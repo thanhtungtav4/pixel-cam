@@ -1,0 +1,26 @@
+<?php
+/**
+ * Template Name: {{TITLE}}
+ * Template Post Type: page
+ *
+ * @author Underscores
+ */
+
+declare(strict_types=1);
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+underscores_child_set_main_class('page-{{HOOK_HANDLE}}');
+
+get_header();
+
+if (have_posts()) {
+    while (have_posts()) {
+        the_post();
+        get_template_part('{{PARTIAL_SLUG}}');
+    }
+}
+
+get_footer();

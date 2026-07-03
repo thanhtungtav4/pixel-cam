@@ -1,0 +1,27 @@
+<?php
+declare(strict_types=1);
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+$acf_fields = get_fields() ?: [];
+$hero_settings = $acf_fields['hero_settings'] ?? [];
+?>
+<?php if ($hero_settings && !empty($hero_settings['is_show'])) : ?>
+    <section class="{{PAGE_CLASS}}__hero">
+        <?php if (!empty($hero_settings['heading'])) : ?>
+            <h1><?php echo esc_html($hero_settings['heading']); ?></h1>
+        <?php endif; ?>
+
+        <?php if (!empty($hero_settings['intro'])) : ?>
+            <div class="{{PAGE_CLASS}}__intro">
+                <?php echo wp_kses_post(wpautop($hero_settings['intro'])); ?>
+            </div>
+        <?php endif; ?>
+    </section>
+<?php endif; ?>
+
+<div class="{{PAGE_CLASS}}__content">
+    <?php the_content(); ?>
+</div>

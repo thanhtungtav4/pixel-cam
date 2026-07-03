@@ -1,0 +1,494 @@
+{
+    "key": "group_page_home",
+    "title": "Trang chủ",
+    "fields": [
+        {
+            "key": "field_page_home_tab_hero",
+            "label": "Hero",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_page_home_hero",
+            "label": "Hero",
+            "name": "hero_settings",
+            "type": "group",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_page_home_hero_is_show",
+                    "label": "Hiển thị section",
+                    "name": "is_show",
+                    "type": "true_false",
+                    "ui": 1,
+                    "default_value": 1,
+                    "wrapper": { "width": "100" }
+                },
+                {
+                    "key": "field_page_home_hero_slides",
+                    "label": "Slide",
+                    "name": "slides",
+                    "type": "repeater",
+                    "layout": "block",
+                    "button_label": "Thêm slide",
+                    "instructions": "VD trong thiết kế: Sony A7 V — Cảm biến 35MP, lấy nét AI.",
+                    "sub_fields": [
+                        {
+                            "key": "field_page_home_hero_slide_kicker",
+                            "label": "Nhãn nhỏ",
+                            "name": "kicker",
+                            "type": "text",
+                            "wrapper": { "width": "50" },
+                            "placeholder": "Ra mắt 2026"
+                        },
+                        {
+                            "key": "field_page_home_hero_slide_heading",
+                            "label": "Tiêu đề",
+                            "name": "heading",
+                            "type": "text",
+                            "wrapper": { "width": "50" },
+                            "placeholder": "Sony A7 V — Cảm biến 35MP, lấy nét AI"
+                        },
+                        {
+                            "key": "field_page_home_hero_slide_image",
+                            "label": "Ảnh",
+                            "name": "image",
+                            "type": "image",
+                            "return_format": "id",
+                            "wrapper": { "width": "50" }
+                        },
+                        {
+                            "key": "field_page_home_hero_slide_link",
+                            "label": "Nút",
+                            "name": "link",
+                            "type": "link",
+                            "return_format": "array",
+                            "wrapper": { "width": "50" }
+                        }
+                    ]
+                },
+                {
+                    "key": "field_page_home_hero_side",
+                    "label": "Banner phụ",
+                    "name": "side_banners",
+                    "type": "repeater",
+                    "layout": "table",
+                    "max": 2,
+                    "button_label": "Thêm banner",
+                    "instructions": "Tối đa 2 banner phụ bên phải. VD: Trả góp 0%, Thu cũ đổi mới.",
+                    "sub_fields": [
+                        {
+                            "key": "field_page_home_hero_side_image",
+                            "label": "Ảnh",
+                            "name": "image",
+                            "type": "image",
+                            "return_format": "id"
+                        },
+                        {
+                            "key": "field_page_home_hero_side_label",
+                            "label": "Nhãn",
+                            "name": "label",
+                            "type": "text",
+                            "placeholder": "Trả góp 0%"
+                        },
+                        {
+                            "key": "field_page_home_hero_side_link",
+                            "label": "Link",
+                            "name": "link",
+                            "type": "link",
+                            "return_format": "array"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_page_home_tab_feature",
+            "label": "Cam kết",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_page_home_feature",
+            "label": "Cam kết",
+            "name": "feature_settings",
+            "type": "group",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_page_home_feature_is_show",
+                    "label": "Hiển thị section",
+                    "name": "is_show",
+                    "type": "true_false",
+                    "ui": 1,
+                    "default_value": 1
+                },
+                {
+                    "key": "field_page_home_feature_items",
+                    "label": "Mục cam kết",
+                    "name": "items",
+                    "type": "repeater",
+                    "layout": "block",
+                    "button_label": "Thêm mục",
+                    "instructions": "VD trong thiết kế: Hàng chính hãng / Phân phối & VAT đầy đủ.",
+                    "sub_fields": [
+                        {
+                            "key": "field_page_home_feature_item_icon",
+                            "label": "Icon",
+                            "name": "icon",
+                            "type": "image",
+                            "return_format": "id",
+                            "wrapper": { "width": "34" }
+                        },
+                        {
+                            "key": "field_page_home_feature_item_title",
+                            "label": "Tiêu đề",
+                            "name": "title",
+                            "type": "text",
+                            "wrapper": { "width": "33" },
+                            "placeholder": "Hàng chính hãng"
+                        },
+                        {
+                            "key": "field_page_home_feature_item_desc",
+                            "label": "Mô tả",
+                            "name": "desc",
+                            "type": "text",
+                            "wrapper": { "width": "33" },
+                            "placeholder": "Phân phối & VAT đầy đủ"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_page_home_tab_categories",
+            "label": "Danh mục nổi bật",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_page_home_categories",
+            "label": "Danh mục nổi bật",
+            "name": "categories_settings",
+            "type": "group",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_page_home_categories_is_show",
+                    "label": "Hiển thị section",
+                    "name": "is_show",
+                    "type": "true_false",
+                    "ui": 1,
+                    "default_value": 1,
+                    "wrapper": { "width": "100" }
+                },
+                {
+                    "key": "field_page_home_categories_heading",
+                    "label": "Tiêu đề",
+                    "name": "heading",
+                    "type": "text",
+                    "wrapper": { "width": "50" },
+                    "placeholder": "Danh mục nổi bật"
+                },
+                {
+                    "key": "field_page_home_categories_link",
+                    "label": "Link xem tất cả",
+                    "name": "link",
+                    "type": "link",
+                    "return_format": "array",
+                    "wrapper": { "width": "50" }
+                },
+                {
+                    "key": "field_page_home_categories_tiles",
+                    "label": "Ô danh mục",
+                    "name": "tiles",
+                    "type": "repeater",
+                    "layout": "block",
+                    "button_label": "Thêm ô",
+                    "instructions": "VD trong thiết kế: Máy ảnh · Mirrorless · Đồ cũ · Compact.",
+                    "sub_fields": [
+                        {
+                            "key": "field_page_home_categories_tile_image",
+                            "label": "Ảnh",
+                            "name": "image",
+                            "type": "image",
+                            "return_format": "id",
+                            "wrapper": { "width": "34" }
+                        },
+                        {
+                            "key": "field_page_home_categories_tile_title",
+                            "label": "Tiêu đề",
+                            "name": "title",
+                            "type": "text",
+                            "wrapper": { "width": "33" },
+                            "placeholder": "Máy ảnh"
+                        },
+                        {
+                            "key": "field_page_home_categories_tile_desc",
+                            "label": "Mô tả",
+                            "name": "desc",
+                            "type": "text",
+                            "wrapper": { "width": "33" },
+                            "placeholder": "Mirrorless · Đồ cũ · Compact"
+                        },
+                        {
+                            "key": "field_page_home_categories_tile_link",
+                            "label": "Link",
+                            "name": "link",
+                            "type": "link",
+                            "return_format": "array"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_page_home_tab_products",
+            "label": "Sản phẩm bán chạy",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_page_home_products",
+            "label": "Sản phẩm bán chạy",
+            "name": "products_settings",
+            "type": "group",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_page_home_products_is_show",
+                    "label": "Hiển thị section",
+                    "name": "is_show",
+                    "type": "true_false",
+                    "ui": 1,
+                    "default_value": 1,
+                    "wrapper": { "width": "100" }
+                },
+                {
+                    "key": "field_page_home_products_heading",
+                    "label": "Tiêu đề",
+                    "name": "heading",
+                    "type": "text",
+                    "wrapper": { "width": "50" },
+                    "placeholder": "Sản phẩm bán chạy"
+                },
+                {
+                    "key": "field_page_home_products_link",
+                    "label": "Link xem thêm",
+                    "name": "link",
+                    "type": "link",
+                    "return_format": "array",
+                    "wrapper": { "width": "50" }
+                },
+                {
+                    "key": "field_page_home_products_mode",
+                    "label": "Chế độ chọn sản phẩm",
+                    "name": "mode",
+                    "type": "select",
+                    "choices": {
+                        "auto": "Tự động (bán chạy nhất)",
+                        "manual": "Chọn tay"
+                    },
+                    "default_value": "auto",
+                    "wrapper": { "width": "50" }
+                },
+                {
+                    "key": "field_page_home_products_count",
+                    "label": "Số sản phẩm (chế độ tự động)",
+                    "name": "count",
+                    "type": "number",
+                    "default_value": 6,
+                    "min": 1,
+                    "max": 24,
+                    "wrapper": { "width": "50" },
+                    "conditional_logic": [
+                        [
+                            { "field": "field_page_home_products_mode", "operator": "==", "value": "auto" }
+                        ]
+                    ]
+                },
+                {
+                    "key": "field_page_home_products_manual",
+                    "label": "Sản phẩm chọn tay",
+                    "name": "manual_products",
+                    "type": "relationship",
+                    "post_type": ["product"],
+                    "filters": ["search"],
+                    "return_format": "id",
+                    "conditional_logic": [
+                        [
+                            { "field": "field_page_home_products_mode", "operator": "==", "value": "manual" }
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_page_home_tab_blog",
+            "label": "Tin tức",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_page_home_blog",
+            "label": "Tin tức",
+            "name": "blog_settings",
+            "type": "group",
+            "layout": "block",
+            "instructions": "Bài viết lấy từ Tin tức (post) mới nhất. Section này chỉ cấu hình tiêu đề + link.",
+            "sub_fields": [
+                {
+                    "key": "field_page_home_blog_is_show",
+                    "label": "Hiển thị section",
+                    "name": "is_show",
+                    "type": "true_false",
+                    "ui": 1,
+                    "default_value": 1,
+                    "wrapper": { "width": "100" }
+                },
+                {
+                    "key": "field_page_home_blog_heading",
+                    "label": "Tiêu đề",
+                    "name": "heading",
+                    "type": "text",
+                    "wrapper": { "width": "50" },
+                    "placeholder": "Tin tức & Kiến thức nhiếp ảnh"
+                },
+                {
+                    "key": "field_page_home_blog_link",
+                    "label": "Link xem tất cả",
+                    "name": "link",
+                    "type": "link",
+                    "return_format": "array",
+                    "wrapper": { "width": "50" }
+                }
+            ]
+        },
+        {
+            "key": "field_page_home_tab_brands",
+            "label": "Thương hiệu",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_page_home_brands",
+            "label": "Thương hiệu",
+            "name": "brands_settings",
+            "type": "group",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_page_home_brands_is_show",
+                    "label": "Hiển thị section",
+                    "name": "is_show",
+                    "type": "true_false",
+                    "ui": 1,
+                    "default_value": 1,
+                    "wrapper": { "width": "100" }
+                },
+                {
+                    "key": "field_page_home_brands_heading",
+                    "label": "Tiêu đề",
+                    "name": "heading",
+                    "type": "text",
+                    "placeholder": "Thương hiệu"
+                },
+                {
+                    "key": "field_page_home_brands_items",
+                    "label": "Thương hiệu",
+                    "name": "brands",
+                    "type": "repeater",
+                    "layout": "table",
+                    "button_label": "Thêm thương hiệu",
+                    "instructions": "Logo hoặc tên. VD: SONY, Canon, Nikon, FUJIFILM, DJI, SIGMA.",
+                    "sub_fields": [
+                        {
+                            "key": "field_page_home_brands_item_logo",
+                            "label": "Logo",
+                            "name": "logo",
+                            "type": "image",
+                            "return_format": "id"
+                        },
+                        {
+                            "key": "field_page_home_brands_item_name",
+                            "label": "Tên (nếu không có logo)",
+                            "name": "name",
+                            "type": "text",
+                            "placeholder": "SONY"
+                        },
+                        {
+                            "key": "field_page_home_brands_item_link",
+                            "label": "Link",
+                            "name": "link",
+                            "type": "link",
+                            "return_format": "array"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_page_home_tab_cta",
+            "label": "CTA đăng ký",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_page_home_cta",
+            "label": "CTA đăng ký",
+            "name": "cta_settings",
+            "type": "group",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_page_home_cta_is_show",
+                    "label": "Hiển thị section",
+                    "name": "is_show",
+                    "type": "true_false",
+                    "ui": 1,
+                    "default_value": 1,
+                    "wrapper": { "width": "100" }
+                },
+                {
+                    "key": "field_page_home_cta_heading",
+                    "label": "Tiêu đề",
+                    "name": "heading",
+                    "type": "text",
+                    "placeholder": "Đăng ký nhận ưu đãi sớm nhất"
+                },
+                {
+                    "key": "field_page_home_cta_desc",
+                    "label": "Mô tả",
+                    "name": "desc",
+                    "type": "textarea",
+                    "placeholder": "Voucher 500.000đ cho đơn đầu tiên + tin khuyến mãi độc quyền mỗi tuần."
+                },
+                {
+                    "key": "field_page_home_cta_button",
+                    "label": "Nút",
+                    "name": "button",
+                    "type": "link",
+                    "return_format": "array"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            { "param": "page_type", "operator": "==", "value": "front_page" }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true
+}

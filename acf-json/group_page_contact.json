@@ -1,0 +1,83 @@
+{
+    "key": "group_page_contact",
+    "title": "Trang Liên hệ",
+    "fields": [
+        {
+            "key": "field_contact_tab_head",
+            "label": "Tiêu đề",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        { "key": "field_contact_heading", "label": "Tiêu đề trang", "name": "heading", "type": "text", "wrapper": {"width":"50"}, "placeholder": "Liên hệ Pixel Cam" },
+        { "key": "field_contact_meta", "label": "Mô tả (HTML cho phép link)", "name": "meta", "type": "textarea" },
+        {
+            "key": "field_contact_tab_info",
+            "label": "Thẻ thông tin",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_contact_cards", "label": "Thẻ thông tin", "name": "info_cards", "type": "repeater", "layout": "block", "button_label": "Thêm thẻ",
+            "sub_fields": [
+                { "key": "field_contact_card_eyebrow", "label": "Eyebrow", "name": "eyebrow", "type": "text", "wrapper": {"width":"50"}, "placeholder": "Thông tin chung" },
+                { "key": "field_contact_card_title", "label": "Tiêu đề", "name": "title", "type": "text", "wrapper": {"width":"50"}, "placeholder": "Đầu mối liên hệ" },
+                {
+                    "key": "field_contact_card_rows", "label": "Dòng thông tin", "name": "rows", "type": "repeater", "layout": "table", "button_label": "Thêm dòng",
+                    "sub_fields": [
+                        { "key": "field_contact_card_row_k", "label": "Nhãn", "name": "k", "type": "text", "placeholder": "Hotline" },
+                        { "key": "field_contact_card_row_v", "label": "Giá trị (HTML cho phép link)", "name": "v", "type": "textarea", "rows": 2 }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_contact_tab_form",
+            "label": "Form",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        { "key": "field_contact_form_eyebrow", "label": "Eyebrow", "name": "form_eyebrow", "type": "text", "wrapper": {"width":"50"}, "placeholder": "Gửi yêu cầu" },
+        { "key": "field_contact_form_heading", "label": "Tiêu đề form", "name": "form_heading", "type": "text", "wrapper": {"width":"50"}, "placeholder": "Để chúng tôi gọi lại cho bạn" },
+        { "key": "field_contact_form_lead", "label": "Mô tả form", "name": "form_lead", "type": "textarea" },
+        { "key": "field_contact_form_shortcode", "label": "Shortcode form (CF7)", "name": "form_shortcode", "type": "text", "instructions": "VD: [contact-form-7 id=\"123\"]. Để trống = dùng shortcode CF7 ở Theme Settings." },
+        {
+            "key": "field_contact_tab_map",
+            "label": "Bản đồ",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        { "key": "field_contact_map_heading", "label": "Tiêu đề", "name": "map_heading", "type": "text", "placeholder": "Vị trí showroom" },
+        { "key": "field_contact_map_embed", "label": "Mã nhúng bản đồ (iframe)", "name": "map_embed", "type": "textarea", "instructions": "Dán iframe Google Maps. Để trống = ẩn bản đồ." },
+        {
+            "key": "field_contact_tab_faq",
+            "label": "FAQ",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        { "key": "field_contact_faq_heading", "label": "Tiêu đề FAQ", "name": "faq_heading", "type": "text", "wrapper": {"width":"50"}, "placeholder": "Câu hỏi thường gặp" },
+        { "key": "field_contact_faq_meta", "label": "Ghi chú FAQ", "name": "faq_meta", "type": "text", "wrapper": {"width":"50"} },
+        {
+            "key": "field_contact_faq_items", "label": "Câu hỏi", "name": "faq_items", "type": "repeater", "layout": "block", "button_label": "Thêm câu hỏi",
+            "sub_fields": [
+                { "key": "field_contact_faq_q", "label": "Câu hỏi", "name": "question", "type": "text" },
+                { "key": "field_contact_faq_a", "label": "Trả lời", "name": "answer", "type": "textarea", "rows": 3 }
+            ]
+        }
+    ],
+    "location": [
+        [
+            { "param": "page_template", "operator": "==", "value": "page-template/template-contact.php" }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true
+}

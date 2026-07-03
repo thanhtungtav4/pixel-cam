@@ -1,0 +1,4 @@
+'use strict';
+
+window.underscoresChild = window.underscoresChild || {};
+window.underscoresChild['{{HOOK_HANDLE}}Page'] = true;

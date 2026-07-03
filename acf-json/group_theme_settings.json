@@ -1,0 +1,603 @@
+{
+    "key": "group_theme_settings",
+    "title": "Theme Settings",
+    "fields": [
+        {
+            "key": "field_ts_tab_general",
+            "label": "General",
+            "name": "",
+            "type": "tab",
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ts_general_section",
+            "label": "General Section",
+            "name": "general_section",
+            "type": "group",
+            "instructions": "Cấu hình chung toàn site.",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_ts_general_logo",
+                    "label": "Logo",
+                    "name": "logo",
+                    "type": "image",
+                    "return_format": "id",
+                    "preview_size": "medium"
+                },
+                {
+                    "key": "field_ts_general_favicon",
+                    "label": "Favicon",
+                    "name": "favicon",
+                    "type": "image",
+                    "return_format": "id"
+                },
+                {
+                    "key": "field_ts_general_site_name",
+                    "label": "Site Name",
+                    "name": "site_name",
+                    "type": "text",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                },
+                {
+                    "key": "field_ts_general_slogan",
+                    "label": "Slogan",
+                    "name": "slogan",
+                    "type": "text",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                },
+                {
+                    "key": "field_ts_general_hotline",
+                    "label": "Hotline",
+                    "name": "hotline",
+                    "type": "text",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                },
+                {
+                    "key": "field_ts_general_email",
+                    "label": "Email",
+                    "name": "email",
+                    "type": "email",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                },
+                {
+                    "key": "field_ts_general_address",
+                    "label": "Address",
+                    "name": "address",
+                    "type": "textarea"
+                },
+                {
+                    "key": "field_ts_general_copyright",
+                    "label": "Copyright",
+                    "name": "copyright",
+                    "type": "text",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "field_ts_tab_header",
+            "label": "Header",
+            "name": "",
+            "type": "tab",
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ts_header_section",
+            "label": "Header Section",
+            "name": "header_section",
+            "type": "group",
+            "instructions": "Cấu hình phần header.",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_ts_header_logo",
+                    "label": "Header Logo",
+                    "name": "logo",
+                    "type": "image",
+                    "return_format": "id",
+                    "instructions": "Để trống = dùng Logo ở tab General."
+                },
+                {
+                    "key": "field_ts_header_hotline",
+                    "label": "Header Hotline",
+                    "name": "hotline",
+                    "type": "text",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                },
+                {
+                    "key": "field_ts_header_cta",
+                    "label": "Header CTA Button",
+                    "name": "cta",
+                    "type": "link",
+                    "return_format": "array"
+                },
+                {
+                    "key": "field_ts_header_topbar_text",
+                    "label": "Top Bar Text",
+                    "name": "topbar_text",
+                    "type": "text",
+                    "wrapper": {
+                        "width": "50"
+                    },
+                    "placeholder": "\ud83d\udcde Hotline: 1900 6868 \u2014 8h\u201321h c\u1ea3 tu\u1ea7n"
+                },
+                {
+                    "key": "field_ts_header_topbar_links",
+                    "label": "Top Bar Links",
+                    "name": "topbar_links",
+                    "type": "repeater",
+                    "instructions": "Link nhanh b\u00ean ph\u1ea3i thanh topbar. VD trong thi\u1ebft k\u1ebf: Gi\u1edbi thi\u1ec7u, H\u1ec7 th\u1ed1ng c\u1eeda h\u00e0ng, Tra c\u1ee9u \u0111\u01a1n h\u00e0ng, Tin t\u1ee9c.",
+                    "layout": "table",
+                    "button_label": "Add Link",
+                    "sub_fields": [
+                        {
+                            "key": "field_ts_header_topbar_link_item",
+                            "label": "Link",
+                            "name": "link",
+                            "type": "link",
+                            "return_format": "array"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_ts_tab_footer_general",
+            "label": "Footer",
+            "name": "",
+            "type": "tab",
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ts_footer_general_section",
+            "label": "Footer General Section",
+            "name": "footer_general_section",
+            "type": "group",
+            "instructions": "Cấu hình footer chung (các block footer chi tiết ở các tab Footer Contact/Branches/Courses).",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_ts_footer_logo",
+                    "label": "Footer Logo",
+                    "name": "logo",
+                    "type": "image",
+                    "return_format": "id"
+                },
+                {
+                    "key": "field_ts_footer_description",
+                    "label": "Footer Description",
+                    "name": "description",
+                    "type": "textarea"
+                },
+                {
+                    "key": "field_ts_footer_copyright",
+                    "label": "Footer Copyright",
+                    "name": "copyright",
+                    "type": "text",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "field_ts_tab_product",
+            "label": "Sản phẩm",
+            "name": "",
+            "type": "tab",
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ts_product_section",
+            "label": "Cam kết sản phẩm",
+            "name": "product_section",
+            "type": "group",
+            "instructions": "Cam kết hiển thị trên MỌI trang chi tiết sản phẩm (giao hàng, trả góp, đổi trả).",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_ts_product_perks",
+                    "label": "Cam kết (perks)",
+                    "name": "perks",
+                    "type": "repeater",
+                    "layout": "block",
+                    "button_label": "Thêm cam kết",
+                    "sub_fields": [
+                        {
+                            "key": "field_ts_product_perk_icon",
+                            "label": "Icon",
+                            "name": "icon",
+                            "type": "image",
+                            "return_format": "id",
+                            "wrapper": { "width": "20" }
+                        },
+                        {
+                            "key": "field_ts_product_perk_title",
+                            "label": "Tiêu đề",
+                            "name": "title",
+                            "type": "text",
+                            "wrapper": { "width": "35" },
+                            "placeholder": "Miễn phí giao hàng"
+                        },
+                        {
+                            "key": "field_ts_product_perk_desc",
+                            "label": "Mô tả",
+                            "name": "desc",
+                            "type": "text",
+                            "wrapper": { "width": "45" },
+                            "placeholder": "Toàn quốc với đơn từ 1 triệu — Nội thành nhận trong 2–4h"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_ts_tab_scripts",
+            "label": "Scripts / Tracking",
+            "name": "",
+            "type": "tab",
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ts_scripts_section",
+            "label": "Scripts Section",
+            "name": "scripts_section",
+            "type": "group",
+            "instructions": "Mã tracking và script chèn vào head/body.",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_ts_scripts_ga_id",
+                    "label": "Google Analytics ID",
+                    "name": "ga_id",
+                    "type": "text",
+                    "wrapper": {
+                        "width": "50"
+                    },
+                    "instructions": "VD: G-XXXXXXXXXX"
+                },
+                {
+                    "key": "field_ts_scripts_fb_pixel",
+                    "label": "Facebook Pixel ID",
+                    "name": "fb_pixel",
+                    "type": "text",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                },
+                {
+                    "key": "field_ts_scripts_header",
+                    "label": "Header Scripts",
+                    "name": "header_scripts",
+                    "type": "textarea",
+                    "instructions": "Chèn vào trước </head>."
+                },
+                {
+                    "key": "field_ts_scripts_footer",
+                    "label": "Footer Scripts",
+                    "name": "footer_scripts",
+                    "type": "textarea",
+                    "instructions": "Chèn vào trước </body>."
+                }
+            ]
+        },
+        {
+            "key": "field_ts_tab_social",
+            "label": "Social",
+            "name": "",
+            "type": "tab",
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ts_social_links",
+            "label": "Social Links",
+            "name": "social_links",
+            "type": "repeater",
+            "instructions": "Link mạng xã hội dùng chung toàn site.",
+            "layout": "table",
+            "button_label": "Add Social",
+            "sub_fields": [
+                {
+                    "key": "field_ts_social_platform",
+                    "label": "Platform",
+                    "name": "platform",
+                    "type": "text",
+                    "instructions": "VD: facebook, instagram, youtube, zalo, tiktok"
+                },
+                {
+                    "key": "field_ts_social_icon",
+                    "label": "Icon",
+                    "name": "icon",
+                    "type": "image",
+                    "return_format": "id"
+                },
+                {
+                    "key": "field_ts_social_url",
+                    "label": "URL",
+                    "name": "url",
+                    "type": "url"
+                }
+            ]
+        },
+        {
+            "key": "field_ts_tab_detail_post_form",
+            "label": "Tab Detail Post Form",
+            "name": "",
+            "type": "tab",
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ts_detail_post_form_section",
+            "label": "Detail Post Form Section",
+            "name": "detail_post_form_section",
+            "type": "group",
+            "instructions": "Global settings for the detail post form section.",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_ts_dpf_shortcode_cf7",
+                    "label": "Shortcode cf7",
+                    "name": "shortcode_cf7",
+                    "type": "text"
+                }
+            ]
+        },
+        {
+            "key": "field_ts_tab_footer_contact",
+            "label": "Tab Footer Contact",
+            "name": "",
+            "type": "tab",
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ts_footer_contact_section",
+            "label": "Footer Contact Section",
+            "name": "footer_contact_section",
+            "type": "group",
+            "instructions": "Footer block: Thông tin liên hệ.",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_ts_fc_title",
+                    "label": "Title",
+                    "name": "title",
+                    "type": "text"
+                },
+                {
+                    "key": "field_ts_fc_items",
+                    "label": "Contact Items",
+                    "name": "items",
+                    "type": "repeater",
+                    "layout": "block",
+                    "button_label": "Add Row",
+                    "sub_fields": [
+                        {
+                            "key": "field_ts_fc_items_text",
+                            "label": "Text",
+                            "name": "text",
+                            "type": "text"
+                        },
+                        {
+                            "key": "field_ts_fc_items_link",
+                            "label": "Link",
+                            "name": "link",
+                            "type": "link",
+                            "return_format": "array"
+                        }
+                    ]
+                },
+                {
+                    "key": "field_ts_fc_social_links",
+                    "label": "Social Links",
+                    "name": "social_links",
+                    "type": "repeater",
+                    "layout": "block",
+                    "button_label": "Add Row",
+                    "sub_fields": [
+                        {
+                            "key": "field_ts_fc_social_icon",
+                            "label": "Icon",
+                            "name": "icon",
+                            "type": "image",
+                            "return_format": "id"
+                        },
+                        {
+                            "key": "field_ts_fc_social_link",
+                            "label": "Link",
+                            "name": "link",
+                            "type": "link",
+                            "return_format": "array"
+                        }
+                    ]
+                },
+                {
+                    "key": "field_ts_fc_reserved_text",
+                    "label": "Reserved Text",
+                    "name": "reserved_text",
+                    "type": "text"
+                },
+                {
+                    "key": "field_ts_fc_signature_image",
+                    "label": "Signature Image",
+                    "name": "signature_image",
+                    "type": "image",
+                    "return_format": "id"
+                }
+            ]
+        },
+        {
+            "key": "field_ts_tab_footer_branches",
+            "label": "Tab Footer Branches",
+            "name": "",
+            "type": "tab",
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ts_footer_branches_section",
+            "label": "Footer Branches Section",
+            "name": "footer_branches_section",
+            "type": "group",
+            "instructions": "Footer block: Các chi nhánh / trụ sở.",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_ts_fb_title",
+                    "label": "Title",
+                    "name": "title",
+                    "type": "text"
+                },
+                {
+                    "key": "field_ts_fb_branch_groups",
+                    "label": "Branch Groups",
+                    "name": "branch_groups",
+                    "type": "repeater",
+                    "layout": "block",
+                    "button_label": "Add Row",
+                    "sub_fields": [
+                        {
+                            "key": "field_ts_fb_bg_label",
+                            "label": "Label",
+                            "name": "label",
+                            "type": "text"
+                        },
+                        {
+                            "key": "field_ts_fb_bg_items",
+                            "label": "Items",
+                            "name": "items",
+                            "type": "repeater",
+                            "layout": "block",
+                            "button_label": "Add Row",
+                            "sub_fields": [
+                                {
+                                    "key": "field_ts_fb_bg_items_icon",
+                                    "label": "Icon",
+                                    "name": "icon",
+                                    "type": "image",
+                                    "return_format": "id"
+                                },
+                                {
+                                    "key": "field_ts_fb_bg_items_link",
+                                    "label": "Link",
+                                    "name": "link",
+                                    "type": "link",
+                                    "return_format": "array"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_ts_tab_footer_courses",
+            "label": "Tab Footer Courses",
+            "name": "",
+            "type": "tab",
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ts_footer_courses_section",
+            "label": "Footer Courses Section",
+            "name": "footer_courses_section",
+            "type": "group",
+            "instructions": "Footer block: Khóa học.",
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_ts_fco_title",
+                    "label": "Title",
+                    "name": "title",
+                    "type": "text"
+                },
+                {
+                    "key": "field_ts_fco_course_links",
+                    "label": "Course Links",
+                    "name": "course_links",
+                    "type": "repeater",
+                    "layout": "block",
+                    "button_label": "Add Row",
+                    "sub_fields": [
+                        {
+                            "key": "field_ts_fco_course_link",
+                            "label": "Link",
+                            "name": "link",
+                            "type": "link",
+                            "return_format": "array"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_ts_tab_cta",
+            "label": "Tab Button Call to Action",
+            "name": "",
+            "type": "tab",
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ts_call_to_action",
+            "label": "Call to Action",
+            "name": "call_to_action",
+            "type": "repeater",
+            "instructions": "Call to action buttons",
+            "layout": "row",
+            "button_label": "Add Row",
+            "sub_fields": [
+                {
+                    "key": "field_ts_cta_icon",
+                    "label": "Icon",
+                    "name": "icon",
+                    "type": "image",
+                    "return_format": "id"
+                },
+                {
+                    "key": "field_ts_cta_link",
+                    "label": "Link",
+                    "name": "link",
+                    "type": "link",
+                    "return_format": "array"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "theme-setting"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true
+}

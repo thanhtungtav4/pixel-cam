@@ -1,0 +1,7 @@
+---
+description: Underscores child theme project guidance
+alwaysApply: true
+---
+
+Follow `AGENTS.md` and the rules + skills in `.ai/` for all conventions
+(PSR-4 hooks under Theme\Child\, ACF Local JSON in acf-json/, data-rendering: no dummy data, guard empty only).

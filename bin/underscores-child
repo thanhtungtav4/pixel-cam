@@ -1,0 +1,125 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+$theme_path = dirname(__DIR__);
+$config_path = $theme_path . '/includes/config';
+$stub_path = $theme_path . '/stubs';
+$generator_path = $theme_path . '/includes/classes/class-child-scaffold-generator.php';
+
+if (!file_exists($generator_path)) {
+    fwrite(STDERR, "Missing generator class: {$generator_path}\n");
+    exit(1);
+}
+
+require_once $generator_path;
+
+$argv = $_SERVER['argv'] ?? [];
+array_shift($argv);
+
+$usage = <<<TXT
+Usage:
+  php wp-content/themes/underscores-child/bin/underscores-child make:page <slug> [--title="Page Title"] [--acf] [--hook] [--assets] [--force] [--dry-run]
+  php wp-content/themes/underscores-child/bin/underscores-child make page <slug> [--title="Page Title"] [--acf] [--hook] [--assets] [--force] [--dry-run]
+TXT;
+
+if ($argv === []) {
+    fwrite(STDERR, $usage . "\n");
+    exit(1);
+}
+
+$command = $argv[0] ?? '';
+$subcommand = $argv[1] ?? '';
+
+if ($command === 'make' && $subcommand === 'page') {
+    array_shift($argv);
+    $command = 'make:page';
+}
+
+if ($command !== 'make:page') {
+    fwrite(STDERR, $usage . "\n");
+    exit(1);
+}
+
+array_shift($argv);
+
+$slug = null;
+$options = [
+    'acf' => false,
+    'hook' => false,
+    'assets' => false,
+    'force' => false,
+    'dry_run' => false,
+];
+
+foreach ($argv as $argument) {
+    if (str_starts_with($argument, '--title=')) {
+        $options['title'] = trim(substr($argument, 8), "\"'");
+        continue;
+    }
+
+    if ($argument === '--acf') {
+        $options['acf'] = true;
+        continue;
+    }
+
+    if ($argument === '--hook') {
+        $options['hook'] = true;
+        continue;
+    }
+
+    if ($argument === '--assets') {
+        $options['assets'] = true;
+        continue;
+    }
+
+    if ($argument === '--force') {
+        $options['force'] = true;
+        continue;
+    }
+
+    if ($argument === '--dry-run') {
+        $options['dry_run'] = true;
+        continue;
+    }
+
+    if ($slug === null && !str_starts_with($argument, '--')) {
+        $slug = $argument;
+        continue;
+    }
+
+    fwrite(STDERR, "Unknown argument: {$argument}\n");
+    exit(1);
+}
+
+if ($slug === null || trim($slug) === '') {
+    fwrite(STDERR, "Missing page slug.\n{$usage}\n");
+    exit(1);
+}
+
+$generator = new Underscores_Child_Scaffold_Generator($theme_path, $config_path, $stub_path);
+
+try {
+    $result = $generator->generate_page($slug, $options);
+} catch (RuntimeException $exception) {
+    fwrite(STDERR, $exception->getMessage() . "\n");
+    exit(1);
+}
+
+if (!empty($result['dry_run'])) {
+    fwrite(STDOUT, "Dry run only. No files were written.\n");
+}
+
+foreach ($result['created'] as $item) {
+    fwrite(STDOUT, "CREATE {$item}\n");
+}
+
+foreach ($result['updated'] as $item) {
+    fwrite(STDOUT, "UPDATE {$item}\n");
+}
+
+foreach ($result['skipped'] as $item) {
+    fwrite(STDOUT, "SKIP {$item}\n");
+}
+
+fwrite(STDOUT, "Page scaffold `{$result['slug']}` is ready.\n");

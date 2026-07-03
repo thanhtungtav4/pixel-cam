@@ -1,0 +1,44 @@
+{
+    "key": "group_page_policy",
+    "title": "Trang Chính sách",
+    "fields": [
+        { "key": "field_policy_lead", "label": "Mô tả trang", "name": "lead", "type": "text", "placeholder": "Cam kết của Pixel Cam về bảo hành, đổi trả, vận chuyển và trả góp." },
+        {
+            "key": "field_policy_sections",
+            "label": "Mục chính sách",
+            "name": "sections",
+            "type": "repeater",
+            "layout": "block",
+            "button_label": "Thêm mục",
+            "sub_fields": [
+                { "key": "field_policy_sec_id", "label": "ID (anchor)", "name": "id", "type": "text", "wrapper": { "width": "25" }, "placeholder": "warranty" },
+                { "key": "field_policy_sec_title", "label": "Tiêu đề", "name": "title", "type": "text", "wrapper": { "width": "75" }, "placeholder": "Chính sách bảo hành" },
+                { "key": "field_policy_sec_intro", "label": "Đoạn mở đầu", "name": "intro", "type": "textarea", "rows": 2 },
+                {
+                    "key": "field_policy_sec_list",
+                    "label": "Danh sách",
+                    "name": "list_items",
+                    "type": "repeater",
+                    "layout": "table",
+                    "button_label": "Thêm dòng",
+                    "sub_fields": [
+                        { "key": "field_policy_sec_list_text", "label": "Nội dung", "name": "text", "type": "text" }
+                    ]
+                },
+                { "key": "field_policy_sec_faq_q", "label": "Câu hỏi FAQ (tùy chọn)", "name": "faq_question", "type": "text", "wrapper": { "width": "40" }, "placeholder": "Trường hợp nào không được bảo hành?" },
+                { "key": "field_policy_sec_faq_a", "label": "Trả lời FAQ", "name": "faq_answer", "type": "textarea", "rows": 2, "wrapper": { "width": "60" } }
+            ]
+        }
+    ],
+    "location": [
+        [
+            { "param": "page_template", "operator": "==", "value": "page-template/template-policy.php" }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true
+}

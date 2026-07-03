@@ -1,0 +1,271 @@
+{
+    "key": "group_product_pdp",
+    "title": "Chi tiết sản phẩm (Pixel Cam)",
+    "fields": [
+        {
+            "key": "field_pdp_tab_price",
+            "label": "Giá & Trả góp",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_pdp_install_text",
+            "label": "Dòng trả góp",
+            "name": "install_text",
+            "type": "text",
+            "instructions": "Hiển thị dưới giá. VD trong thiết kế: Trả góp 0% qua thẻ tín dụng — chỉ từ 4.416.000đ/tháng."
+        },
+        {
+            "key": "field_pdp_tab_gifts",
+            "label": "Quà tặng kèm",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_pdp_gifts_total",
+            "label": "Tổng trị giá quà",
+            "name": "gifts_total",
+            "type": "text",
+            "wrapper": { "width": "50" },
+            "placeholder": "Tổng trị giá 1.490.000đ"
+        },
+        {
+            "key": "field_pdp_gifts",
+            "label": "Danh sách quà",
+            "name": "gifts",
+            "type": "repeater",
+            "layout": "block",
+            "button_label": "Thêm quà",
+            "sub_fields": [
+                {
+                    "key": "field_pdp_gift_name",
+                    "label": "Tên quà",
+                    "name": "name",
+                    "type": "text",
+                    "wrapper": { "width": "70" },
+                    "placeholder": "Thẻ nhớ SanDisk Extreme Pro SD 64GB UHS-II"
+                },
+                {
+                    "key": "field_pdp_gift_value",
+                    "label": "Giá trị (ghi chú)",
+                    "name": "value",
+                    "type": "text",
+                    "wrapper": { "width": "30" },
+                    "placeholder": "690.000đ"
+                }
+            ]
+        },
+        {
+            "key": "field_pdp_tab_box",
+            "label": "Hộp gồm",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_pdp_box_items",
+            "label": "Hộp sản phẩm bao gồm",
+            "name": "box_items",
+            "type": "repeater",
+            "layout": "table",
+            "button_label": "Thêm mục",
+            "sub_fields": [
+                {
+                    "key": "field_pdp_box_item_text",
+                    "label": "Mục",
+                    "name": "text",
+                    "type": "text",
+                    "placeholder": "Thân máy Sony A7 IV"
+                }
+            ]
+        },
+        {
+            "key": "field_pdp_tab_spec",
+            "label": "Thông số kỹ thuật",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_pdp_spec_rows",
+            "label": "Bảng thông số",
+            "name": "spec_rows",
+            "type": "repeater",
+            "layout": "block",
+            "button_label": "Thêm dòng",
+            "sub_fields": [
+                {
+                    "key": "field_pdp_spec_key",
+                    "label": "Tên",
+                    "name": "key",
+                    "type": "text",
+                    "wrapper": { "width": "35" },
+                    "placeholder": "Cảm biến"
+                },
+                {
+                    "key": "field_pdp_spec_value",
+                    "label": "Giá trị",
+                    "name": "value",
+                    "type": "textarea",
+                    "rows": 2,
+                    "wrapper": { "width": "65" },
+                    "placeholder": "Exmor R BSI CMOS 33MP — 35.6 × 23.8mm"
+                }
+            ]
+        },
+        {
+            "key": "field_pdp_tab_qa",
+            "label": "Hỏi đáp",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_pdp_qa",
+            "label": "Câu hỏi thường gặp",
+            "name": "qa",
+            "type": "repeater",
+            "layout": "block",
+            "button_label": "Thêm Q&A",
+            "sub_fields": [
+                {
+                    "key": "field_pdp_qa_question",
+                    "label": "Câu hỏi",
+                    "name": "question",
+                    "type": "text",
+                    "placeholder": "A7 IV có quay 4K 120fps không?"
+                },
+                {
+                    "key": "field_pdp_qa_answer",
+                    "label": "Trả lời",
+                    "name": "answer",
+                    "type": "textarea",
+                    "rows": 3
+                },
+                {
+                    "key": "field_pdp_qa_meta",
+                    "label": "Ghi chú (người trả lời / ngày)",
+                    "name": "meta",
+                    "type": "text",
+                    "placeholder": "Nhân viên Pixel Cam · 12/06/2026"
+                }
+            ]
+        },
+        {
+            "key": "field_pdp_tab_warranty",
+            "label": "Bảo hành",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_pdp_warranty",
+            "label": "Nội dung bảo hành",
+            "name": "warranty",
+            "type": "wysiwyg",
+            "instructions": "Chính sách bảo hành & dịch vụ riêng cho sản phẩm (nếu để trống, tab Bảo hành sẽ ẩn)."
+        },
+        {
+            "key": "field_pdp_card_spec",
+            "label": "Dòng spec trên card",
+            "name": "card_spec",
+            "type": "text",
+            "instructions": "Dòng ngắn hiện trên card sản phẩm (.spec), VD: 33MP · Sony E. Để trống thì ẩn.",
+            "placeholder": "33MP · Sony E"
+        },
+        {
+            "key": "field_pdp_tab_seo",
+            "label": "SEO & Feed",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_pdp_seo_gone_action",
+            "label": "Khi sản phẩm ngừng bán",
+            "name": "seo_gone_action",
+            "type": "select",
+            "instructions": "Điều khiển status code khi sản phẩm không còn bán. 'Giữ' = vẫn index, mua lại khi có hàng. 'Chuyển hướng 301' = trỏ sang sản phẩm kế nhiệm. '410 Gone' = ngừng vĩnh viễn.",
+            "choices": {
+                "keep": "Giữ URL (mặc định)",
+                "redirect": "Chuyển hướng 301",
+                "gone": "410 Gone"
+            },
+            "default_value": "keep",
+            "return_format": "value",
+            "wrapper": { "width": "50" }
+        },
+        {
+            "key": "field_pdp_seo_redirect_url",
+            "label": "URL chuyển hướng (301)",
+            "name": "seo_redirect_url",
+            "type": "url",
+            "instructions": "Chỉ dùng khi chọn 'Chuyển hướng 301'.",
+            "wrapper": { "width": "50" },
+            "conditional_logic": [
+                [
+                    { "field": "field_pdp_seo_gone_action", "operator": "==", "value": "redirect" }
+                ]
+            ]
+        },
+        {
+            "key": "field_pdp_feed_gtin",
+            "label": "GTIN / EAN / UPC",
+            "name": "feed_gtin",
+            "type": "text",
+            "instructions": "Mã sản phẩm toàn cầu — dùng cho Merchant Center feed & Product schema.",
+            "wrapper": { "width": "50" }
+        },
+        {
+            "key": "field_pdp_feed_mpn",
+            "label": "MPN (Mã nhà sản xuất)",
+            "name": "feed_mpn",
+            "type": "text",
+            "wrapper": { "width": "50" }
+        },
+        {
+            "key": "field_pdp_feed_brand",
+            "label": "Thương hiệu (Brand)",
+            "name": "feed_brand",
+            "type": "text",
+            "instructions": "Để trống nếu đã có taxonomy brand. Dùng cho feed khi không có taxonomy.",
+            "wrapper": { "width": "50" }
+        },
+        {
+            "key": "field_pdp_feed_material",
+            "label": "Chất liệu",
+            "name": "feed_material",
+            "type": "text",
+            "instructions": "Dùng cho khối internal-link 'cùng chất liệu'. Nếu dùng thuộc tính Woo pa_material thì để trống.",
+            "wrapper": { "width": "50" }
+        },
+        {
+            "key": "field_pdp_shipping_policy",
+            "label": "Chính sách vận chuyển",
+            "name": "shipping_policy",
+            "type": "textarea",
+            "rows": 2,
+            "instructions": "Xuất cho schema/feed nếu cần. Để trống dùng chính sách mặc định của shop."
+        },
+        {
+            "key": "field_pdp_return_policy",
+            "label": "Chính sách đổi trả",
+            "name": "return_policy",
+            "type": "textarea",
+            "rows": 2
+        }
+    ],
+    "location": [
+        [
+            { "param": "post_type", "operator": "==", "value": "product" }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true
+}
