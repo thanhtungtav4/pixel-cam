@@ -31,6 +31,12 @@ final class WooHook
         add_action('after_setup_theme', [$self, 'add_gallery_support']);
         add_action('after_setup_theme', [$self, 'register_image_sizes']);
         add_action('init', [$self, 'swap_content_wrapper']);
+        // Product search (?s=...&post_type=product) is is_search(), not a
+        // product post-type archive, so Woo's template_loader skips
+        // archive-product.php and WP falls back to the theme search.php (no shop
+        // wrapper). Route it through woocommerce_content() so the shop layout
+        // (page head + sidebar + product grid) renders like the shop archive.
+        add_filter('template_include', [$self, 'product_search_template'], 99);
         add_filter('woocommerce_add_to_cart_fragments', [$self, 'cart_count_fragment']);
         add_action('wp_enqueue_scripts', [$self, 'trim_cart_fragments'], 99);
 
@@ -677,6 +683,18 @@ final class WooHook
         // before/after_main_content, so wrap the shop grid around the loop hooks.
         add_action('woocommerce_before_shop_loop', [$this, 'open_shop_grid'], 1);
         add_action('woocommerce_after_shop_loop', [$this, 'close_shop_grid'], 999);
+    }
+
+    public function product_search_template(string $template): string
+    {
+        if (is_search() && get_query_var('post_type') === 'product') {
+            $located = locate_template('woocommerce.php');
+            if ($located) {
+                return $located;
+            }
+        }
+
+        return $template;
     }
 
     public function open_content_wrapper(): void
