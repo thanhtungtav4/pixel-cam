@@ -505,6 +505,94 @@ footer a:hover{color:#fff}
 .author-bio small{color:var(--muted);font-size:13px}
 .author-bio p{color:var(--muted);font-size:14px;margin-top:8px;line-height:1.6}
 
+/* === POST HEAD (sforum-style single post hero) ===============
+   Mobile : image edge-to-edge, darkened filter, red category tag +
+            title overlaid on the image, white card overlapping the
+            image bottom with author + "Ngày cập nhật" row.
+   Desktop: image normal, white card below with H1 + author row. */
+.post-head{margin-block:8px 0;position:relative}
+.post-head .post-cover{position:relative;aspect-ratio:16/9;overflow:hidden;
+  margin:0;border-radius:14px;background:#f2f2f2}
+.post-head .post-cover img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Mobile overlay: hidden on desktop, shown on mobile */
+.post-cover__overlay{display:none}
+
+/* Red sforum-style category tag */
+.post-tag{display:inline-block;background:#DF062D;color:#fff;font-size:14px;
+  font-weight:600;padding:5px 8px;border-radius:5px;text-decoration:none;
+  line-height:1.2;letter-spacing:.01em}
+.post-tag:hover,.post-tag:focus-visible{background:#c70528;color:#fff}
+
+/* White card overlapping the image (desktop) */
+.post-card{background:var(--surface);border-radius:14px;padding:18px 20px;
+  margin:-30px 16px 0;position:relative;z-index:2;box-shadow:0 -1px 0 rgba(0,0,0,.04)}
+.post-card__head .post-tag--inline{margin-bottom:12px}
+.post-card__title{font-size:clamp(26px,3.4vw,40px);font-weight:700;line-height:1.15;
+  letter-spacing:-.02em;margin:0 0 12px}
+.post-card__sub{color:var(--muted);font-size:clamp(15px,1.5vw,18px);
+  margin:0 0 16px;max-width:60ch;line-height:1.55}
+
+/* Author row inside the card (overrides the older .post-author defaults) */
+.post-head .post-author{display:flex;align-items:center;gap:10px;
+  padding-top:14px;border-top:1px solid var(--border);margin:0}
+.post-author__av{display:inline-flex;width:42px;height:42px;border-radius:50%;
+  background:#fff;flex-shrink:0;align-items:center;justify-content:center;
+  border:0;padding:0;overflow:hidden}
+.post-author__img{display:block;width:100%;height:100%;object-fit:cover;
+  border-radius:50%;background:#f2f2f2}
+.post-author__meta{display:flex;flex-direction:column;gap:2px;min-width:0}
+.post-author__name{font-size:14px;font-weight:600;display:block;color:var(--fg);
+  line-height:1.2}
+.post-author__date{color:#656565;font-size:12px;font-weight:300;
+  display:inline-flex;align-items:center;gap:4px;line-height:1.3}
+.post-author__date svg{color:#1A6DB4;flex-shrink:0}
+
+/* Tighter overlap on wider screens */
+@media(min-width:1000px){
+  .post-card{margin-top:-80px}
+}
+
+/* === MOBILE === */
+@media(max-width:600px){
+  .post-head{margin-block:0}
+  /* Image breaks out of the .wrap gutter to become edge-to-edge */
+  .post-head .post-cover{aspect-ratio:16/9;border-radius:0;
+    margin:0 calc(-1 * clamp(16px,4vw,24px));
+    width:calc(100% + clamp(16px,4vw,24px) * 2)}
+  .post-head .post-cover img{filter:brightness(.5)}
+
+  /* Overlay: red tag (top) + title (bottom) on the darkened image */
+  .post-cover__overlay{
+    display:block;
+    position:absolute;left:0;right:0;bottom:18px;
+    padding:0 12px;
+  }
+  .post-cover__title{
+    color:#fff;font-size:18px;font-weight:700;line-height:1.3;margin:10px 0 0;
+    text-shadow:0 1px 2px rgba(0,0,0,.35);
+  }
+
+  /* White card overlapping the image */
+  .post-head .post-card{
+    margin:-20px 8px 0;
+    border-radius:10px;
+    padding:5px 10px 0;
+  }
+  /* Hide desktop-only bits on mobile */
+  .post-card__head .post-tag--inline{display:none}
+  .post-card__title{display:none}
+  .post-card__sub{display:none}
+
+  /* Author row mobile — red ring avatar + red author + gray date */
+  .post-head .post-author{padding:10px 0 6px;border-top:0}
+  .post-author__av{width:35px;height:35px;border:1px solid #ef1515;padding:2px;background:#fff}
+  .post-author__img{border-radius:50%}
+  .post-author__name{color:#DF062D;font-size:14px;font-weight:600}
+  .post-author__date{color:#656565;font-size:10px;font-weight:300}
+  .post-author__date svg{width:11px;height:11px}
+}
+
 /* related */
 .related{margin-top:48px}
 .related h3{font-size:20px;font-weight:700;margin-bottom:18px;letter-spacing:-.01em}
@@ -2916,3 +3004,4 @@ table.my_account_orders mark.order-status.status-failed {
 .e404-search .hdr-search:focus-within{border-color:var(--accent)}
 .e404-search .hdr-search button:hover{background:var(--accent-80)}
 .e404-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.search-results .main {margin-bottom: 2rem;}
