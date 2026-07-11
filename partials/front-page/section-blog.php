@@ -10,22 +10,35 @@ defined('ABSPATH') || exit;
 
 $heading = $args['heading'] ?? '';
 $link    = underscores_child_acf_link($args['link'] ?? []);
+$mode    = $args['mode'] ?? 'auto';
+$count   = max(1, min(6, (int) ($args['count'] ?? 6)));
+$manual  = $args['manual_posts'] ?? [];
 
-$query = new WP_Query([
-    'post_type'           => 'post',
-    'post_status'         => 'publish',
-    'posts_per_page'      => 5,
-    'ignore_sticky_posts' => true,
-    'no_found_rows'       => true,
-]);
+if ($mode === 'manual') {
+    // Hand-picked posts, in the chosen order.
+    $post_ids = array_map('intval', (array) $manual);
+    $post_ids = array_values(array_filter($post_ids, static fn ($id) => get_post_status($id) === 'publish'));
+} else {
+    $post_ids = get_posts([
+        'post_type'           => 'post',
+        'post_status'         => 'publish',
+        'posts_per_page'      => $count,
+        'ignore_sticky_posts' => true,
+        'no_found_rows'       => true,
+        'fields'              => 'ids',
+    ]);
+}
 
-if (! $query->have_posts()) {
-    wp_reset_postdata();
+if (empty($post_ids)) {
     return;
 }
 
-$posts = $query->posts;
-$lead  = array_shift($posts);
+$lead_id  = (int) array_shift($post_ids);
+$lead     = get_post($lead_id);
+if (! $lead) {
+    return;
+}
+$posts = array_filter(array_map('get_post', $post_ids));
 ?>
 <section><div class="wrap">
     <?php if ($heading || $link) : ?>
@@ -42,7 +55,7 @@ $lead  = array_shift($posts);
         ?>
         <article class="hb-lead">
             <?php if (has_post_thumbnail($lead->ID)) : ?>
-                <?php echo get_the_post_thumbnail($lead->ID, 'large'); ?>
+                <?php echo get_the_post_thumbnail($lead->ID, 'pxc_card_16_10', ['loading' => 'lazy']); ?>
             <?php endif; ?>
             <div class="body">
                 <?php if ($cat) : ?><span class="cat-tag"><?php echo esc_html($cat); ?></span><?php endif; ?>
@@ -65,7 +78,7 @@ $lead  = array_shift($posts);
                 ?>
                 <li>
                     <?php if (has_post_thumbnail($post_item->ID)) : ?>
-                        <?php echo get_the_post_thumbnail($post_item->ID, 'medium'); ?>
+                        <?php echo get_the_post_thumbnail($post_item->ID, 'pxc_thumb_sq', ['loading' => 'lazy']); ?>
                     <?php endif; ?>
                     <div class="meta-block">
                         <?php if ($item_cat) : ?><span class="cat-tag"><?php echo esc_html($item_cat); ?></span><?php endif; ?>
@@ -77,4 +90,3 @@ $lead  = array_shift($posts);
         </ul>
     </div>
 </div></section>
-<?php wp_reset_postdata(); ?>

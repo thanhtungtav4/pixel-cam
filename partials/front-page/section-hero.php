@@ -24,7 +24,7 @@ if (empty($slides) && empty($side)) {
             ?>
             <div class="slide<?php echo $i === 0 ? ' on' : ''; ?>">
                 <?php if ($image) : ?>
-                    <?php echo wp_get_attachment_image($image, 'full', false, ['class' => 'slide-img']); ?>
+                    <?php echo wp_get_attachment_image($image, 'pxc_hero', false, ['class' => 'slide-img', 'fetchpriority' => $i === 0 ? 'high' : 'low', 'loading' => $i === 0 ? 'eager' : 'lazy']); ?>
                 <?php endif; ?>
                 <div class="cap">
                     <?php if (! empty($slide['kicker'])) : ?>
@@ -53,7 +53,9 @@ if (empty($slides) && empty($side)) {
             ?>
             <<?php echo $tag; ?> class="card"<?php echo $link ? ' href="' . esc_url($link['url']) . '"' : ''; ?>>
                 <?php if ($image) {
-                    echo wp_get_attachment_image($image, 'medium_large');
+                    // 'large' keeps the image's real aspect ratio (pxc_side_banner
+                    // hard-crops to 4:3 → would distort/crop non-4:3 uploads).
+                    echo wp_get_attachment_image($image, 'large', false, ['loading' => 'lazy']);
                 } ?>
                 <?php if ($label) : ?><span class="lbl"><?php echo esc_html($label); ?></span><?php endif; ?>
             </<?php echo $tag; ?>>

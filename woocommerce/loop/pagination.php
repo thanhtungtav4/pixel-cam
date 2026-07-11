@@ -16,7 +16,18 @@ $format  = isset($format) ? $format : '';
 if ($total <= 1) {
     return;
 }
+
+$current  = max(1, (int) $current);
+$next_url = $current < $total ? get_pagenum_link($current + 1, false) : '';
 ?>
+<?php if ($next_url) : ?>
+    <?php // Load-more button: JS appends the next page (data-next). Hidden when JS
+          // enhances the numeric pager, which stays for no-JS + crawlers. ?>
+    <div class="loadmore-wrap" data-next="<?php echo esc_url($next_url); ?>" data-page="<?php echo (int) $current; ?>" data-total="<?php echo (int) $total; ?>">
+        <button type="button" class="loadmore button"><?php esc_html_e('Xem thêm sản phẩm', 'underscores'); ?></button>
+    </div>
+<?php endif; ?>
+
 <nav class="pager" aria-label="<?php esc_attr_e('Phân trang', 'underscores'); ?>">
     <?php
     echo paginate_links(
@@ -26,7 +37,7 @@ if ($total <= 1) {
                 'base'      => $base,
                 'format'    => $format,
                 'add_args'  => false,
-                'current'   => max(1, $current),
+                'current'   => $current,
                 'total'     => $total,
                 'prev_text' => '‹',
                 'next_text' => '›',

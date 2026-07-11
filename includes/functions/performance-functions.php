@@ -5,6 +5,51 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+if (!function_exists('underscores_child_cache_version')) {
+    /** Current version number for a cache group (monotonic, starts at 1). */
+    function underscores_child_cache_version(string $group): int
+    {
+        return (int) get_option('pxc_ver_' . $group, 1);
+    }
+}
+
+if (!function_exists('underscores_child_bump_cache_version')) {
+    /**
+     * Invalidate a whole cache group in O(1) by bumping its version — old
+     * transient keys become unreachable and expire on their own TTL.
+     */
+    function underscores_child_bump_cache_version(string $group): void
+    {
+        update_option('pxc_ver_' . $group, underscores_child_cache_version($group) + 1, false);
+    }
+}
+
+if (!function_exists('underscores_child_versioned_cache')) {
+    /**
+     * Read-through versioned transient cache. Key = group + version + subkey,
+     * so bumping the group version (on catalog change) invalidates everything
+     * in that group at once. $build runs only on a miss; its return is cached.
+     *
+     * @template T
+     * @param callable():T $build
+     * @return T
+     */
+    function underscores_child_versioned_cache(string $group, string $subkey, callable $build, int $ttl = 43200)
+    {
+        $ver = underscores_child_cache_version($group);
+        $key = 'pxc_' . $group . '_' . $ver . '_' . md5($subkey);
+
+        $hit = get_transient($key);
+        if ($hit !== false) {
+            return $hit;
+        }
+
+        $value = $build();
+        set_transient($key, $value, $ttl);
+        return $value;
+    }
+}
+
 if (!function_exists('underscores_child_mark_style_loading_strategy')) {
     function underscores_child_mark_style_loading_strategy(string $handle, string $strategy): void
     {
@@ -183,3 +228,58 @@ if (!function_exists('underscores_child_get_critical_css_contents')) {
         return $critical_css;
     }
 }
+
+if (!function_exists('underscores_child_add_webp_to_srcset')) {
+    /**
+     * #14b — Auto-add WebP variants to image srcset.
+     *
+     * WP 6.x generates WebP on upload but does NOT inject existing .webp
+     * files into the srcset of <img> tags that were uploaded before WebP
+     * support was enabled. This filter checks each src in the srcset: if a
+     * .webp sibling exists on disk (same path, .webp extension), it is
+     * appended to the srcset so the browser can pick the modern format.
+     *
+     * Runs on `wp_calculate_image_srcset` (core filter) → applies to every
+     * image, including Woo product cards and gallery.
+     *
+     * @param array  $sources
+     * @param array  $size_array
+     * @param string $image_src
+     * @param array  $image_meta
+     * @param int    $attachment_id
+     * @return array
+     */
+    function underscores_child_add_webp_to_srcset(array $sources, array $size_array, string $image_src, array $image_meta, int $attachment_id): array
+    {
+        if (empty($sources)) {
+            return $sources;
+        }
+
+        foreach ($sources as $i => $source) {
+            $url = $source['url'] ?? '';
+            if ($url === '') {
+                continue;
+            }
+            // Already webp → skip.
+            if (preg_match('/\.webp$/i', $url)) {
+                continue;
+            }
+            // Convert URL → filesystem path.
+            $path = str_replace(wp_get_upload_dir()['baseurl'], wp_get_upload_dir()['basedir'], $url);
+            $webp_path = preg_replace('/\.(jpe?g|png)$/i', '.webp', $path);
+            if (! file_exists($webp_path)) {
+                continue;
+            }
+            // WebP exists → add as a source with same dimensions.
+            $webp_url = preg_replace('/\.(jpe?g|png)$/i', '.webp', $url);
+            $sources[$i . '-webp'] = [
+                'url'        => $webp_url,
+                'descriptor' => $source['descriptor'] ?? '',
+                'value'      => $source['value'] ?? 0,
+            ];
+        }
+
+        return $sources;
+    }
+}
+add_filter('wp_calculate_image_srcset', 'underscores_child_add_webp_to_srcset', 10, 5);

@@ -19,7 +19,7 @@ $cat  = ! empty($cats) ? $cats[0]->name : '';
 ?>
 <article class="bcard">
     <?php if (has_post_thumbnail($post_id)) : ?>
-        <a href="<?php echo esc_url(get_permalink($post_id)); ?>"><?php echo get_the_post_thumbnail($post_id, 'large'); ?></a>
+        <a href="<?php echo esc_url(get_permalink($post_id)); ?>"><?php echo get_the_post_thumbnail($post_id, 'pxc_card_16_10', ['loading' => 'lazy']); ?></a>
     <?php endif; ?>
     <div class="body">
         <?php if ($cat) : ?><span class="cat-tag"><?php echo esc_html($cat); ?></span><?php endif; ?>

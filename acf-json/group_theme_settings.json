@@ -19,39 +19,6 @@
             "layout": "block",
             "sub_fields": [
                 {
-                    "key": "field_ts_general_logo",
-                    "label": "Logo",
-                    "name": "logo",
-                    "type": "image",
-                    "return_format": "id",
-                    "preview_size": "medium"
-                },
-                {
-                    "key": "field_ts_general_favicon",
-                    "label": "Favicon",
-                    "name": "favicon",
-                    "type": "image",
-                    "return_format": "id"
-                },
-                {
-                    "key": "field_ts_general_site_name",
-                    "label": "Site Name",
-                    "name": "site_name",
-                    "type": "text",
-                    "wrapper": {
-                        "width": "50"
-                    }
-                },
-                {
-                    "key": "field_ts_general_slogan",
-                    "label": "Slogan",
-                    "name": "slogan",
-                    "type": "text",
-                    "wrapper": {
-                        "width": "50"
-                    }
-                },
-                {
                     "key": "field_ts_general_hotline",
                     "label": "Hotline",
                     "name": "hotline",
@@ -102,14 +69,6 @@
             "instructions": "Cấu hình phần header.",
             "layout": "block",
             "sub_fields": [
-                {
-                    "key": "field_ts_header_logo",
-                    "label": "Header Logo",
-                    "name": "logo",
-                    "type": "image",
-                    "return_format": "id",
-                    "instructions": "Để trống = dùng Logo ở tab General."
-                },
                 {
                     "key": "field_ts_header_hotline",
                     "label": "Header Hotline",
@@ -169,16 +128,9 @@
             "label": "Footer General Section",
             "name": "footer_general_section",
             "type": "group",
-            "instructions": "Cấu hình footer chung (các block footer chi tiết ở các tab Footer Contact/Branches/Courses).",
+            "instructions": "Cấu hình footer chung.",
             "layout": "block",
             "sub_fields": [
-                {
-                    "key": "field_ts_footer_logo",
-                    "label": "Footer Logo",
-                    "name": "logo",
-                    "type": "image",
-                    "return_format": "id"
-                },
                 {
                     "key": "field_ts_footer_description",
                     "label": "Footer Description",
@@ -300,45 +252,6 @@
             ]
         },
         {
-            "key": "field_ts_tab_social",
-            "label": "Social",
-            "name": "",
-            "type": "tab",
-            "placement": "left",
-            "endpoint": 0
-        },
-        {
-            "key": "field_ts_social_links",
-            "label": "Social Links",
-            "name": "social_links",
-            "type": "repeater",
-            "instructions": "Link mạng xã hội dùng chung toàn site.",
-            "layout": "table",
-            "button_label": "Add Social",
-            "sub_fields": [
-                {
-                    "key": "field_ts_social_platform",
-                    "label": "Platform",
-                    "name": "platform",
-                    "type": "text",
-                    "instructions": "VD: facebook, instagram, youtube, zalo, tiktok"
-                },
-                {
-                    "key": "field_ts_social_icon",
-                    "label": "Icon",
-                    "name": "icon",
-                    "type": "image",
-                    "return_format": "id"
-                },
-                {
-                    "key": "field_ts_social_url",
-                    "label": "URL",
-                    "name": "url",
-                    "type": "url"
-                }
-            ]
-        },
-        {
             "key": "field_ts_tab_detail_post_form",
             "label": "Tab Detail Post Form",
             "name": "",
@@ -359,228 +272,6 @@
                     "label": "Shortcode cf7",
                     "name": "shortcode_cf7",
                     "type": "text"
-                }
-            ]
-        },
-        {
-            "key": "field_ts_tab_footer_contact",
-            "label": "Tab Footer Contact",
-            "name": "",
-            "type": "tab",
-            "placement": "left",
-            "endpoint": 0
-        },
-        {
-            "key": "field_ts_footer_contact_section",
-            "label": "Footer Contact Section",
-            "name": "footer_contact_section",
-            "type": "group",
-            "instructions": "Footer block: Thông tin liên hệ.",
-            "layout": "block",
-            "sub_fields": [
-                {
-                    "key": "field_ts_fc_title",
-                    "label": "Title",
-                    "name": "title",
-                    "type": "text"
-                },
-                {
-                    "key": "field_ts_fc_items",
-                    "label": "Contact Items",
-                    "name": "items",
-                    "type": "repeater",
-                    "layout": "block",
-                    "button_label": "Add Row",
-                    "sub_fields": [
-                        {
-                            "key": "field_ts_fc_items_text",
-                            "label": "Text",
-                            "name": "text",
-                            "type": "text"
-                        },
-                        {
-                            "key": "field_ts_fc_items_link",
-                            "label": "Link",
-                            "name": "link",
-                            "type": "link",
-                            "return_format": "array"
-                        }
-                    ]
-                },
-                {
-                    "key": "field_ts_fc_social_links",
-                    "label": "Social Links",
-                    "name": "social_links",
-                    "type": "repeater",
-                    "layout": "block",
-                    "button_label": "Add Row",
-                    "sub_fields": [
-                        {
-                            "key": "field_ts_fc_social_icon",
-                            "label": "Icon",
-                            "name": "icon",
-                            "type": "image",
-                            "return_format": "id"
-                        },
-                        {
-                            "key": "field_ts_fc_social_link",
-                            "label": "Link",
-                            "name": "link",
-                            "type": "link",
-                            "return_format": "array"
-                        }
-                    ]
-                },
-                {
-                    "key": "field_ts_fc_reserved_text",
-                    "label": "Reserved Text",
-                    "name": "reserved_text",
-                    "type": "text"
-                },
-                {
-                    "key": "field_ts_fc_signature_image",
-                    "label": "Signature Image",
-                    "name": "signature_image",
-                    "type": "image",
-                    "return_format": "id"
-                }
-            ]
-        },
-        {
-            "key": "field_ts_tab_footer_branches",
-            "label": "Tab Footer Branches",
-            "name": "",
-            "type": "tab",
-            "placement": "left",
-            "endpoint": 0
-        },
-        {
-            "key": "field_ts_footer_branches_section",
-            "label": "Footer Branches Section",
-            "name": "footer_branches_section",
-            "type": "group",
-            "instructions": "Footer block: Các chi nhánh / trụ sở.",
-            "layout": "block",
-            "sub_fields": [
-                {
-                    "key": "field_ts_fb_title",
-                    "label": "Title",
-                    "name": "title",
-                    "type": "text"
-                },
-                {
-                    "key": "field_ts_fb_branch_groups",
-                    "label": "Branch Groups",
-                    "name": "branch_groups",
-                    "type": "repeater",
-                    "layout": "block",
-                    "button_label": "Add Row",
-                    "sub_fields": [
-                        {
-                            "key": "field_ts_fb_bg_label",
-                            "label": "Label",
-                            "name": "label",
-                            "type": "text"
-                        },
-                        {
-                            "key": "field_ts_fb_bg_items",
-                            "label": "Items",
-                            "name": "items",
-                            "type": "repeater",
-                            "layout": "block",
-                            "button_label": "Add Row",
-                            "sub_fields": [
-                                {
-                                    "key": "field_ts_fb_bg_items_icon",
-                                    "label": "Icon",
-                                    "name": "icon",
-                                    "type": "image",
-                                    "return_format": "id"
-                                },
-                                {
-                                    "key": "field_ts_fb_bg_items_link",
-                                    "label": "Link",
-                                    "name": "link",
-                                    "type": "link",
-                                    "return_format": "array"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "key": "field_ts_tab_footer_courses",
-            "label": "Tab Footer Courses",
-            "name": "",
-            "type": "tab",
-            "placement": "left",
-            "endpoint": 0
-        },
-        {
-            "key": "field_ts_footer_courses_section",
-            "label": "Footer Courses Section",
-            "name": "footer_courses_section",
-            "type": "group",
-            "instructions": "Footer block: Khóa học.",
-            "layout": "block",
-            "sub_fields": [
-                {
-                    "key": "field_ts_fco_title",
-                    "label": "Title",
-                    "name": "title",
-                    "type": "text"
-                },
-                {
-                    "key": "field_ts_fco_course_links",
-                    "label": "Course Links",
-                    "name": "course_links",
-                    "type": "repeater",
-                    "layout": "block",
-                    "button_label": "Add Row",
-                    "sub_fields": [
-                        {
-                            "key": "field_ts_fco_course_link",
-                            "label": "Link",
-                            "name": "link",
-                            "type": "link",
-                            "return_format": "array"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "key": "field_ts_tab_cta",
-            "label": "Tab Button Call to Action",
-            "name": "",
-            "type": "tab",
-            "placement": "left",
-            "endpoint": 0
-        },
-        {
-            "key": "field_ts_call_to_action",
-            "label": "Call to Action",
-            "name": "call_to_action",
-            "type": "repeater",
-            "instructions": "Call to action buttons",
-            "layout": "row",
-            "button_label": "Add Row",
-            "sub_fields": [
-                {
-                    "key": "field_ts_cta_icon",
-                    "label": "Icon",
-                    "name": "icon",
-                    "type": "image",
-                    "return_format": "id"
-                },
-                {
-                    "key": "field_ts_cta_link",
-                    "label": "Link",
-                    "name": "link",
-                    "type": "link",
-                    "return_format": "array"
                 }
             ]
         }

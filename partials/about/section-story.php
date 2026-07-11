@@ -15,7 +15,7 @@ $text    = $args['text'] ?? '';
     <?php endif; ?>
     <div class="ab-story">
         <?php if ($image) : ?>
-            <div class="photo"><?php echo wp_get_attachment_image($image, 'large'); ?></div>
+            <div class="photo"><?php echo wp_get_attachment_image($image, 'pxc_lead_4_3', false, ['loading' => 'lazy']); ?></div>
         <?php endif; ?>
         <?php if ($text) : ?>
             <div class="text"><?php echo wp_kses_post($text); ?></div>

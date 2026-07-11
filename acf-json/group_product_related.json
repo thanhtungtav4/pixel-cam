@@ -1,0 +1,67 @@
+{
+    "key": "group_product_related",
+    "title": "Bài viết & Sản phẩm liên quan",
+    "fields": [
+        {
+            "key": "field_product_related_posts_is_show",
+            "label": "Hiển thị bài viết liên quan",
+            "name": "related_posts_is_show",
+            "type": "true_false",
+            "instructions": "Bật để hiển thị khối \"Bài viết liên quan\" ở cuối trang sản phẩm.",
+            "default_value": 1,
+            "ui": 1
+        },
+        {
+            "key": "field_product_related_posts",
+            "label": "Bài viết liên quan",
+            "name": "related_posts",
+            "type": "relationship",
+            "instructions": "Chọn tối đa 4 bài. Để trống = tự động lấy bài có chuyên mục slug khớp danh mục sản phẩm.",
+            "post_type": ["post"],
+            "filters": ["search"],
+            "return_format": "id",
+            "max": 4,
+            "conditional_logic": [
+                [
+                    { "field": "field_product_related_posts_is_show", "operator": "==", "value": "1" }
+                ]
+            ]
+        },
+        {
+            "key": "field_product_related_products_is_show",
+            "label": "Hiển thị sản phẩm liên quan",
+            "name": "related_products_is_show",
+            "type": "true_false",
+            "instructions": "Bật để hiển thị khối \"Sản phẩm liên quan\" ở cuối trang sản phẩm.",
+            "default_value": 1,
+            "ui": 1
+        },
+        {
+            "key": "field_product_related_products",
+            "label": "Sản phẩm liên quan",
+            "name": "related_products",
+            "type": "relationship",
+            "instructions": "Chọn tối đa 4 sản phẩm. Để trống = tự động lấy theo thuật toán liên quan của WooCommerce.",
+            "post_type": ["product"],
+            "filters": ["search"],
+            "return_format": "id",
+            "max": 4,
+            "conditional_logic": [
+                [
+                    { "field": "field_product_related_products_is_show", "operator": "==", "value": "1" }
+                ]
+            ]
+        }
+    ],
+    "location": [
+        [
+            { "param": "post_type", "operator": "==", "value": "product" }
+        ]
+    ],
+    "menu_order": 25,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true
+}

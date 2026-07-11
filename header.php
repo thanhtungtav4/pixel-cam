@@ -81,7 +81,15 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
         </button>
         <a class="ha" href="<?php echo esc_url($has_woo ? wc_get_page_permalink('myaccount') : wp_login_url()); ?>">
             <svg viewBox="0 0 24 24"><path d="M20 8h-3V6a5 5 0 0 0-10 0v2H4l-1 12h18z"/></svg>
-            <span><?php esc_html_e('Đăng nhập', 'underscores'); ?></span>
+            <span>
+                <?php
+                if (is_user_logged_in()) {
+                    esc_html_e('Tài khoản', 'underscores');
+                } else {
+                    esc_html_e('Đăng nhập', 'underscores');
+                }
+                ?>
+            </span>
         </a>
         <?php if (defined('YITH_WCWL') && function_exists('YITH_WCWL')) :
             $wishlist_url = esc_url(YITH_WCWL()->get_wishlist_url());
@@ -94,11 +102,18 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
             </a>
         <?php endif; ?>
         <?php if ($has_woo) : ?>
-            <a class="ha" href="<?php echo esc_url(wc_get_cart_url()); ?>">
-                <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13h11l2.6-9H6"/></svg>
-                <span><?php esc_html_e('Giỏ hàng', 'underscores'); ?></span>
-                <span class="badge" id="cartBadge"><?php echo (int) $cart_count; ?></span>
-            </a>
+            <div class="cart-wrap" id="cartWrap">
+                <a class="ha" href="<?php echo esc_url(wc_get_cart_url()); ?>" aria-haspopup="true" aria-expanded="false">
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13h11l2.6-9H6"/></svg>
+                    <span><?php esc_html_e('Giỏ hàng', 'underscores'); ?></span>
+                    <span class="badge" id="cartBadge"><?php echo (int) $cart_count; ?></span>
+                </a>
+                <div class="mini-cart" aria-label="<?php esc_attr_e('Giỏ hàng', 'underscores'); ?>">
+                    <div class="widget_shopping_cart_content">
+                        <?php woocommerce_mini_cart(); ?>
+                    </div>
+                </div>
+            </div>
         <?php endif; ?>
     </div>
 </div></header>
@@ -112,7 +127,8 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
         'container'      => false,
         'menu_class'     => 'cat-list',
         'fallback_cb'    => false,
-        'depth'          => 2,
+        'depth'          => 3,
+        'walker'         => new \Theme\Child\Menu\MegaWalker(),
     ]);
     ?>
 </div></nav>

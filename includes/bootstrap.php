@@ -22,6 +22,11 @@ require_once UNDERSCORES_CHILD_THEME_INCLUDES_PATH . '/functions/template-functi
 \Theme\Child\Hooks\ThemeHook::register();
 \Theme\Child\Hooks\WooHook::register();
 \Theme\Child\Hooks\SeoHook::register();
+\Theme\Child\Hooks\MediaHook::register();
+\Theme\Child\Hooks\SecurityHook::register();
+\Theme\Child\Hooks\MenuHook::register();
+\Theme\Child\Hooks\FilterHook::register();
+\Theme\Child\Product\Versions::register();
 \Theme\Child\Hooks\AboutPageHook::register();
 \Theme\Child\Hooks\ContactPageHook::register();
 

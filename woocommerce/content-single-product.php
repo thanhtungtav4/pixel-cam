@@ -14,6 +14,10 @@ defined('ABSPATH') || exit;
 
 global $product;
 
+if (! $product instanceof WC_Product) {
+    return;
+}
+
 do_action('woocommerce_before_single_product');
 
 if (post_password_required()) {
@@ -23,21 +27,60 @@ if (post_password_required()) {
 
 $product_id = $product->get_id();
 
-$install_text = function_exists('get_field') ? (get_field('install_text', $product_id) ?: '') : '';
-$gifts        = function_exists('get_field') ? (get_field('gifts', $product_id) ?: []) : [];
-$gifts_total  = function_exists('get_field') ? (get_field('gifts_total', $product_id) ?: '') : '';
-$box_items    = function_exists('get_field') ? (get_field('box_items', $product_id) ?: []) : [];
+$acf_fields = function_exists('get_field') ? [
+    'install_text' => get_field('install_text', $product_id) ?: '',
+    'gifts'        => get_field('gifts', $product_id) ?: [],
+    'gifts_total'  => get_field('gifts_total', $product_id) ?: '',
+    'box_items'    => get_field('box_items', $product_id) ?: [],
+    'stock_note'   => get_field('stock_note', $product_id) ?: '',
+] : [
+    'install_text' => '',
+    'gifts'        => [],
+    'gifts_total'  => '',
+    'box_items'    => [],
+    'stock_note'   => '',
+];
+$install_text = $acf_fields['install_text'];
+$gifts        = $acf_fields['gifts'];
+$gifts_total  = $acf_fields['gifts_total'];
+$box_items    = $acf_fields['box_items'];
+$stock_note   = $acf_fields['stock_note'];
 
 $product_settings = function_exists('underscores_get_option') ? (underscores_get_option('product_section') ?: []) : [];
 $perks            = $product_settings['perks'] ?? [];
+
+$acf_fields = function_exists('get_fields') ? (get_fields($product_id) ?: []) : [];
+$related_posts_is_show    = ! empty($acf_fields['related_posts_is_show']);
+$related_products_is_show = ! empty($acf_fields['related_products_is_show']);
+$related_posts            = ! empty($acf_fields['related_posts']) ? array_map('intval', (array) $acf_fields['related_posts']) : [];
+$related_products         = ! empty($acf_fields['related_products']) ? array_map('intval', (array) $acf_fields['related_products']) : [];
+
+// Brand (taxonomy) + gallery badge state (mirrors the card).
+$brand_terms = get_the_terms($product_id, 'product_brand');
+$brand       = (! is_wp_error($brand_terms) && ! empty($brand_terms)) ? $brand_terms[0]->name : '';
+$sku         = $product->get_sku();
+
+['class' => $badge_class, 'label' => $badge_label] = underscores_child_product_badge($product);
 ?>
 
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class('pdp-single', $product); ?>>
 
-    <?php woocommerce_breadcrumb(); ?>
+    <div class="wrap">
+        <?php
+        woocommerce_breadcrumb([
+            'wrap_before' => '<nav class="crumb" aria-label="Breadcrumb">',
+            'wrap_after'  => '</nav>',
+            'delimiter'   => '<span class="sep">/</span>',
+            'home'        => __('Trang chủ', 'underscores'),
+        ]);
+        ?>
+    </div>
 
     <div class="wrap pdp-layout">
         <div class="pdp-gallery-col">
+            <?php if ($badge_label) : ?>
+                <div class="pdp-badges"><span class="bd <?php echo esc_attr($badge_class); ?>"><?php echo esc_html($badge_label); ?></span></div>
+            <?php endif; ?>
             <?php
             /**
              * Woo gallery (thumbs + main image), sale flash.
@@ -50,6 +93,7 @@ $perks            = $product_settings['perks'] ?? [];
         </div>
 
         <div class="pdp-info summary entry-summary">
+            <?php if ($brand) : ?><span class="brand"><?php echo esc_html($brand); ?></span><?php endif; ?>
             <?php
             /**
              * Title, rating, price, excerpt, add-to-cart, meta.
@@ -61,25 +105,14 @@ $perks            = $product_settings['perks'] ?? [];
              * @hooked woocommerce_template_single_add_to_cart - 30
              * @hooked woocommerce_template_single_meta - 40
              */
+            // Gifts (@12), version chips (@15) and stock (@28) are hooked into
+            // woocommerce_single_product_summary in WooHook, so they land in the
+            // right order (before add-to-cart @30).
             do_action('woocommerce_single_product_summary');
             ?>
 
             <?php if ($install_text) : ?>
                 <div class="install"><?php echo esc_html($install_text); ?></div>
-            <?php endif; ?>
-
-            <?php if (! empty($gifts)) : ?>
-                <div class="pdp-gifts">
-                    <div class="gift-head">
-                        <b><?php esc_html_e('Quà tặng kèm', 'underscores'); ?></b>
-                        <?php if ($gifts_total) : ?><span class="gift-total"><?php echo esc_html($gifts_total); ?></span><?php endif; ?>
-                    </div>
-                    <ul class="gift-list">
-                        <?php foreach ($gifts as $gift) : ?>
-                            <li><?php echo esc_html($gift['name'] ?? ''); ?><?php if (! empty($gift['value'])) : ?> <small>(<?php echo esc_html($gift['value']); ?>)</small><?php endif; ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
             <?php endif; ?>
 
             <?php if (! empty($perks)) : ?>
@@ -126,5 +159,19 @@ $perks            = $product_settings['perks'] ?? [];
         ?>
     </div>
 </div>
+
+<?php if ($related_posts_is_show) : ?>
+    <?php get_template_part('partials/components/post-related', null, [
+        'post_id'        => $product_id,
+        'selected_posts' => $related_posts,
+    ]); ?>
+<?php endif; ?>
+
+<?php if ($related_products_is_show) : ?>
+    <?php get_template_part('partials/components/post-related-products', null, [
+        'post_id'           => $product_id,
+        'selected_products' => $related_products,
+    ]); ?>
+<?php endif; ?>
 
 <?php do_action('woocommerce_after_single_product'); ?>

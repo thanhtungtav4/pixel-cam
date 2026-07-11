@@ -45,7 +45,8 @@ if ($material_ids) {
         'status'   => 'publish',
         'limit'    => 4,
         'exclude'  => [$product_id],
-        'orderby'  => 'rand',
+        'orderby'  => 'date',
+        'order'    => 'DESC',
         'tax_query' => [[
             'taxonomy' => 'pa_material',
             'field'    => 'term_id',

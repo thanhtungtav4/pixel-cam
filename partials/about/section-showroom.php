@@ -24,7 +24,7 @@ if (empty($rooms)) {
             ?>
             <div class="room">
                 <?php if ($image) : ?>
-                    <?php echo wp_get_attachment_image($image, 'large'); ?>
+                    <?php echo wp_get_attachment_image($image, 'pxc_cover_16_9', false, ['loading' => 'lazy']); ?>
                 <?php endif; ?>
                 <div class="body">
                     <?php if (! empty($room['city'])) : ?><div class="city"><?php echo esc_html($room['city']); ?></div><?php endif; ?>

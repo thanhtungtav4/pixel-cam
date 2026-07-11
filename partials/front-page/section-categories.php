@@ -32,7 +32,7 @@ if (empty($tiles)) {
             ?>
             <a href="<?php echo esc_url($href); ?>" class="tile">
                 <?php if ($image) {
-                    echo wp_get_attachment_image($image, 'medium_large');
+                    echo wp_get_attachment_image($image, 'pxc_tile', false, ['loading' => 'lazy']);
                 } ?>
                 <div class="t">
                     <?php if (! empty($tile['title'])) : ?><b><?php echo esc_html($tile['title']); ?></b><?php endif; ?>

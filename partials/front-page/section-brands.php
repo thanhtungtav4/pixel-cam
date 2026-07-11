@@ -28,7 +28,7 @@ if (empty($brands)) {
             ?>
             <<?php echo $tag; ?> class="b"<?php echo $link ? ' href="' . esc_url($link['url']) . '"' : ''; ?>>
                 <?php if ($logo) {
-                    echo wp_get_attachment_image($logo, 'medium');
+                    echo wp_get_attachment_image($logo, 'thumbnail', false, ['loading' => 'lazy']);
                 } else {
                     echo esc_html($name);
                 } ?>

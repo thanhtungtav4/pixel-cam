@@ -1,0 +1,146 @@
+{
+    "key": "group_product_seo",
+    "title": "Product SEO & Feed",
+    "fields": [
+        {
+            "key": "field_product_seo_tab",
+            "label": "SEO / Feed",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_product_gtin",
+            "label": "GTIN / EAN / Barcode",
+            "name": "gtin",
+            "type": "text",
+            "wrapper": { "width": "33" },
+            "instructions": "Mã vạch quốc tế (13 số). Dùng cho Merchant Center feed + Product schema."
+        },
+        {
+            "key": "field_product_mpn",
+            "label": "MPN (Manufacturer Part Number)",
+            "name": "mpn",
+            "type": "text",
+            "wrapper": { "width": "33" },
+            "instructions": "Mã part number của hãng. Dùng khi không có GTIN."
+        },
+        {
+            "key": "field_product_identifier_exists",
+            "label": "Có GTIN/MPN?",
+            "name": "identifier_exists",
+            "type": "true_false",
+            "wrapper": { "width": "34" },
+            "ui": 1,
+            "default_value": 0,
+            "instructions": "Bật = có GTIN/MPN (Merchant Center yêu cầu). Tắt = sản phẩm tự custom không có mã hãng."
+        },
+        {
+            "key": "field_product_seo_shipping_tab",
+            "label": "Vận chuyển",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_product_shipping_policy",
+            "label": "Chính sách vận chuyển (schema + feed)",
+            "name": "shipping_policy",
+            "type": "textarea",
+            "rows": 3,
+            "instructions": "Mô tả vận chuyển cho product schema + Merchant Center. VD: Giao toàn quốc 2-4 ngày, miễn phí đơn từ 5 triệu."
+        },
+        {
+            "key": "field_product_shipping_time",
+            "label": "Thời gian giao hàng",
+            "name": "shipping_time",
+            "type": "text",
+            "wrapper": { "width": "50" },
+            "placeholder": "2-4 ngày làm việc"
+        },
+        {
+            "key": "field_product_shipping_cost",
+            "label": "Phí ship (VND, 0 = miễn phí)",
+            "name": "shipping_cost",
+            "type": "number",
+            "wrapper": { "width": "50" },
+            "default_value": 0
+        },
+        {
+            "key": "field_product_seo_return_tab",
+            "label": "Đổi trả",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_product_return_policy",
+            "label": "Chính sách đổi trả (schema + feed)",
+            "name": "return_policy",
+            "type": "textarea",
+            "rows": 3,
+            "instructions": "Mô tả đổi trả cho product schema. VD: 30 ngày đổi trả, hoàn tiền 100% nếu lỗi hãng."
+        },
+        {
+            "key": "field_product_return_days",
+            "label": "Số ngày đổi trả",
+            "name": "return_days",
+            "type": "number",
+            "wrapper": { "width": "50" },
+            "default_value": 30
+        },
+        {
+            "key": "field_product_seo_cat_tab",
+            "label": "Primary Category",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_product_primary_category",
+            "label": "Danh mục chính (breadcrumb + permalink)",
+            "name": "primary_category",
+            "type": "taxonomy",
+            "taxonomy": "product_cat",
+            "field_type": "select",
+            "allow_null": 1,
+            "multiple": 0,
+            "return_format": "id",
+            "instructions": "Khi sản phẩm thuộc nhiều danh mục, chọn 1 danh mục chính cho breadcrumb + URL. Để trống = Woo tự lấy danh mục đầu."
+        },
+        {
+            "key": "field_product_seo_stock_tab",
+            "label": "Hết hàng",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_product_discontinued",
+            "label": "Ngừng bán (HTTP 410 Gone)",
+            "name": "discontinued",
+            "type": "true_false",
+            "ui": 1,
+            "default_value": 0,
+            "instructions": "Bật = sản phẩm ngừng bán. URL sẽ trả 410 Gone (không index, không 404 lặp)."
+        },
+        {
+            "key": "field_product_redirect_url",
+            "label": "Redirect tới URL (nếu ngừng bán)",
+            "name": "redirect_url",
+            "type": "url",
+            "instructions": "Khi 'Ngừng bán' bật + URL này có: 301 redirect thay vì 410. VD: chuyển sang sản phẩm thay thế."
+        }
+    ],
+    "location": [
+        [
+            { "param": "post_type", "operator": "==", "value": "product" }
+        ]
+    ],
+    "menu_order": 50,
+    "position": "side",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true
+}

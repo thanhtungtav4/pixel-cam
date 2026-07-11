@@ -1,10 +1,12 @@
 :root{
   /* THAY MÀU LOGO TẠI ĐÂY */
   --bg:#FAFAFA; --surface:#FFFFFF; --fg:#111111; --muted:#6B6B6B;
-  --border:#E5E5E5; --accent:#2F6FEB; --accent-80:#2F6FEBcc;
+  --border:#E5E5E5; --accent:#045269; --accent-80:#045269cc;
   --success:#17A34A; --warn:#EAB308; --danger:#DC2626;
-  --font:'Inter',-apple-system,system-ui,sans-serif;
-  --mono:ui-monospace,'JetBrains Mono',monospace;
+  --font:'Inter','Inter-fallback',-apple-system,system-ui,sans-serif;
+  /* Single typeface site-wide: --mono aliases Inter (tabular-nums keeps
+     numbers column-aligned without a second font). */
+  --mono:'Inter','Inter-fallback',-apple-system,system-ui,sans-serif;
   --max:1200px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -13,13 +15,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--fg);line-height:1.
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 .wrap{max-width:var(--max);margin-inline:auto;padding-inline:clamp(16px,4vw,24px)}
-.ph{position:relative;background:var(--bg);display:grid;place-items:center;overflow:hidden}
-.ph::before{content:"";position:absolute;width:46%;aspect-ratio:1;border-radius:50%;
-  border:1px solid oklch(80% .015 75);opacity:.5}
-.ph::after{content:attr(data-label);position:relative;font-family:var(--mono);
-  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-  color:oklch(60% .025 70);text-align:center;padding:0 12px;line-height:1.5}
-.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8%}
+/* Shared image box used by non-card sections (hero, tiles, blog, PDP...). */
+.ph{position:relative;background:#fff;display:grid;place-items:center;overflow:hidden}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
 /* ===== TOPBAR ===== */
@@ -35,10 +34,10 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .hdr{display:flex;align-items:center;gap:clamp(12px,3vw,32px);height:72px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;letter-spacing:-.02em;flex-shrink:0;color:var(--fg);text-decoration:none;line-height:1}
 .logo .mark{width:34px;height:34px;border-radius:8px;background:var(--accent);display:grid;place-items:center;color:#fff;font-size:18px}
-/* Custom logo image (Appearance → Customize → Logo). Cap height, keep ratio. */
-.logo img,.logo .custom-logo{display:block;height:34px;width:auto;max-width:180px;object-fit:contain}
+/* Custom logo image (Appearance → Customize → Logo). Cap width, keep ratio. */
+.logo img,.logo .custom-logo{display:block;max-width:150px;height:auto;width:auto;object-fit:contain}
 .logo:hover{opacity:.85}
-@media(max-width:560px){.logo{font-size:19px}.logo .mark{width:30px;height:30px;font-size:16px}.logo img,.logo .custom-logo{height:30px}}
+@media(max-width:560px){.logo{font-size:19px}.logo .mark{width:30px;height:30px;font-size:16px}.logo img,.logo .custom-logo{max-width:120px}}
 .search{flex:1;display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;min-width:0}
 .search input{flex:1;border:0;padding:10px 14px;font:inherit;font-size:14px;min-width:0;outline:none}
 .search input:focus{outline:none}
@@ -53,7 +52,52 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .ha .badge{position:absolute;top:-6px;right:2px;background:var(--danger);color:#fff;font-size:10px;
   min-width:16px;height:16px;border-radius:8px;display:grid;place-items:center;padding:0 4px}
 @media(max-width:860px){.ha span{display:none}}
-@media(max-width:640px){.search{display:none}.mob-search-btn{display:flex!important}}
+@media(max-width:640px){.search{display:none}.mob-search-btn{display:flex!important}.hdr{justify-content:space-between}}
+
+/* ===== MINI CART (hover / focus dropdown) ===== */
+.cart-wrap{position:relative}
+.cart-wrap .mini-cart{position:absolute;top:calc(100% + 12px);right:0;width:340px;max-width:88vw;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  box-shadow:0 12px 32px rgba(17,17,17,.12);padding:14px;z-index:60;
+  opacity:0;visibility:hidden;transform:translateY(-6px);transition:.18s}
+.cart-wrap:hover .mini-cart,.cart-wrap:focus-within .mini-cart{opacity:1;visibility:visible;transform:none}
+/* Bridge the gap so the panel doesn't close when moving the cursor to it. */
+.cart-wrap .mini-cart::before{content:"";position:absolute;top:-12px;left:0;right:0;height:12px}
+/* Empty state: centered message + a cart glyph above it. */
+.mini-cart .woocommerce-mini-cart__empty-message{margin:0;color:var(--muted);font-size:14px;
+  text-align:center;padding:28px 12px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.mini-cart .woocommerce-mini-cart__empty-message::before{content:"";width:40px;height:40px;
+  background:var(--bg);border-radius:50%;display:block;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a9a9a' stroke-width='1.6'%3E%3Ccircle cx='9' cy='21' r='1'/%3E%3Ccircle cx='20' cy='21' r='1'/%3E%3Cpath d='M1 1h4l2.7 13h11l2.6-9H6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:center;background-size:22px}
+.mini-cart ul.cart_list{list-style:none;margin:0 0 8px;padding:0;max-height:320px;overflow-y:auto}
+
+/* Woo mini-cart item DOM: <li> > a.remove + a(img + product name) + span.quantity.
+   The image lives inside the product link, so make that link a flex row
+   [image | name]; the <li> stacks link + quantity, remove pinned top-right. */
+.mini-cart ul.cart_list li{position:relative;padding:12px 26px 12px 0;border-bottom:1px solid var(--border)}
+.mini-cart ul.cart_list li:last-child{border-bottom:0}
+.mini-cart ul.cart_list li a:not(.remove){display:flex;align-items:center;gap:12px;
+  color:var(--fg);text-decoration:none;font-size:13px;font-weight:600;line-height:1.35}
+.mini-cart ul.cart_list li img{width:52px;height:52px;object-fit:cover;border-radius:8px;
+  background:#f2f2f2;flex-shrink:0;margin:0}
+.mini-cart .quantity{display:block;margin-top:6px;padding-left:64px;color:var(--muted);font-size:12.5px;font-weight:500}
+.mini-cart .quantity .amount{color:var(--fg);font-weight:600}
+
+.mini-cart a.remove{position:absolute;top:10px;right:0;width:22px;height:22px;border-radius:50%;
+  display:grid;place-items:center;background:var(--bg);color:var(--muted)!important;
+  font-size:15px;line-height:1;text-decoration:none;transition:.15s}
+.mini-cart a.remove:hover{background:var(--danger);color:#fff!important}
+
+.mini-cart .woocommerce-mini-cart__total{display:flex;justify-content:space-between;align-items:center;
+  font-size:14px;font-weight:700;margin:4px 0 12px;padding-top:12px;border-top:1px solid var(--border)}
+.mini-cart .woocommerce-mini-cart__total .amount{color:var(--danger)}
+.mini-cart .woocommerce-mini-cart__buttons{display:flex;gap:8px;margin:0}
+.mini-cart .woocommerce-mini-cart__buttons .button{flex:1;text-align:center;border-radius:8px;padding:10px;
+  font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--accent);color:var(--accent);background:transparent;transition:.15s}
+.mini-cart .woocommerce-mini-cart__buttons .button:hover{background:var(--accent);color:#fff}
+.mini-cart .woocommerce-mini-cart__buttons .checkout{background:var(--accent);color:#fff}
+.mini-cart .woocommerce-mini-cart__buttons .checkout:hover{filter:brightness(.92)}
 .mob-search-btn{display:none}
 
 /* ===== NAV / MEGA MENU ===== */
@@ -62,16 +106,24 @@ nav.cat{background:var(--surface);border-bottom:1px solid var(--border);position
 .cat-list::-webkit-scrollbar{display:none}
 .cat-list>li{position:static}
 .cat-list>li>a{display:flex;align-items:center;gap:6px;padding:13px 16px;font-size:14px;font-weight:600;white-space:nowrap;border-bottom:2px solid transparent;cursor:pointer}
+.menu-icon{width:18px;height:18px;object-fit:contain;flex-shrink:0}
 .cat-list>li:hover>a,.cat-list>li.open>a{color:var(--accent);border-bottom-color:var(--accent)}
 .mega{position:absolute;left:0;right:0;top:100%;background:var(--surface);border-bottom:1px solid var(--border);
   box-shadow:0 8px 24px rgba(17,17,17,.08);opacity:0;visibility:hidden;transform:translateY(-6px);
   transition:.15s;padding:28px 0}
 .cat-list>li:hover .mega,.cat-list>li.open .mega{opacity:1;visibility:visible;transform:none}
-.mega-grid{display:grid;grid-template-columns:repeat(4,1fr) 280px;gap:28px}
+/* Columns auto-fit to however many top-level submenu groups exist. */
+.mega-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:28px}
 .mega h4{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:12px}
-.mega ul{list-style:none;display:flex;flex-direction:column;gap:9px}
-.mega li a{font-size:14px;color:var(--fg)}
+.mega h4 a{color:inherit;text-decoration:none}
+.mega h4 a:hover{color:var(--accent)}
+.mega ul,.mega-links{list-style:none;display:flex;flex-direction:column;gap:9px;margin:0;padding:0}
+.mega li a{font-size:14px;color:var(--fg);text-decoration:none}
 .mega li a:hover{color:var(--accent)}
+/* Top item with a mega panel: caret + hover intent. */
+.cat-list>li.has-mega{position:static}
+.cat-list>li .caret{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.7;transition:transform .2s;flex-shrink:0}
+.cat-list>li.has-mega:hover .caret,.cat-list>li.open .caret{transform:rotate(180deg);opacity:1}
 .mega-promo{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
 .mega-promo .ph{height:120px;border:0;border-radius:0}
 .mega-promo .txt{padding:14px}
@@ -81,11 +133,14 @@ nav.cat{background:var(--surface);border-bottom:1px solid var(--border);position
 
 /* ===== HERO ===== */
 .hero{padding:24px 0}
-.hero-grid{display:grid;grid-template-columns:1fr 320px;gap:16px}
-.slider{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/7;background:#111}
+.hero-grid{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:stretch}
+/* Slider height follows the side column (two banners + gap), not a fixed ratio. */
+.slider{position:relative;border-radius:14px;overflow:hidden;background:#111;min-height:0}
 .slide{position:absolute;inset:0;opacity:0;transition:opacity .5s;display:grid}
 .slide.on{opacity:1}
 .slide .ph{border-radius:0;border:0;height:100%}
+/* Slide image fills the slider box (cover, no distortion). */
+.slide-img,.slide img{width:100%;height:100%;object-fit:cover;display:block}
 .slide .cap{position:absolute;left:0;bottom:0;padding:clamp(20px,4vw,40px);max-width:60%;
   background:linear-gradient(90deg,rgba(0,0,0,.6),transparent);color:#fff}
 .slide .cap .kick{font-size:12px;text-transform:uppercase;letter-spacing:.08em;opacity:.85}
@@ -95,11 +150,17 @@ nav.cat{background:var(--surface);border-bottom:1px solid var(--border);position
 .dots{position:absolute;bottom:16px;right:20px;display:flex;gap:8px;z-index:2}
 .dots button{width:9px;height:9px;border-radius:50%;border:0;background:rgba(255,255,255,.5);cursor:pointer;padding:0;transition:.2s}
 .dots button.on{background:#fff;width:24px;border-radius:5px}
-.hero-side{display:grid;grid-template-rows:1fr 1fr;gap:16px}
-.hero-side .card{position:relative;border-radius:14px;overflow:hidden}
+/* Side banners define the hero height: each is a fixed 4:3, so two of them
+   plus the gap set the column height — the slider then stretches to match. */
+.hero-side{display:flex;flex-direction:column;gap:16px}
+/* Card height follows the image's real ratio — no crop, no stretch. */
+.hero-side .card{position:relative;border-radius:14px;overflow:hidden;display:block;background:#f2f2f2}
+/* Side banner image fills the card without stretching (cover + centered). */
+.hero-side .card img{width:100%;height:auto;display:block}
 .hero-side .ph{height:100%;border-radius:0;border:0}
-.hero-side .lbl{position:absolute;top:14px;left:14px;background:var(--surface);padding:6px 12px;border-radius:6px;font-size:13px;font-weight:600}
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-side{grid-template-rows:none;grid-template-columns:1fr 1fr}}
+.hero-side .lbl{position:absolute;top:14px;left:14px;background:var(--surface);padding:6px 12px;border-radius:6px;font-size:13px;font-weight:600;z-index:2}
+/* Stacked below the slider → cards need their own ratio (no slider to match). */
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-side{grid-template-rows:none;grid-template-columns:1fr 1fr}.hero-side .card{aspect-ratio:16/9}}
 @media(max-width:560px){.slide .cap{max-width:100%}.hero-side{grid-template-columns:1fr}}
 
 /* ===== FEATURE STRIP ===== */
@@ -122,6 +183,7 @@ section{padding:clamp(36px,6vw,56px) 0}
 .tile{display:block;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface);transition:.15s;color:inherit;text-decoration:none}
 .tile:hover{border-color:var(--accent);transform:translateY(-2px)}
 .tile .ph{height:150px;border-radius:0;border:0}
+.tile img{width:100%;height:150px;object-fit:cover;display:block;background:#f2f2f2}
 .tile .t{padding:14px}
 .tile .t b{font-size:15px}
 .tile .t p{font-size:12px;color:var(--muted);margin-top:3px}
@@ -133,11 +195,21 @@ section{padding:clamp(36px,6vw,56px) 0}
 .fgroup{padding:16px;border-bottom:1px solid var(--border)}
 .fgroup:last-child{border-bottom:0}
 .fgroup h5{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:12px}
-.fopt{display:flex;align-items:center;gap:9px;font-size:14px;padding:5px 0;cursor:pointer}
+.fopt{display:flex;align-items:center;gap:9px;font-size:14px;padding:5px 0;cursor:pointer;color:var(--fg);text-decoration:none}
 .fopt input{accent-color:var(--accent);width:16px;height:16px}
 .fopt .ct{margin-left:auto;font-size:12px;color:var(--muted)}
+/* Fake checkbox for the <a>-based category filters (FilterHook). */
+.fopt .fopt-box{width:16px;height:16px;border:1.5px solid var(--border);border-radius:4px;flex-shrink:0;position:relative;transition:.15s}
+.fopt:hover .fopt-box{border-color:var(--accent)}
+.fopt.on{color:var(--fg);font-weight:600}
+.fopt.on .fopt-box{background:var(--accent);border-color:var(--accent)}
+.fopt.on .fopt-box::after{content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
 .price-row{display:flex;gap:8px;align-items:center}
 .price-row input{flex:1;border:1px solid var(--border);border-radius:6px;padding:8px;font:inherit;font-size:13px;min-width:0}
+.fgroup-price .filter-apply{margin-top:10px;width:100%;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:8px;padding:8px;font:inherit;font-weight:600;font-size:13px;cursor:pointer;transition:.15s}
+.fgroup-price .filter-apply:hover{filter:brightness(.92)}
+.filter-reset{display:inline-block;color:var(--danger);font-size:13px;font-weight:600;text-decoration:none}
+.filter-reset:hover{text-decoration:underline}
 .filter-toggle{display:none}
 @media(max-width:860px){
   .shop{grid-template-columns:1fr}
@@ -152,15 +224,26 @@ section{padding:clamp(36px,6vw,56px) 0}
 .grid.list{grid-template-columns:1fr;gap:12px}
 .grid.list .pcard{flex-direction:row}
 .grid.list .pcard .imgwrap{width:200px;flex-shrink:0}
-.grid.list .pcard .ph{height:100%}
 .grid.list .pcard .body{justify-content:center}
 .grid.list .pcard .name{-webkit-line-clamp:1;min-height:0}
 @media(max-width:560px){.grid.list .pcard{flex-direction:column}.grid.list .pcard .imgwrap{width:auto}}
 
 .pcard{border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden;display:flex;flex-direction:column;transition:.15s;position:relative}
 .pcard:hover{border-color:var(--accent);box-shadow:0 2px 8px rgba(17,17,17,.08)}
-.pcard .imgwrap{position:relative;padding:14px;background:#fff;display:block;color:inherit;text-decoration:none}
-.pcard .ph{height:160px;border:0}
+/* Image box: 1:1 (no CLS). Image sits directly inside (no .ph wrapper).
+   cover fills the box edge-to-edge (crops overflow) for a clean, borderless card. */
+.pcard .imgwrap{position:relative;aspect-ratio:1/1;background:#fff;display:block;overflow:hidden;color:inherit;text-decoration:none}
+.pcard .imgwrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .4s ease;z-index:2;animation:pxc-fade .4s ease both}
+@keyframes pxc-fade{from{opacity:0}to{opacity:1}}
+/* Badge + wishlist above the image. */
+.pcard .badges,.pcard .wish{z-index:4}
+/* Subtle zoom on hover. */
+.pcard:hover .imgwrap img{transform:scale(1.05)}
+@media(prefers-reduced-motion:reduce){
+  .pcard .imgwrap img{animation:none;transition:none}
+  .pcard:hover .imgwrap img{transform:none}
+}
 .badges{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:6px;z-index:2}
 .bd{font-size:11px;font-weight:700;padding:3px 8px;border-radius:5px;color:#fff}
 .bd.sale{background:var(--danger)}
@@ -171,16 +254,25 @@ section{padding:clamp(36px,6vw,56px) 0}
 .wish svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.6;transition:.15s}
 .wish:hover svg{stroke:var(--danger)}
 .wish.on svg{stroke:var(--danger);fill:var(--danger)}
-.pcard .body{padding:0 14px 14px;display:flex;flex-direction:column;flex:1;gap:6px}
-.pcard .brand{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.pcard .body{padding:12px 14px 14px;display:flex;flex-direction:column;flex:1;gap:4px}
+/* Brand is a sub-label of the name → sit it tight above, not evenly spaced. */
+.pcard .brand{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;line-height:1;margin-bottom:2px}
 .pcard .name{font-size:14px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:38px}
+.pcard .spec{font-size:12px;color:var(--muted);line-height:1.3}
 .price{margin-top:auto;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.price{font-variant-numeric:tabular-nums}
 .price .now{font-size:17px;font-weight:700;color:var(--danger)}
 .price .old{font-size:13px;color:var(--muted);text-decoration:line-through}
-.pcard .addcart{margin-top:8px;border:1px solid var(--accent);color:var(--accent);background:transparent;
-  border-radius:8px;padding:9px;font:inherit;font-weight:600;font-size:13px;cursor:pointer;transition:.15s}
+/* Add-to-cart button (Woo outputs <a> in the loop → style both a/button). */
+.pcard .addcart{margin-top:8px;display:block;width:100%;text-align:center;border:1px solid var(--accent);
+  color:var(--accent);background:transparent;border-radius:8px;padding:9px;font:inherit;font-weight:600;
+  font-size:13px;line-height:1.2;text-decoration:none;cursor:pointer;transition:.15s}
 .pcard .addcart:hover{background:var(--accent);color:#fff}
+/* Woo toggles .added + .loading during AJAX; reflect both. */
 .pcard .addcart.added{background:var(--success);border-color:var(--success);color:#fff}
+.pcard .addcart.loading{opacity:.6;pointer-events:none}
+/* Woo appends a "View cart" link after an AJAX add — hide it in cards. */
+.pcard .added_to_cart{display:none}
 
 /* ===== BRANDS ===== */
 .brands{background:var(--surface);border-block:1px solid var(--border)}
@@ -232,20 +324,43 @@ footer a:hover{color:#fff}
   cursor:pointer;color:var(--fg);font-family:inherit;transition:.15s}
 .chip:hover{border-color:var(--accent);color:var(--accent)}
 .chip.on{background:var(--fg);color:#fff;border-color:var(--fg)}
+/* Active-filter chips above the shop grid. */
+.active-filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.active-filters .af-label{font-size:13px;color:var(--muted);font-weight:600}
+.af-chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
+  border:1px solid var(--accent);color:var(--accent);background:transparent;padding:5px 10px;
+  border-radius:99px;text-decoration:none;transition:.15s}
+.af-chip:hover{background:var(--accent);color:#fff}
+.af-chip .af-x{font-size:15px;line-height:1;opacity:.8}
+.af-clear{font-size:13px;font-weight:600;color:var(--danger);text-decoration:none;margin-left:2px}
+.af-clear:hover{text-decoration:underline}
 
 /* ===== SORT BAR ===== */
 .sortbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border:1px solid var(--border);
   border-radius:10px;background:var(--surface);margin-bottom:16px;font-size:14px}
 .sortbar .res{color:var(--muted)}.sortbar .res b{color:var(--fg)}
 .sortbar .right{margin-left:auto;display:flex;align-items:center;gap:10px}
-.sortbar select{border:1px solid var(--border);border-radius:8px;padding:7px 10px;font:inherit;font-size:13px;background:var(--surface);cursor:pointer}
-.view-toggle{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.view-toggle button{border:0;background:var(--surface);padding:7px 10px;cursor:pointer;color:var(--muted);display:grid;place-items:center}
+/* Sort select + view toggle: equal height in the sortbar. */
+.sortbar .woocommerce-ordering{margin:0}
+.sortbar select,.sortbar .woocommerce-ordering select,.sortbar .orderby{height:38px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font:inherit;font-size:13px;background:var(--surface);cursor:pointer;line-height:normal;box-sizing:border-box}
+.view-toggle{display:flex;height:38px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.view-toggle button{border:0;background:var(--surface);padding:0 10px;cursor:pointer;color:var(--muted);display:grid;place-items:center}
 .view-toggle button.on{background:var(--fg);color:#fff}
 .view-toggle svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8}
 
 /* ===== PAGINATION ===== */
 .pager{display:flex;justify-content:center;gap:6px;margin-top:32px;flex-wrap:wrap}
+/* Load-more: shown only when JS enhances the shop; the numeric pager then hides
+   (still in DOM for no-JS + crawlers). */
+.loadmore-wrap{display:none;justify-content:center;margin-top:28px}
+.shop.js-loadmore .loadmore-wrap{display:flex}
+.shop.js-loadmore .pager{display:none}
+.loadmore{border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:10px;
+  padding:12px 28px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;transition:.15s;
+  display:inline-flex;align-items:center;gap:8px}
+.loadmore:hover{background:var(--accent);color:#fff}
+.loadmore:disabled{opacity:.6;cursor:default}
+.loadmore.is-loading::before{content:"";width:15px;height:15px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:pxc-spin .7s linear infinite}
 .pager a,.pager span{min-width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--border);
   border-radius:8px;font-size:14px;font-weight:600;color:var(--fg);background:var(--surface);padding:0 12px;transition:.15s}
 .pager a:hover{border-color:var(--accent);color:var(--accent)}
@@ -261,7 +376,7 @@ footer a:hover{color:#fff}
 .featured .ph{aspect-ratio:4/3;border:0;border-radius:0;min-height:100%}
 .featured .body{padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:12px;justify-content:center}
 .featured .cat-tag{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
-  color:var(--accent);background:rgba(47,111,235,.08);padding:4px 10px;border-radius:6px;align-self:flex-start}
+  color:var(--accent);background:rgba(4,82,105,.08);padding:4px 10px;border-radius:6px;align-self:flex-start}
 .featured h2{font-size:clamp(20px,2.4vw,28px);font-weight:700;line-height:1.25;letter-spacing:-.01em}
 .featured h2 a:hover{color:var(--accent)}
 .featured p{color:var(--muted);font-size:14.5px;line-height:1.6}
@@ -305,8 +420,8 @@ footer a:hover{color:#fff}
 
 .post-hero{padding:8px 0 24px}
 .post-cat{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
-  color:var(--accent);background:rgba(47,111,235,.08);padding:5px 12px;border-radius:6px;margin-bottom:14px}
-.post-hero h1{font-size:clamp(28px,4vw,44px);font-weight:700;line-height:1.15;letter-spacing:-.02em;max-width:24ch}
+  color:var(--accent);background:rgba(4,82,105,.08);padding:5px 12px;border-radius:6px;margin-bottom:14px}
+.post-hero h1{font-size:clamp(28px,4vw,44px);font-weight:700;line-height:1.15;letter-spacing:-.02em}
 .post-hero .sub{color:var(--muted);font-size:clamp(15px,1.5vw,18px);margin-top:14px;max-width:60ch;line-height:1.55}
 .post-meta{display:flex;align-items:center;gap:16px;margin-top:22px;padding-top:18px;border-top:1px solid var(--border);flex-wrap:wrap}
 .post-author{display:flex;align-items:center;gap:10px}
@@ -334,6 +449,9 @@ footer a:hover{color:#fff}
 
 /* prose */
 .prose{font-size:16.5px;line-height:1.75;color:var(--fg);max-width:68ch}
+/* Cart / checkout render inside .prose (page.php) but need the full width for
+   their 2-column layout — drop the reading-column cap when they're present. */
+.prose:has(.cart-layout),.prose:has(.co-layout),.prose:has(.woocommerce){max-width:none}
 .prose>*+*{margin-top:1.1em}
 .prose h2{font-size:clamp(22px,2.4vw,28px);font-weight:700;letter-spacing:-.01em;margin-top:1.8em;line-height:1.25;scroll-margin-top:120px}
 .prose h3{font-size:clamp(18px,2vw,22px);font-weight:700;margin-top:1.5em;line-height:1.3;scroll-margin-top:120px}
@@ -353,7 +471,7 @@ footer a:hover{color:#fff}
 /* callout */
 .callout{border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--surface);
   border-radius:10px;padding:18px 20px;display:flex;gap:14px}
-.callout .ico{width:32px;height:32px;border-radius:8px;background:rgba(47,111,235,.1);color:var(--accent);
+.callout .ico{width:32px;height:32px;border-radius:8px;background:rgba(4,82,105,.1);color:var(--accent);
   display:grid;place-items:center;flex-shrink:0;font-weight:700}
 .callout b{display:block;margin-bottom:4px;font-size:14px}
 .callout p{font-size:14.5px;color:var(--muted);margin:0}
@@ -384,6 +502,9 @@ footer a:hover{color:#fff}
 /* related */
 .related{margin-top:48px}
 .related h3{font-size:20px;font-weight:700;margin-bottom:18px;letter-spacing:-.01em}
+/* Cross-sells below the cart (full width, only shown when products have them). */
+.cross-sells-section{margin-top:48px;padding-top:40px;border-top:1px solid var(--border)}
+.cross-sells-section .cross-sells>h2,.cross-sells-section>.wrap>.cross-sells h2{font-size:22px;font-weight:700;margin-bottom:20px;letter-spacing:-.01em}
 .related-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 @media(max-width:780px){.related-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.related-grid{grid-template-columns:minmax(0,1fr)}}
@@ -455,7 +576,7 @@ footer a:hover{color:#fff}
 .variant-chip{border:1.5px solid var(--border);background:var(--surface);padding:10px 14px;border-radius:8px;cursor:pointer;color:var(--fg);font-family:inherit;font-size:13.5px;font-weight:500;transition:.15s;display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;position:relative;min-width:96px}
 .variant-chip small{font-family:var(--mono);font-size:11.5px;color:var(--muted);font-weight:400}
 .variant-chip:hover{border-color:var(--muted)}
-.variant-chip.on{border-color:var(--accent);background:rgba(47,111,235,.04)}
+.variant-chip.on{border-color:var(--accent);background:rgba(4,82,105,.04)}
 .variant-chip.on::after{content:'';position:absolute;top:-1px;right:-1px;width:0;height:0;border-top:18px solid var(--accent);border-left:18px solid transparent;border-top-right-radius:8px}
 .variant-chip.on::before{content:'✓';position:absolute;top:0;right:2px;color:#fff;font-size:9px;font-weight:700;z-index:1;line-height:1}
 .variant-chip.out{color:var(--muted);background:var(--bg);cursor:not-allowed;text-decoration:line-through}
@@ -485,12 +606,12 @@ footer a:hover{color:#fff}
 .cta-row .buy small{display:block;font-size:11.5px;font-weight:500;opacity:.85;margin-top:1px}
 .cta-row .buy span{display:flex;flex-direction:column;line-height:1.15}
 .cta-row .add{background:var(--surface);color:var(--accent);border:1.5px solid var(--accent)}
-.cta-row .add:hover{background:rgba(47,111,235,.06)}
+.cta-row .add:hover{background:rgba(4,82,105,.06)}
 .cta-row .add.added{background:var(--accent);color:#fff}
 .cta-row .ic{background:var(--surface);color:var(--muted);border:1.5px solid var(--border);padding:0;width:48px;height:48px}
 .cta-row .ic svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
 .cta-row .ic:hover{color:var(--accent);border-color:var(--accent)}
-.cta-row .ic.on{color:var(--accent);border-color:var(--accent);background:rgba(47,111,235,.06)}
+.cta-row .ic.on{color:var(--accent);border-color:var(--accent);background:rgba(4,82,105,.06)}
 .cta-row .ic.on svg{fill:var(--accent)}
 
 /* Shipping / warranty info */
@@ -502,7 +623,7 @@ footer a:hover{color:#fff}
 .pdp-perks .perk small{color:var(--muted);font-size:12.5px;line-height:1.45}
 
 /* Gifts + box (PDP) */
-.pdp-gifts{margin-top:18px;border:1px dashed var(--accent);border-radius:10px;background:#2F6FEB0d;padding:14px 16px}
+.pdp-gifts{margin-top:18px;border:1px dashed var(--accent);border-radius:10px;background:#0452690d;padding:14px 16px}
 .gift-head{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:10px}
 .gift-head svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.6;flex-shrink:0}
 .gift-head .gift-total{margin-left:auto;color:var(--accent);font-weight:600;font-size:12.5px}
@@ -588,18 +709,24 @@ footer a:hover{color:#fff}
 .hb-lead{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:.15s}
 .hb-lead:hover{border-color:var(--accent)}
 .hb-lead .ph{aspect-ratio:16/10;border:0;border-radius:0;display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+/* Lead post image: fixed 2:1 box, cover, no CLS. */
+.hb-lead img{width:100%;aspect-ratio:2/1;object-fit:cover;display:block;background:#f2f2f2}
 .hb-lead .body{padding:22px 24px 24px;display:flex;flex-direction:column;gap:10px;flex:1}
-.hb-lead .cat-tag{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);background:rgba(47,111,235,.08);padding:4px 10px;border-radius:6px;align-self:flex-start}
+.hb-lead .cat-tag{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);background:rgba(4,82,105,.08);padding:4px 10px;border-radius:6px;align-self:flex-start}
 .hb-lead h3{font-size:22px;font-weight:700;line-height:1.28;letter-spacing:-.01em;margin:0}
 .hb-lead h3 a{color:var(--fg);text-decoration:none}
 .hb-lead h3 a:hover{color:var(--accent)}
 .hb-lead p{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0}
 .hb-lead .meta{display:flex;flex-wrap:wrap;gap:8px;color:var(--muted);font-size:12.5px;margin-top:4px;font-family:var(--mono)}
 
-.hb-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
-.hb-list li{display:grid;grid-template-columns:130px minmax(0,1fr);gap:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:.15s}
+.hb-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;height:100%;justify-content:space-between}
+.hb-list li{display:grid;grid-template-columns:130px minmax(0,1fr);gap:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:.15s;align-items:stretch}
 .hb-list li:hover{border-color:var(--accent)}
 .hb-list .ph{aspect-ratio:auto;border:0;border-radius:0;min-height:100%;display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--muted);padding:8px;text-align:center}
+/* List post thumbnail: fills the 130px column, cover, full row height. */
+.hb-list li img{grid-row:1;grid-column:1;width:130px;height:100%;min-height:96px;object-fit:cover;display:block;background:#f2f2f2}
+/* Keep the text block in column 2 even when a post has no thumbnail. */
+.hb-list li .meta-block{grid-column:2}
 .hb-list .meta-block{padding:13px 16px;display:flex;flex-direction:column;gap:6px;min-width:0;justify-content:center}
 .hb-list .cat-tag{display:inline-block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);align-self:flex-start}
 .hb-list h4{font-size:14.5px;font-weight:600;line-height:1.38;margin:0}
@@ -708,7 +835,7 @@ footer a:hover{color:#fff}
 .ct-form button[type=submit]{background:var(--fg);color:#fff;border:0;border-radius:8px;padding:12px 24px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;transition:.15s}
 .ct-form button[type=submit]:hover{background:var(--accent)}
 .ct-form .submit small{color:var(--muted);font-size:12.5px;font-family:var(--mono)}
-.ct-form .ok{display:none;background:rgba(47,111,235,.08);border:1px solid var(--accent);color:var(--accent);padding:12px 14px;border-radius:8px;font-size:13.5px;margin-bottom:14px;font-weight:500}
+.ct-form .ok{display:none;background:rgba(4,82,105,.08);border:1px solid var(--accent);color:var(--accent);padding:12px 14px;border-radius:8px;font-size:13.5px;margin-bottom:14px;font-weight:500}
 .ct-form .ok.show{display:block}
 
 .ct-map{margin-top:48px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
@@ -759,31 +886,284 @@ footer a:hover{color:#fff}
 .empty-state--bordered{border:1px dashed var(--border);border-radius:12px}
 
 /* ===== AUTH (forgot-password) ===== */
-.auth-narrow{max-width:420px;margin-inline:auto}
-.auth-steps{display:flex;gap:8px;margin-bottom:24px}
-.auth-steps .step{flex:1;height:3px;border-radius:2px;background:var(--border)}
-.auth-steps .step.on{background:var(--accent)}
-.auth-narrow h1,.auth-narrow h2{font-size:clamp(24px,3vw,30px);letter-spacing:-.02em}
-.auth-sub{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.6}
-.field{display:block;margin-bottom:18px}
-.field-label{display:block;font-size:14px;margin-bottom:6px;color:var(--fg)}
-.field input{width:100%;padding:10px 14px;border-radius:8px;border:1px solid var(--border);font-size:14px;font-family:inherit}
-.field input:focus{outline:none;border-color:var(--accent)}
-.field-err{display:none;margin-top:6px;font-size:12px;color:var(--danger)}
-.field-err.on{display:block}
-.auth-back{margin-top:18px;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
-.auth-back:hover{color:var(--accent)}
-.auth-ok{text-align:center;padding:10px 0}
-.auth-ok .check{width:56px;height:56px;border-radius:50%;background:oklch(95% .05 145);color:oklch(55% .12 145);
-  display:grid;place-items:center;margin:0 auto 18px;font-size:26px;font-weight:700}
-.auth-social{display:flex;flex-direction:column;gap:10px;margin-top:20px}
-.social-btn{font-weight:500}
-.auth-divider{display:flex;align-items:center;gap:14px;margin:20px 0;color:var(--muted);font-size:13px}
-.auth-divider::before,.auth-divider::after{content:"";flex:1;height:1px;background:var(--border)}
-.field-pw{position:relative;display:block}
-.field-pw input{padding-right:64px}
-.pw-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;cursor:pointer;
-  font:inherit;font-size:13px;font-weight:600;color:var(--accent);padding:6px 8px}
+.auth-narrow {
+    max-width: 440px !important;
+    margin-inline: auto !important;
+    padding: 20px 0 !important;
+}
+.auth-steps {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+.auth-steps .step {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--border);
+}
+.auth-steps .step.on {
+    background: var(--accent);
+}
+.auth-narrow h1 {
+    text-align: center !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: var(--fg) !important;
+    margin-bottom: 8px !important;
+    letter-spacing: -0.02em !important;
+}
+.auth-narrow .auth-register-heading {
+    text-align: center !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    color: var(--fg) !important;
+    margin-bottom: 8px !important;
+    letter-spacing: -0.02em !important;
+}
+.auth-sub {
+    text-align: center !important;
+    font-size: 14px !important;
+    color: var(--muted) !important;
+    margin-bottom: 24px !important;
+    line-height: 1.6 !important;
+}
+.field {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    margin-bottom: 18px !important;
+}
+.field-label {
+    display: block !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: var(--fg) !important;
+    margin-bottom: 0 !important;
+}
+.field input {
+    width: 100% !important;
+    padding: 12px 14px !important;
+    border-radius: 9px !important;
+    border: 1.5px solid var(--border) !important;
+    background: var(--surface) !important;
+    color: var(--fg) !important;
+    font-size: 14px !important;
+    font-family: inherit !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.15s, background-color 0.15s !important;
+}
+.field input:focus {
+    outline: none !important;
+    border-color: var(--accent) !important;
+    background: var(--surface) !important;
+}
+
+/* Specific WooCommerce form overrides in auth-narrow */
+.woocommerce form.login, 
+.woocommerce form.register,
+.woocommerce form.lost_reset_password {
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    border-radius: 14px !important;
+    padding: 32px !important;
+    margin: 20px 0 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+    display: grid !important;
+    gap: 20px !important;
+    text-align: left !important;
+}
+.auth-narrow .field input,
+.auth-narrow .woocommerce-Input.input-text {
+    width: 100% !important;
+    padding: 12px 14px !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 9px !important;
+    background: var(--bg) !important;
+    color: var(--fg) !important;
+    font-family: inherit !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    transition: border-color .15s, background-color .15s !important;
+}
+.auth-narrow .field input:focus,
+.auth-narrow .woocommerce-Input.input-text:focus {
+    border-color: var(--accent) !important;
+    outline: none !important;
+    background: var(--surface) !important;
+}
+.auth-narrow .field-label {
+    font-weight: 600 !important;
+    color: var(--fg) !important;
+    font-size: 13.5px !important;
+}
+.auth-narrow .auth-form {
+    margin: 0 !important;
+}
+.auth-narrow .woocommerce-form-row,
+.auth-narrow p.form-row {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.field-err {
+    display: none;
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--danger);
+}
+.field-err.on {
+    display: block;
+}
+.auth-back {
+    margin-top: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--muted);
+}
+.auth-back:hover {
+    color: var(--accent);
+}
+.auth-divider {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    margin: 32px 0 !important;
+    color: var(--muted) !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+}
+.auth-divider::before,
+.auth-divider::after {
+    content: "" !important;
+    flex: 1 !important;
+    height: 1px !important;
+    background: var(--border) !important;
+}
+.field-pw {
+    position: relative !important;
+    display: block !important;
+}
+.field-pw input {
+    padding-right: 64px !important;
+}
+.pw-toggle {
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: none !important;
+    border: 0 !important;
+    cursor: pointer !important;
+    font: inherit !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--accent) !important;
+    padding: 6px 8px !important;
+    z-index: 10 !important;
+}
+
+/* Auth Row spacing: remember check & forgot pw link alignment */
+.auth-narrow .auth-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-size: 14px !important;
+    margin: 4px 0 !important;
+}
+.auth-narrow .auth-row label.checkbox {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    color: var(--muted) !important;
+    font-size: 13.5px !important;
+    margin: 0 !important;
+}
+.auth-narrow .auth-row label.checkbox input {
+    margin: 0 !important;
+    width: 16px !important;
+    height: 16px !important;
+    accent-color: var(--accent) !important;
+    cursor: pointer !important;
+}
+.auth-narrow .auth-link {
+    color: var(--accent) !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    font-size: 13.5px !important;
+}
+.auth-narrow .auth-link:hover {
+    text-decoration: underline !important;
+}
+
+/* Dynamic social style buttons */
+.auth-social {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+.social-btn {
+    font-weight: 500;
+}
+
+/* Button style overrides for login / register */
+.auth-narrow button.btn {
+    height: 48px !important;
+    border-radius: 10px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    margin: 10px 0 0 0 !important;
+    border: 0 !important;
+}
+.auth-narrow button.woocommerce-form-login__submit {
+    background: var(--accent) !important;
+    color: #fff !important;
+}
+.auth-narrow button.woocommerce-form-login__submit:hover {
+    background: var(--accent-80) !important;
+}
+.auth-narrow button.woocommerce-form-register__submit {
+    background: var(--accent) !important;
+    color: #fff !important;
+}
+.auth-narrow button.woocommerce-form-register__submit:hover {
+    background: var(--accent-80) !important;
+}
+
+/* Privacy policy text style rules */
+.woocommerce-privacy-policy-text {
+    font-size: 12.5px !important;
+    line-height: 1.6 !important;
+    color: var(--muted) !important;
+    margin: 10px 0 0 0 !important;
+    border-top: 1px solid var(--border) !important;
+    padding-top: 16px !important;
+}
+.woocommerce-privacy-policy-text a {
+    color: var(--accent) !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+}
+.woocommerce-privacy-policy-text a:hover {
+    text-decoration: underline !important;
+}
+
+.auth-foot {
+    text-align: center !important;
+    font-size: 14px !important;
+    color: var(--muted) !important;
+    margin-top: 24px !important;
+}
 .auth-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;font-size:13px;flex-wrap:wrap;gap:8px}
 .checkbox{display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:var(--fg)}
 .checkbox input{width:16px;height:16px;accent-color:var(--accent)}
@@ -861,7 +1241,32 @@ footer a:hover{color:#fff}
 .breadcrumb{font-size:13px;color:var(--muted)}
 .breadcrumb a:hover{color:var(--accent)}
 .cart-layout{display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start}
+.cart-layout #cartItems{min-width:0}
 .cart-item{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--border)}
+/* Cart thumbnail (real Woo image, sized square). */
+.ci-thumb{width:88px;height:88px;flex-shrink:0;border-radius:10px;overflow:hidden;background:#f2f2f2}
+.ci-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+/* Cart qty uses the JS .qty-stepper (Woo .quantity wrapper); strip its border. */
+.ci-qty .quantity{margin:0}
+.ci-qty .qty-stepper{border:0}
+/* Coupon + update row under the items. */
+.cart-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+.cart-actions .coupon{display:flex;gap:8px;flex:1;min-width:220px}
+.cart-actions .coupon input{flex:1;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font:inherit;font-size:14px;min-width:0}
+.cart-summary .continue-shopping{width:100%;justify-content:center;margin-top:10px;display:flex}
+/* Checkout order review (Woo table) inside .co-summary. */
+.co-summary .shop_table{width:100%;border-collapse:collapse;font-size:14px}
+.co-summary .shop_table th,.co-summary .shop_table td{padding:10px 0;text-align:left;border-bottom:1px solid var(--border)}
+.co-summary .shop_table td{text-align:right}
+.co-summary .order-total th,.co-summary .order-total td{font-size:17px;font-weight:700;color:var(--fg);border-bottom:0}
+.co-summary #payment{margin-top:18px}
+.co-summary #place_order,.co-summary .wc-proceed-to-checkout .button{width:100%;margin-top:14px}
+/* Cart summary: full-width proceed button + spacing to match the design. */
+.cart-summary h3{font-size:18px;margin-bottom:18px}
+.cart-summary .wc-proceed-to-checkout{margin-top:16px}
+.cart-summary .wc-proceed-to-checkout .button,.cart-summary .checkout-button{width:100%;justify-content:center}
+.cart-summary .continue-shopping{background:transparent;color:var(--fg);border:1px solid var(--border)}
+.cart-summary .continue-shopping:hover{border-color:var(--accent);color:var(--accent)}
 .cart-item:first-child{padding-top:0}
 .ci-info{flex:1;min-width:0}
 .ci-brand{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -911,8 +1316,26 @@ footer a:hover{color:#fff}
 .acc-side{position:sticky;top:20px;border:1px solid var(--border);border-radius:14px;background:var(--surface);overflow:hidden}
 .acc-user{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
 .acc-avatar{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:18px}
-.acc-user b{display:block;font-size:15px}
-.acc-user small{color:var(--muted);font-size:12.5px}
+.acc-info,
+.acc-user > div {
+    min-width: 0;
+    flex-grow: 1;
+}
+.acc-user b {
+    display: block;
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.acc-user small {
+    color: var(--muted);
+    font-size: 12.5px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .acc-nav{list-style:none;padding:8px;display:flex;flex-direction:column;gap:2px}
 .acc-nav a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;color:var(--fg)}
 .acc-nav a:hover{background:var(--bg)}
@@ -965,7 +1388,13 @@ footer a:hover{color:#fff}
 .pager .dots{border:0;background:transparent;color:var(--muted)}
 /* Page title on shop */
 .woocommerce-products-header__title{font-size:clamp(24px,3.5vw,34px);font-weight:700;letter-spacing:-.02em;margin:8px 0 16px}
-.shop-main{min-width:0}
+.shop-main{min-width:0;position:relative;transition:opacity .15s}
+/* AJAX loading: dim + block interaction + spinner. */
+.shop-main.is-loading{opacity:.5;pointer-events:none}
+.shop-main.is-loading::after{content:"";position:absolute;top:80px;left:50%;width:34px;height:34px;
+  margin-left:-17px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;
+  animation:pxc-spin .7s linear infinite;z-index:5}
+@keyframes pxc-spin{to{transform:rotate(360deg)}}
 .shop--no-filters{grid-template-columns:1fr}
 /* Woo widgets inside the filters aside */
 .filters .widget{padding:16px;border-bottom:1px solid var(--border)}
@@ -991,38 +1420,304 @@ footer a:hover{color:#fff}
 .woocommerce .wishlist-title h2{font-size:clamp(22px,3vw,30px);font-weight:700;margin-bottom:16px}
 
 /* ----- Single product (PDP) bridge ----- */
-.pdp-layout .pdp-gallery-col{position:sticky;top:120px}
+.pdp-layout .pdp-gallery-col{position:sticky;top:1rem}
+.pdp-stock .dot--out{background:var(--danger);box-shadow:0 0 0 3px rgba(220,38,38,.18)}
 @media(max-width:900px){.pdp-layout .pdp-gallery-col{position:static}}
-/* Woo gallery */
-.woocommerce-product-gallery{position:relative}
+
+/* Force Woo columns to fill PDP grid */
+.pdp-layout .pdp-gallery-col .woocommerce-product-gallery {
+    width: 100% !important;
+    float: none !important;
+}
+.pdp-layout .pdp-info.summary {
+    width: 100% !important;
+    float: none !important;
+}
+
+/* Woo gallery grid override */
+.woocommerce-product-gallery{display:grid !important;grid-template-columns:72px minmax(0,1fr) !important;gap:14px !important;position:relative !important}
 .woocommerce-product-gallery img{border-radius:14px;border:1px solid var(--border)}
-.woocommerce-product-gallery .flex-viewport{border-radius:14px;overflow:hidden}
-.flex-control-thumbs{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;padding:0;list-style:none}
-.flex-control-thumbs li{width:72px;flex:0 0 72px}
-.flex-control-thumbs img{border:1.5px solid var(--border);border-radius:8px;cursor:pointer;opacity:.75;transition:.15s}
-.flex-control-thumbs img.flex-active,.flex-control-thumbs img:hover{opacity:1;border-color:var(--accent)}
+.woocommerce-product-gallery .flex-viewport{border-radius:14px !important;overflow:hidden !important;order:1 !important;width:100% !important}
+
+/* High specificity thumbnail styling */
+.woocommerce-product-gallery .flex-control-thumbs{display:flex !important;flex-direction:column !important;gap:10px !important;margin:0 !important;padding:0 !important;list-style:none !important;order:0 !important;max-height:446px !important;overflow-y:auto !important;scrollbar-width:thin !important;scrollbar-color:var(--border) transparent !important;padding-right:4px !important}
+.woocommerce-product-gallery .flex-control-thumbs::-webkit-scrollbar{width:4px !important;height:4px !important;display:block !important}
+.woocommerce-product-gallery .flex-control-thumbs::-webkit-scrollbar-track{background:transparent !important}
+.woocommerce-product-gallery .flex-control-thumbs::-webkit-scrollbar-thumb{background:var(--border) !important;border-radius:4px !important}
+.woocommerce-product-gallery .flex-control-thumbs::-webkit-scrollbar-thumb:hover{background:var(--muted) !important}
+.woocommerce-product-gallery .flex-control-thumbs li{width:72px !important;height:72px !important;flex:0 0 72px !important;float:none !important;margin:0 !important}
+.woocommerce-product-gallery .flex-control-thumbs img{width:100% !important;height:100% !important;object-fit:cover !important;border:1.5px solid var(--border) !important;border-radius:8px !important;cursor:pointer !important;opacity:.75 !important;transition:.15s !important}
+.woocommerce-product-gallery .flex-control-thumbs img.flex-active,.woocommerce-product-gallery .flex-control-thumbs img:hover{opacity:1 !important;border-color:var(--accent) !important}
+
 .woocommerce-product-gallery__trigger{position:absolute;right:14px;top:14px;z-index:3}
+.pdp-gallery-col .pdp-badges{position:absolute;top:14px;left:100px;display:flex;gap:6px;z-index:2}
+@media(max-width:900px){
+  .woocommerce-product-gallery{grid-template-columns:minmax(0,1fr) !important;gap:10px !important}
+  .woocommerce-product-gallery .flex-viewport{order:0 !important}
+  .woocommerce-product-gallery .flex-control-thumbs{flex-direction:row !important;order:2 !important;overflow-x:auto !important;max-height:none !important;padding-bottom:4px !important;margin-top:10px !important;flex-wrap:nowrap !important}
+  .woocommerce-product-gallery .flex-control-thumbs li{width:72px !important;height:72px !important;flex:0 0 72px !important}
+  .pdp-gallery-col .pdp-badges{left:14px}
+}
 /* Info column */
 .pdp-info .product_title{font-size:clamp(22px,2.4vw,30px);font-weight:700;line-height:1.25;letter-spacing:-.01em;margin:0 0 6px}
 .pdp-info .price{margin:18px 0;padding:16px 18px;background:var(--bg);border-radius:10px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;font-family:var(--mono)}
-.pdp-info .price .amount{font-size:clamp(22px,2.4vw,28px);color:var(--danger);font-weight:700}
+/* Variable product: hide the summary price range (<p class="price">); the
+   variation price (below the swatches) shows the real price of the chosen
+   option — avoids the duplicate .price. */
+.product-type-variable .pdp-info > p.price{display:none}
+.pdp-info .woocommerce-variation-price .price{margin:14px 0;padding:16px 18px;background:var(--bg);border-radius:10px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.pdp-info .price ins{text-decoration:none !important;order:1 !important}
+.pdp-info .price ins .amount{font-size:clamp(22px,2.4vw,28px) !important;color:var(--danger) !important;font-weight:700 !important}
+.pdp-info .price del{opacity:1 !important;order:2 !important}
+.pdp-info .price del .amount{font-size:15px;color:var(--muted);font-weight:500;text-decoration:line-through}
+.pdp-info .price > .amount{font-size:clamp(22px,2.4vw,28px) !important;color:var(--danger) !important;font-weight:700 !important;order:1 !important}
+.pdp-info .price .save{font-size:12px !important;font-weight:700 !important;color:var(--danger) !important;background:rgba(220,38,38,.1) !important;padding:3px 8px !important;border-radius:6px !important;letter-spacing:.02em !important;order:3 !important}
+.pdp-info .price-install{font-size:13px !important;color:var(--muted) !important;margin-top:-10px !important;margin-bottom:18px !important;display:block !important}
+.pdp-info .price-install b{color:var(--fg) !important;font-family:var(--mono) !important}
+/* Single (non-sale) price. */
+.pdp-info .price > .amount{font-size:clamp(22px,2.4vw,28px);color:var(--danger);font-weight:700}
+/* Hide Woo's default "Sale!" flash — we render our own .pdp-badges. */
+.pdp-gallery-col .onsale,.woocommerce-product-gallery .onsale{display:none}
 .pdp-info .price del{color:var(--muted);font-size:15px;opacity:1}
 .pdp-info .price ins{text-decoration:none}
 .pdp-info .stock{margin-top:8px;font-size:13.5px}
 .pdp-info .stock.in-stock{color:var(--success)}
 .pdp-info .stock.out-of-stock{color:var(--danger)}
 /* Quantity + add to cart */
-.pdp-info form.cart{margin:22px 0;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.pdp-info form.cart .quantity{display:inline-flex;align-items:center;border:1.5px solid var(--border);border-radius:8px;overflow:hidden}
-.pdp-info form.cart .quantity input{width:60px;height:44px;border:0;text-align:center;font:inherit;font-weight:600;font-family:var(--mono);background:var(--surface);-moz-appearance:textfield}
-.pdp-info form.cart button.button,.pdp-info .single_add_to_cart_button{background:var(--danger);color:#fff;border:0;border-radius:10px;padding:14px 24px;font:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:.15s}
-.pdp-info form.cart button.button:hover{filter:brightness(1.08)}
-.pdp-info .variations{margin:18px 0;border-collapse:collapse}
-.pdp-info .variations td{padding:6px 0}
-.pdp-info .variations label{font-size:13px;font-weight:600;padding-right:12px}
+/* Quantity + add to cart */
+.pdp-info form.cart:not(.variations_form),
+.pdp-info form.cart .woocommerce-variation-add-to-cart {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 48px !important;
+    gap: 10px !important;
+    margin-top: 22px !important;
+    width: 100% !important;
+}
+
+/* Quantity row layout */
+.pdp-info form.cart .qty-row {
+    grid-column: 1 / -1 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    margin-top: 18px !important;
+    margin-bottom: 0 !important;
+}
+.pdp-info form.cart .qty-row .lbl {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--fg) !important;
+    min-width: 64px !important;
+}
+.pdp-info form.cart .qty-row .muted-limit {
+    font-size: 12.5px !important;
+    color: var(--muted) !important;
+}
+
+.pdp-info form.cart .qty-row .quantity {
+    display: inline-flex !important;
+    align-items: center !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    background: var(--surface) !important;
+    margin: 0 !important;
+    width: auto !important;
+}
+.pdp-info form.cart .qty-row .qty-stepper {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+.pdp-info form.cart .qty-row .qty-stepper button {
+    border: 0 !important;
+    background: var(--surface) !important;
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 18px !important;
+    cursor: pointer !important;
+    color: var(--fg) !important;
+    font-family: inherit !important;
+    display: grid !important;
+    place-items: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.pdp-info form.cart .qty-row .qty-stepper button:hover {
+    background: var(--bg) !important;
+}
+.pdp-info form.cart .qty-row .qty-stepper input {
+    width: 48px !important;
+    height: 38px !important;
+    border: 0 !important;
+    border-left: 1.5px solid var(--border) !important;
+    border-right: 1.5px solid var(--border) !important;
+    text-align: center !important;
+    font: inherit !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    font-family: var(--mono) !important;
+    background: var(--surface) !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Add to Cart button (blue outline) */
+.pdp-info form.cart .single_add_to_cart_button {
+    grid-column: 2 !important;
+    order: 2 !important;
+    background: var(--surface) !important;
+    color: var(--accent) !important;
+    border: 1.5px solid var(--accent) !important;
+    border-radius: 10px !important;
+    font: inherit !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: .15s !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 18px !important;
+    min-width: 0 !important;
+}
+.pdp-info form.cart .single_add_to_cart_button:hover {
+    background: rgba(47,111,235,.06) !important;
+}
+.pdp-info form.cart .single_add_to_cart_button.disabled {
+    background: var(--bg) !important;
+    color: var(--muted) !important;
+    border-color: var(--border) !important;
+    cursor: not-allowed !important;
+}
+
+/* Buy Now button (solid red) */
+.pdp-info form.cart .buynow {
+    grid-column: 1 !important;
+    order: 1 !important;
+    background: var(--danger) !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    font: inherit !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    text-align: center !important;
+    transition: .15s !important;
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    line-height: 1.15 !important;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 18px !important;
+    min-width: 0 !important;
+    text-decoration: none !important;
+}
+.pdp-info form.cart .buynow small {
+    display: block !important;
+    font-size: 11.5px !important;
+    font-weight: 500 !important;
+    opacity: .85 !important;
+    margin-top: 1px !important;
+}
+.pdp-info form.cart .buynow:hover {
+    filter: brightness(1.08) !important;
+}
+.pdp-info form.cart .buynow.disabled {
+    background: var(--border) !important;
+    color: var(--muted) !important;
+    cursor: not-allowed !important;
+}
+
+/* Wishlist button inside PDP form */
+.pdp-info form.cart .wish.ic {
+    grid-column: 3 !important;
+    order: 3 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 48px !important;
+    height: 48px !important;
+    background: var(--surface) !important;
+    color: var(--muted) !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    transition: .15s !important;
+}
+.pdp-info form.cart .wish.ic svg {
+    width: 20px !important;
+    height: 20px !important;
+    stroke: currentColor !important;
+    fill: none !important;
+    stroke-width: 1.8 !important;
+}
+.pdp-info form.cart .wish.ic:hover {
+    color: var(--accent) !important;
+    border-color: var(--accent) !important;
+}
+.pdp-info form.cart .wish.ic.on {
+    color: var(--accent) !important;
+    border-color: var(--accent) !important;
+    background: rgba(47,111,235,.06) !important;
+}
+.pdp-info form.cart .wish.ic.on svg {
+    fill: var(--accent) !important;
+}
+
+/* Responsive CTAs layout */
+@media(max-width:480px) {
+    .pdp-info form.cart:not(.variations_form),
+    .pdp-info form.cart .woocommerce-variation-add-to-cart {
+        grid-template-columns: 1fr 48px !important;
+        grid-auto-rows: auto !important;
+    }
+    .pdp-info form.cart .buynow {
+        grid-column: 1 / -1 !important;
+    }
+    .pdp-info form.cart .single_add_to_cart_button {
+        grid-column: 1 !important;
+    }
+    .pdp-info form.cart .wish.ic {
+        grid-column: 2 !important;
+    }
+}
+
+/* Hide default YITH button completely */
+.pdp-info .yith-wcwl-add-to-wishlist,
+.pdp-info .yith-add-to-wishlist-button-block {
+    display: none !important;
+}
+.pdp-info .variations{display:block !important;width:100% !important;margin:18px 0 !important;border:0 !important}
+.pdp-info .variations tbody{display:block !important}
+.pdp-info .variations tr{display:flex !important;flex-direction:column !important;gap:8px !important;margin-bottom:18px !important;border:0 !important}
+.pdp-info .variations th.label{display:block !important;padding:0 !important;text-align:left !important;width:100% !important}
+.pdp-info .variations th.label label{font-size:14px !important;font-weight:700 !important;color:var(--fg) !important;margin:0 !important;padding:0 !important;text-transform:none !important}
+.pdp-info .variations td.value{display:block !important;padding:0 !important;width:100% !important}
 .pdp-info .variations select{border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font:inherit;background:var(--surface)}
+/* Variation swatch buttons (colour) — hide the native select when swatches active. */
+.pdp-info .variations .swatches{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:6px}
+.pdp-info .has-swatches select{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.pdp-info .reset_variations{display:none !important}
+.pdp-info .woocommerce-variation-price{display:none !important}
+.swatch.variant-chip{padding:10px 14px}
+.swatch.variant-chip.is-disabled{color:var(--muted) !important;background:var(--bg) !important;border-color:var(--border) !important;cursor:not-allowed !important;text-decoration:line-through !important;opacity:.6 !important}
+.swatch.variant-chip.is-disabled::after,.swatch.variant-chip.is-disabled::before{display:none !important}
+/* Version chips row (storage/config siblings). */
+.pdp-versions{margin:18px 0}
+.pdp-versions .variant-chip{text-decoration:none}
+.pdp-versions .variant-chip small .amount{color:var(--danger)}
 .pdp-info .product_meta{margin-top:18px;font-size:13px;color:var(--muted)}
 .pdp-info .product_meta>span{display:block;margin-bottom:4px}
+/* SKU already shown under the title (sku_line) → hide Woo's duplicate in meta. */
+.pdp-info .product_meta .sku_wrapper{display:none}
 /* Woo tabs → Pixel Cam tab look */
 .woocommerce-tabs{margin-top:56px}
 .woocommerce-tabs ul.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);overflow-x:auto;list-style:none;margin:0;padding:0}
@@ -1059,19 +1754,25 @@ footer a:hover{color:#fff}
 .woocommerce-checkout #order_review,.woocommerce-checkout-review-order{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:22px}
 .woocommerce-checkout #payment{background:transparent;border:0}
 .woocommerce-checkout #payment ul.payment_methods{border:1px solid var(--border);border-radius:10px;padding:14px 16px;list-style:none;margin:0 0 16px}
+.woocommerce-info::before,.woocommerce-message::before,.woocommerce-error::before{display:none !important}
 .woocommerce-info,.woocommerce-message,.woocommerce-error{border-left:3px solid var(--accent);background:var(--surface);border-radius:8px;padding:12px 16px;list-style:none;margin-bottom:16px;font-size:14px}
 .woocommerce-error{border-left-color:var(--danger)}
 .woocommerce-message{border-left-color:var(--success)}
 
 /* ----- My Account ----- */
-.woocommerce-account .woocommerce{display:grid;grid-template-columns:240px 1fr;gap:40px;align-items:start}
-@media(max-width:820px){.woocommerce-account .woocommerce{grid-template-columns:1fr}}
+.woocommerce-account .woocommerce{display:block}
 .woocommerce-MyAccount-navigation{border:1px solid var(--border);border-radius:14px;background:var(--surface);overflow:hidden}
 .woocommerce-MyAccount-navigation ul{list-style:none;margin:0;padding:8px}
 .woocommerce-MyAccount-navigation li a{display:block;padding:10px 12px;border-radius:8px;font-size:14px;color:var(--fg);text-decoration:none}
 .woocommerce-MyAccount-navigation li a:hover{background:var(--bg)}
 .woocommerce-MyAccount-navigation li.is-active a{background:color-mix(in srgb,var(--accent) 10%,transparent);color:var(--accent);font-weight:600}
 .woocommerce-MyAccount-content{min-width:0}
+/* My Account 2-column layout (nav | content). */
+.account-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:28px;align-items:start}
+@media(max-width:820px){.account-layout{grid-template-columns:1fr}}
+/* Register block heading under the login form. */
+.auth-register-heading{font-size:20px;font-weight:700;margin:0 0 14px}
+.auth-note{font-size:13px;color:var(--muted);margin:0 0 14px}
 .woocommerce-account:not(.logged-in) .woocommerce{display:block;max-width:960px;margin-inline:auto}
 .woocommerce .col2-set .col-1,.woocommerce .col2-set .col-2{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:24px}
 
@@ -1085,3 +1786,1056 @@ footer a:hover{color:#fff}
 /* Post tags */
 .post-tags a{font-size:13px;background:var(--bg);border:1px solid var(--border);padding:6px 12px;border-radius:6px;color:var(--muted);margin-right:6px;text-decoration:none}
 .post-tags a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ============================================================
+   IMAGE FIT — partials emit raw <img> (no .ph wrapper), so the
+   .ph aspect/object-fit rules never applied. Constrain each image
+   slot directly: cover fill so nothing stretches, fixed ratio/
+   height so there's no CLS.
+   ============================================================ */
+/* (Hero side banners intentionally left as height:auto — follow the real image
+   ratio, no crop, per earlier decision.) */
+/* Home featured blog lead. */
+.featured{overflow:hidden}
+.featured > img,.featured a > img{width:100%;height:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#f2f2f2}
+/* Blog card grid. */
+.bcard{overflow:hidden}
+.bcard > a > img,.bcard > img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#f2f2f2}
+/* Single post cover (16:9 box). */
+.post-cover img{width:100%;height:100%;object-fit:cover;display:block;background:#f2f2f2}
+/* About: story photo (4:3) + showroom rooms (16:9). */
+.ab-story .photo img{width:100%;height:100%;object-fit:cover;display:block}
+.ab-showroom .room img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#f2f2f2}
+/* About: team avatar (square crop). */
+.ab-team .mem .av img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+/* Brand logos: contain inside the 72px cell (don't crop a logo). */
+.brand-grid .b img{max-width:70%;max-height:44px;width:auto;height:auto;object-fit:contain;display:block}
+/* Feature strip icon + PDP perk icon: small, contain. */
+.strip .item img{width:32px;height:32px;object-fit:contain;flex-shrink:0}
+.pdp-perks .perk img{width:20px;height:20px;object-fit:contain;flex-shrink:0}
+
+/* ============================================================
+    SINGLE POST — RELATED SECTIONS
+    ============================================================ */
+.post-related,
+.post-related-products {
+    padding: 32px 0;
+}
+
+.post-related > h2,
+.post-related-products > h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+}
+
+.post-related .blog-grid {
+    margin-top: 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.post-related-products .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.post-related-products .pcard .imgwrap {
+    aspect-ratio: 1 / 1;
+}
+
+.post-related .bcard > a > img,
+.post-related .bcard > img {
+    aspect-ratio: 16 / 9;
+}
+
+@media (max-width: 1024px) {
+    .post-related .blog-grid,
+    .post-related-products .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .post-related .blog-grid,
+    .post-related-products .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+    .post-related-products .pcard .body {
+        padding: 10px 12px 12px;
+    }
+    .post-related-products .pcard .name {
+        font-size: 13px;
+        min-height: 0;
+    }
+    .post-related-products .pcard .price {
+        font-size: 13px;
+    }
+    .post-related-products .pcard .addcart {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+/* WooCommerce Cart Page Alignment */
+.cart-actions .coupon {
+    display: none !important;
+}
+
+.cart-summary .checkout-button {
+    background: var(--accent) !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    padding: 12px 20px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 48px !important;
+    text-decoration: none !important;
+    transition: .15s !important;
+}
+
+.cart-summary .checkout-button:hover {
+    background: var(--fg) !important;
+}
+
+.cart-summary .shipping-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+}
+
+.cart-summary .shipping-row ul#shipping_method {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: right !important;
+}
+
+.cart-summary .shipping-row ul#shipping_method li {
+    margin-bottom: 6px !important;
+    font-size: 13px !important;
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+}
+
+.cart-summary .shipping-row ul#shipping_method li input[type="radio"] {
+    margin: 0 !important;
+}
+
+/* Hide shipping destination text & calculator on cart page */
+.cart-summary .shipping-row .woocommerce-shipping-destination,
+.cart-summary .shipping-row .woocommerce-shipping-calculator,
+.shipping-row .woocommerce-shipping-destination,
+.shipping-row .woocommerce-shipping-calculator,
+.cart_totals .woocommerce-shipping-destination,
+.cart_totals .woocommerce-shipping-calculator,
+.woocommerce-cart .woocommerce-shipping-destination,
+.woocommerce-cart .woocommerce-shipping-calculator {
+    display: none !important;
+}
+
+/* Fallback: style the shipping calculator form if it becomes visible */
+.cart-summary .shipping-calculator-form,
+.shipping-row .shipping-calculator-form {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 12px 0 0 !important;
+}
+.cart-summary .shipping-calculator-form select,
+.cart-summary .shipping-calculator-form input,
+.shipping-row .shipping-calculator-form select,
+.shipping-row .shipping-calculator-form input {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    font-size: 13px !important;
+    padding: 8px 10px !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+}
+.cart-summary .shipping-calculator-form .form-row,
+.shipping-row .shipping-calculator-form .form-row {
+    width: 100% !important;
+    float: none !important;
+    padding: 4px 0 !important;
+}
+.cart-summary .shipping-calculator-form button,
+.shipping-row .shipping-calculator-form button {
+    margin-top: 8px !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+}
+
+/* Update Cart button — teal accent, override WooCommerce disabled gray */
+.woocommerce button.update-cart,
+.woocommerce button[name="update_cart"],
+.woocommerce-cart button.update-cart {
+    background: var(--accent) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 9px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+    transition: background 0.15s !important;
+}
+.woocommerce button.update-cart:hover,
+.woocommerce button[name="update_cart"]:hover,
+.woocommerce-cart button.update-cart:hover {
+    background: var(--fg) !important;
+}
+.woocommerce button.update-cart:disabled,
+.woocommerce button.update-cart[disabled],
+.woocommerce button[name="update_cart"]:disabled,
+.woocommerce button[name="update_cart"][disabled] {
+    background: var(--accent) !important;
+    color: #fff !important;
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}
+
+/* Cart collaterals pass-through and width overrides */
+.woocommerce .cart-collaterals,
+.woocommerce-page .cart-collaterals {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+    clear: none !important;
+    position: sticky !important;
+    top: 20px !important;
+}
+
+.woocommerce .cart-collaterals .cart_totals,
+.woocommerce-page .cart-collaterals .cart_totals,
+.cart-summary {
+    width: 100% !important;
+    float: none !important;
+    margin: 0 !important;
+}
+
+/* WooCommerce Checkout Page Alignment */
+@media (min-width: 600px) {
+    .woocommerce-billing-fields__field-wrapper,
+    .woocommerce-shipping-fields__field-wrapper {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 14px !important;
+    }
+    .woocommerce-billing-fields__field-wrapper .form-row-wide,
+    .woocommerce-shipping-fields__field-wrapper .form-row-wide {
+        grid-column: 1 / -1 !important;
+    }
+}
+
+.woocommerce-checkout .form-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    font-size: 13px !important;
+    margin-bottom: 14px !important;
+    float: none !important;
+    width: 100% !important;
+}
+.woocommerce-checkout .form-row label {
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    color: var(--fg) !important;
+    margin-bottom: 0 !important;
+}
+.woocommerce-checkout .form-row input.input-text,
+.woocommerce-checkout .form-row select,
+.woocommerce-checkout .form-row textarea {
+    padding: 11px 14px !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-family: inherit !important;
+    background: var(--surface) !important;
+    color: var(--fg) !important;
+    width: 100% !important;
+    transition: .15s !important;
+    box-sizing: border-box !important;
+}
+.woocommerce-checkout .form-row input.input-text:focus,
+.woocommerce-checkout .form-row select:focus,
+.woocommerce-checkout .form-row textarea:focus {
+    outline: 2px solid var(--accent) !important;
+    outline-offset: 0 !important;
+    border-color: var(--accent) !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 0 20px 0 !important;
+    display: grid !important;
+    gap: 10px !important;
+}
+.woocommerce-checkout #payment ul.payment_methods li {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 14px 16px !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    background: var(--surface) !important;
+    transition: .15s !important;
+    list-style-type: none !important;
+}
+.woocommerce-checkout #payment ul.payment_methods li:has(input:checked) {
+    border-color: var(--accent) !important;
+    background: color-mix(in srgb, var(--accent) 6%, transparent) !important;
+}
+.woocommerce-checkout #payment ul.payment_methods li input[type="radio"] {
+    margin: 0 !important;
+    width: 18px !important;
+    height: 18px !important;
+    flex-shrink: 0 !important;
+}
+.woocommerce-checkout #payment ul.payment_methods li label {
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    color: var(--fg) !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+.woocommerce-checkout #payment ul.payment_methods li .payment_box {
+    flex-basis: 100% !important;
+    width: 100% !important;
+    margin: 10px 0 0 0 !important;
+    font-size: 12.5px !important;
+    color: var(--muted) !important;
+    background: var(--bg) !important;
+    border-radius: 8px !important;
+    padding: 12px 14px !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+.woocommerce-checkout #payment ul.payment_methods li .payment_box::before {
+    display: none !important;
+}
+
+.checkout-item-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    text-align: left !important;
+}
+.checkout-item-thumb {
+    width: 56px !important;
+    height: 56px !important;
+    flex-shrink: 0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    background: #f2f2f2 !important;
+    border: 1px solid var(--border) !important;
+}
+.checkout-item-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+.checkout-item-info {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+.checkout-item-name {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--fg) !important;
+    line-height: 1.35 !important;
+}
+.checkout-item-qty {
+    font-size: 12px !important;
+    color: var(--muted) !important;
+    margin-top: 2px !important;
+}
+
+.woocommerce-checkout #place_order {
+    background: var(--accent) !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    padding: 16px !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 54px !important;
+    cursor: pointer !important;
+    transition: .15s !important;
+    margin-top: 14px !important;
+}
+.woocommerce-checkout #place_order:hover {
+    background: var(--fg) !important;
+}
+
+.co-summary .woocommerce-checkout-review-order-table th,
+.co-summary .woocommerce-checkout-review-order-table td {
+    padding: 12px 0 !important;
+    border-bottom: 1.5px solid var(--border) !important;
+    background: transparent !important;
+}
+.co-summary .woocommerce-checkout-review-order-table tbody td.product-total {
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    color: var(--fg) !important;
+    text-align: right !important;
+    vertical-align: middle !important;
+}
+.co-summary .woocommerce-checkout-review-order-table thead,
+.co-summary .woocommerce-checkout-review-order-table .product-name strong.product-quantity {
+    display: none !important;
+}
+
+/* Shipping Methods Layout and Overrides */
+.co-summary .woocommerce-checkout-review-order-table tr.shipping {
+    display: none !important;
+}
+.ship-options {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 14px !important;
+    margin-top: 14px !important;
+}
+@media (max-width: 600px) {
+    .ship-options {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+}
+.ship-opt {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 14px 16px !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    background: var(--surface) !important;
+    transition: .15s !important;
+}
+.ship-opt:has(input:checked) {
+    border-color: var(--accent) !important;
+    background: color-mix(in srgb, var(--accent) 6%, transparent) !important;
+}
+.ship-opt input[type="radio"] {
+    margin: 0 !important;
+    width: 18px !important;
+    height: 18px !important;
+    flex-shrink: 0 !important;
+}
+.ship-info {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    font-size: 13px !important;
+    color: var(--fg) !important;
+}
+.ship-info b {
+    font-weight: 600 !important;
+    font-size: 14px !important;
+}
+.ship-info small {
+    color: var(--muted) !important;
+    font-size: 12px !important;
+}
+
+/* Order Received / Thank You Page Styling */
+@media (min-width: 860px) {
+    .woocommerce-order {
+        display: grid !important;
+        grid-template-columns: 1fr 360px !important;
+        gap: 28px !important;
+        align-items: start !important;
+    }
+    /* Full width elements */
+    .woocommerce-order > .woocommerce-notice,
+    .woocommerce-order > .woocommerce-order-overview {
+        grid-column: 1 / -1 !important;
+    }
+    /* Right column elements */
+    .woocommerce-order > .woocommerce-customer-details {
+        grid-column: 2 !important;
+        grid-row: 3 / span 20 !important;
+    }
+    /* Left column elements */
+    .woocommerce-order > :not(.woocommerce-notice):not(.woocommerce-order-overview):not(.woocommerce-customer-details) {
+        grid-column: 1 !important;
+    }
+}
+
+.woocommerce-order-overview {
+    list-style: none !important;
+    padding: 18px 24px !important;
+    margin: 0 0 28px 0 !important;
+    background: var(--surface) !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 12px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 24px !important;
+    font-size: 13.5px !important;
+    color: var(--muted) !important;
+}
+.woocommerce-order-overview li {
+    flex: 1 !important;
+    min-width: 140px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-right: 1px solid var(--border) !important;
+}
+.woocommerce-order-overview li:last-child {
+    border-right: 0 !important;
+}
+@media (max-width: 600px) {
+    .woocommerce-order-overview li {
+        border-right: 0 !important;
+        border-bottom: 1px solid var(--border) !important;
+        padding-bottom: 12px !important;
+    }
+    .woocommerce-order-overview li:last-child {
+        border-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+}
+.woocommerce-order-overview li strong {
+    font-size: 15px !important;
+    color: var(--fg) !important;
+    font-weight: 600 !important;
+}
+
+p.woocommerce-notice.woocommerce-thankyou-order-received {
+    background: color-mix(in srgb, var(--success) 8%, transparent) !important;
+    border: 1.5px solid var(--success) !important;
+    color: var(--success) !important;
+    padding: 16px 20px !important;
+    border-radius: 12px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    margin-bottom: 24px !important;
+}
+
+.woocommerce-order-details {
+    background: var(--surface) !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 14px !important;
+    padding: 24px !important;
+    margin: 0 0 28px 0 !important;
+}
+.woocommerce-order-details__title {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: var(--fg) !important;
+    margin-bottom: 18px !important;
+    border-bottom: 1.5px solid var(--border) !important;
+    padding-bottom: 10px !important;
+}
+.woocommerce-order-details table.shop_table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: 0 !important;
+    margin: 0 !important;
+}
+.woocommerce-order-details table.shop_table th,
+.woocommerce-order-details table.shop_table td {
+    padding: 12px 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+    background: transparent !important;
+    color: var(--fg) !important;
+    font-size: 14px !important;
+    text-align: left !important;
+}
+.woocommerce-order-details table.shop_table tbody td {
+    font-weight: 600 !important;
+}
+.woocommerce-order-details table.shop_table tbody td a {
+    color: var(--fg) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+.woocommerce-order-details table.shop_table tbody td a:hover {
+    color: var(--accent) !important;
+}
+.woocommerce-order-details table.shop_table tfoot th {
+    font-weight: 500 !important;
+    color: var(--muted) !important;
+}
+.woocommerce-order-details table.shop_table tfoot td {
+    text-align: right !important;
+    font-weight: 600 !important;
+}
+.woocommerce-order-details table.shop_table tfoot tr:last-child th,
+.woocommerce-order-details table.shop_table tfoot tr:last-child td {
+    border-bottom: 0 !important;
+    font-size: 16px !important;
+}
+.woocommerce-order-details table.shop_table tfoot tr:last-child td span.amount {
+    color: var(--danger) !important;
+    font-weight: 700 !important;
+}
+
+.woocommerce-customer-details {
+    background: var(--surface) !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 14px !important;
+    padding: 24px !important;
+    margin: 0 !important;
+}
+.woocommerce-customer-details h2 {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: var(--fg) !important;
+    margin-bottom: 18px !important;
+    border-bottom: 1.5px solid var(--border) !important;
+    padding-bottom: 10px !important;
+}
+.woocommerce-customer-details address {
+    font-style: normal !important;
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+    color: var(--fg) !important;
+    display: block !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+.woocommerce-columns--addresses,
+.woocommerce-columns.addresses,
+.woocommerce-account .woocommerce-columns--addresses,
+.woocommerce-checkout .woocommerce-columns--addresses,
+.woocommerce-Addresses {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 28px !important;
+    margin-top: 24px !important;
+    float: none !important;
+    width: 100% !important;
+    clear: both !important;
+}
+.woocommerce-columns--addresses::before,
+.woocommerce-columns--addresses::after,
+.woocommerce-Addresses::before,
+.woocommerce-Addresses::after {
+    display: none !important;
+    content: none !important;
+}
+@media (max-width: 600px) {
+    .woocommerce-columns--addresses,
+    .woocommerce-columns.addresses,
+    .woocommerce-account .woocommerce-columns--addresses,
+    .woocommerce-checkout .woocommerce-columns--addresses,
+    .woocommerce-Addresses {
+        grid-template-columns: 1fr !important;
+    }
+}
+.woocommerce-columns--addresses .woocommerce-column,
+.woocommerce-columns--addresses .col-1,
+.woocommerce-columns--addresses .col-2,
+.woocommerce-columns.addresses .col-1,
+.woocommerce-columns.addresses .col-2,
+.woocommerce-account .woocommerce-columns--addresses .woocommerce-column,
+.woocommerce-checkout .woocommerce-columns--addresses .woocommerce-column,
+.woocommerce-Addresses .woocommerce-Address,
+.woocommerce-Addresses .col-1,
+.woocommerce-Addresses .col-2 {
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    border-radius: 14px !important;
+    padding: 24px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+    display: grid !important;
+    gap: 12px !important;
+    width: 100% !important;
+    float: none !important;
+    clear: none !important;
+}
+.woocommerce-columns--addresses .woocommerce-column h2,
+.woocommerce-columns--addresses .woocommerce-column h3,
+.woocommerce-columns.addresses .col-1 h2,
+.woocommerce-columns.addresses .col-2 h2,
+.woocommerce-Addresses .woocommerce-Address h2,
+.woocommerce-Addresses .col-1 h2,
+.woocommerce-Addresses .col-2 h2 {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: var(--fg) !important;
+    margin: 0 0 8px 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding-bottom: 8px !important;
+}
+.woocommerce-columns--addresses .woocommerce-column address,
+.woocommerce-columns.addresses .col-1 address,
+.woocommerce-columns.addresses .col-2 address,
+.woocommerce-Addresses .woocommerce-Address address,
+.woocommerce-Addresses .col-1 address,
+.woocommerce-Addresses .col-2 address {
+    font-style: normal !important;
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+    color: var(--fg) !important;
+    display: block !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+/* Fix button text color and underlines being overridden by .prose styling */
+.prose a.btn {
+    text-decoration: none !important;
+}
+.prose a.btn-primary,
+.prose a.btn-primary:hover {
+    color: #fff !important;
+}
+.prose a.btn-ghost,
+.prose a.btn-ghost:hover {
+    color: var(--fg) !important;
+}
+
+/* WooCommerce My Account Styling overrides */
+.woocommerce-account .woocommerce {
+    max-width: 1200px !important;
+    margin-inline: auto !important;
+}
+
+/* Sidebar & Info Card overrides */
+.acc-side .woocommerce-MyAccount-navigation,
+.woocommerce-MyAccount-navigation {
+    border: 0 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    width: 100% !important;
+    float: none !important;
+}
+.woocommerce-MyAccount-navigation ul {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+}
+.woocommerce-MyAccount-navigation li a {
+    display: flex !important;
+    align-items: center !important;
+    padding: 10px 12px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    color: var(--fg) !important;
+    text-decoration: none !important;
+    transition: .15s !important;
+}
+.woocommerce-MyAccount-navigation li a:hover {
+    background: var(--bg) !important;
+}
+.woocommerce-MyAccount-navigation li.is-active a {
+    background: color-mix(in srgb, var(--accent) 10%, transparent) !important;
+    color: var(--accent) !important;
+    font-weight: 600 !important;
+}
+/* Style customer-logout link text as danger red */
+.woocommerce-MyAccount-navigation li.woocommerce-MyAccount-navigation-link--customer-logout a {
+    color: var(--danger) !important;
+}
+.woocommerce-MyAccount-navigation li.woocommerce-MyAccount-navigation-link--customer-logout a:hover {
+    background: color-mix(in srgb, var(--danger) 8%, transparent) !important;
+}
+
+/* Dashboard Greeting Block overrides */
+.woocommerce-MyAccount-content {
+    width: 100% !important;
+    float: none !important;
+}
+.woocommerce-MyAccount-content > p:first-of-type {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    padding: 20px 24px !important;
+    font-size: 14.5px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 24px !important;
+    color: var(--fg) !important;
+    display: block !important;
+}
+.woocommerce-MyAccount-content > p:first-of-type strong {
+    color: var(--accent) !important;
+    font-weight: 600 !important;
+}
+
+/* Grid layout for Login / Register page */
+.woocommerce .col2-set {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 28px !important;
+    margin-bottom: 24px !important;
+}
+@media (max-width: 768px) {
+    .woocommerce .col2-set {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Forms inside My Account (Login, register, edit account, edit address) */
+.woocommerce-form-login,
+.woocommerce-form-register,
+.woocommerce-EditAccountForm,
+.woocommerce-address-fields__field-wrapper {
+    display: grid !important;
+    gap: 16px !important;
+}
+.woocommerce-EditAccountForm,
+.woocommerce-address-fields {
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    border-radius: 14px !important;
+    padding: 32px !important;
+    margin: 20px 0 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+}
+.woocommerce-EditAccountForm fieldset {
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 20px 0 0 0 !important;
+    display: grid !important;
+    gap: 16px !important;
+}
+.woocommerce-EditAccountForm legend {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: var(--fg) !important;
+    margin-bottom: 8px !important;
+    padding: 0 !important;
+}
+.woocommerce-Addresses {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 28px !important;
+    margin-top: 14px !important;
+}
+@media (max-width: 600px) {
+    .woocommerce-Addresses {
+        grid-template-columns: 1fr !important;
+    }
+}
+.woocommerce-Address {
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    border-radius: 14px !important;
+    padding: 24px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+    display: grid !important;
+    gap: 12px !important;
+    width: 100% !important;
+    float: none !important;
+}
+.woocommerce-Address header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 8px !important;
+}
+.woocommerce-Address header h3 {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: var(--fg) !important;
+    margin: 0 !important;
+}
+.woocommerce-Address header a.edit {
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: var(--accent) !important;
+    text-decoration: none !important;
+}
+.woocommerce-Address header a.edit:hover {
+    color: var(--accent-80) !important;
+}
+.woocommerce-form-row,
+.woocommerce-address-fields__field-wrapper .form-row {
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+}
+.woocommerce-form-row label,
+.woocommerce-address-fields__field-wrapper .form-row label {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: var(--fg) !important;
+    margin: 0 !important;
+}
+.woocommerce-form-row input.input-text,
+.woocommerce-address-fields__field-wrapper .form-row input.input-text,
+.woocommerce-address-fields__field-wrapper .form-row select {
+    width: 100% !important;
+    padding: 12px 14px !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 9px !important;
+    background: var(--bg) !important;
+    color: var(--fg) !important;
+    font-family: inherit !important;
+    font-size: 14px !important;
+    transition: border-color .15s !important;
+    box-sizing: border-box !important;
+}
+.woocommerce-form-row input.input-text:focus,
+.woocommerce-address-fields__field-wrapper .form-row input.input-text:focus,
+.woocommerce-address-fields__field-wrapper .form-row select:focus {
+    border-color: var(--accent) !important;
+    outline: 0 !important;
+}
+
+/* Desktop layout for side-by-side edit account / address form fields */
+@media (min-width: 600px) {
+    .woocommerce-EditAccountForm .woocommerce-form-row--first,
+    .woocommerce-address-fields__field-wrapper .form-row-first {
+        width: 100% !important;
+        float: none !important;
+    }
+    .woocommerce-EditAccountForm .woocommerce-form-row--last,
+    .woocommerce-address-fields__field-wrapper .form-row-last {
+        width: 100% !important;
+        float: none !important;
+    }
+}
+
+/* Edit Address / Account Buttons styling */
+.woocommerce-form-login button.button,
+.woocommerce-form-register button.button,
+.woocommerce-EditAccountForm button.button,
+.woocommerce-address-fields button.button {
+    background: var(--accent) !important;
+    color: #fff !important;
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    border-radius: 9px !important;
+    border: 0 !important;
+    cursor: pointer !important;
+    transition: .15s !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: auto !important;
+    align-self: start !important;
+}
+.woocommerce-form-login button.button:hover,
+.woocommerce-form-register button.button:hover,
+.woocommerce-EditAccountForm button.button:hover,
+.woocommerce-address-fields button.button:hover {
+    background: var(--accent-80) !important;
+}
+
+/* Orders Table styling overrides */
+table.my_account_orders {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 14px !important;
+    background: var(--surface) !important;
+    overflow: hidden !important;
+    margin-bottom: 24px !important;
+}
+table.my_account_orders th,
+table.my_account_orders td {
+    padding: 16px 20px !important;
+    font-size: 14px !important;
+    border-bottom: 1px solid var(--border) !important;
+    text-align: left !important;
+    color: var(--fg) !important;
+}
+table.my_account_orders th {
+    background: color-mix(in srgb, var(--accent) 5%, var(--surface)) !important;
+    font-weight: 600 !important;
+    color: var(--fg) !important;
+    border-bottom: 2px solid var(--border) !important;
+}
+table.my_account_orders tr:last-child td {
+    border-bottom: 0 !important;
+}
+table.my_account_orders td.woocommerce-orders-table__cell-order-actions a.button {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    background: var(--surface) !important;
+    color: var(--fg) !important;
+    border: 1px solid var(--border) !important;
+    text-decoration: none !important;
+    transition: .15s !important;
+}
+table.my_account_orders td.woocommerce-orders-table__cell-order-actions a.button:hover {
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+    background: var(--bg) !important;
+}
+
+/* Status Pills inside order table */
+table.my_account_orders mark.order-status {
+    background: var(--bg) !important;
+    color: var(--fg) !important;
+    padding: 4px 10px !important;
+    border-radius: 20px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: capitalize !important;
+}
+table.my_account_orders mark.order-status.status-processing {
+    background: color-mix(in srgb, var(--accent) 15%, transparent) !important;
+    color: var(--accent) !important;
+}
+table.my_account_orders mark.order-status.status-completed {
+    background: color-mix(in srgb, var(--success) 15%, transparent) !important;
+    color: var(--success) !important;
+}
+table.my_account_orders mark.order-status.status-on-hold {
+    background: color-mix(in srgb, var(--warning) 15%, transparent) !important;
+    color: var(--warning) !important;
+}
+table.my_account_orders mark.order-status.status-cancelled,
+table.my_account_orders mark.order-status.status-failed {
+    background: color-mix(in srgb, var(--danger) 15%, transparent) !important;
+    color: var(--danger) !important;
+}
+
+/* Ensure the registration submit button matches the login button color */
+.auth-narrow button.woocommerce-form-register__submit,
+.woocommerce-form-register button.woocommerce-form-register__submit {
+    background: var(--accent) !important;
+    color: #fff !important;
+}
+.auth-narrow button.woocommerce-form-register__submit:hover,
+.woocommerce-form-register button.woocommerce-form-register__submit:hover {
+    background: var(--accent-80) !important;
+    color: #fff !important;
+}

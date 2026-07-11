@@ -56,6 +56,10 @@
                             "name": "image",
                             "type": "image",
                             "return_format": "id",
+                            "instructions": "Khuyến nghị 1600×700px (tỉ lệ 16:7), JPG/WebP. Ảnh sẽ cắt cover theo khung slider.",
+                            "min_width": 1200,
+                            "min_height": 525,
+                            "mime_types": "jpg,jpeg,png,webp",
                             "wrapper": { "width": "50" }
                         },
                         {
@@ -83,7 +87,10 @@
                             "label": "Ảnh",
                             "name": "image",
                             "type": "image",
-                            "return_format": "id"
+                            "return_format": "id",
+                            "instructions": "Khuyến nghị rộng ≥800px, JPG/WebP. Khung banner phụ tự cao theo tỉ lệ ảnh (không cắt) — 2 banner nên cùng tỉ lệ để đều nhau.",
+                            "min_width": 600,
+                            "mime_types": "jpg,jpeg,png,webp"
                         },
                         {
                             "key": "field_page_home_hero_side_label",
@@ -140,6 +147,8 @@
                             "name": "icon",
                             "type": "image",
                             "return_format": "id",
+                            "instructions": "Icon vuông, khuyến nghị SVG hoặc PNG 96×96px (nền trong suốt).",
+                            "mime_types": "svg,png,webp",
                             "wrapper": { "width": "34" }
                         },
                         {
@@ -216,6 +225,10 @@
                             "name": "image",
                             "type": "image",
                             "return_format": "id",
+                            "instructions": "Khuyến nghị 500×500px (vuông 1:1), JPG/WebP. Cắt cover theo ô danh mục.",
+                            "min_width": 400,
+                            "min_height": 400,
+                            "mime_types": "jpg,jpeg,png,webp",
                             "wrapper": { "width": "34" }
                         },
                         {
@@ -340,7 +353,7 @@
             "name": "blog_settings",
             "type": "group",
             "layout": "block",
-            "instructions": "Bài viết lấy từ Tin tức (post) mới nhất. Section này chỉ cấu hình tiêu đề + link.",
+            "instructions": "Tự động lấy bài Tin tức mới nhất, hoặc chọn tay bài cụ thể. Hiển thị 1 bài lớn + tối đa 4 bài phụ.",
             "sub_fields": [
                 {
                     "key": "field_page_home_blog_is_show",
@@ -366,6 +379,48 @@
                     "type": "link",
                     "return_format": "array",
                     "wrapper": { "width": "50" }
+                },
+                {
+                    "key": "field_page_home_blog_mode",
+                    "label": "Chế độ chọn bài",
+                    "name": "mode",
+                    "type": "select",
+                    "choices": {
+                        "auto": "Tự động (mới nhất)",
+                        "manual": "Chọn tay"
+                    },
+                    "default_value": "auto",
+                    "wrapper": { "width": "50" }
+                },
+                {
+                    "key": "field_page_home_blog_count",
+                    "label": "Số bài (chế độ tự động)",
+                    "name": "count",
+                    "type": "number",
+                    "default_value": 6,
+                    "min": 1,
+                    "max": 6,
+                    "wrapper": { "width": "50" },
+                    "conditional_logic": [
+                        [
+                            { "field": "field_page_home_blog_mode", "operator": "==", "value": "auto" }
+                        ]
+                    ]
+                },
+                {
+                    "key": "field_page_home_blog_manual",
+                    "label": "Bài viết chọn tay (bài đầu = bài lớn, tối đa 6)",
+                    "name": "manual_posts",
+                    "type": "relationship",
+                    "post_type": ["post"],
+                    "filters": ["search"],
+                    "return_format": "id",
+                    "max": 6,
+                    "conditional_logic": [
+                        [
+                            { "field": "field_page_home_blog_mode", "operator": "==", "value": "manual" }
+                        ]
+                    ]
                 }
             ]
         },

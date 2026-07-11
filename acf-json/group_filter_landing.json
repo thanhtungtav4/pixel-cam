@@ -1,0 +1,126 @@
+{
+    "key": "group_filter_landing",
+    "title": "Trang Landing (Filter SEO)",
+    "fields": [
+        {
+            "key": "field_fl_tab_head",
+            "label": "Tiêu đề",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        { "key": "field_fl_h1", "label": "H1 (tiêu đề trang)", "name": "h1", "type": "text", "instructions": "VD: Máy ảnh Mirrorless Full-frame" },
+        { "key": "field_fl_meta", "label": "Mô tả ngắn (dưới H1)", "name": "meta", "type": "textarea", "rows": 2, "instructions": "VD: Top máy ảnh không gương full-frame 2026 — Sony, Canon, Nikon chính hãng." },
+        { "key": "field_fl_intro", "label": "Nội dung SEO (HTML)", "name": "intro", "type": "wysiwyg", "instructions": "Đoạn intro 200-400 chữ cho SEO. H2, list, internal link." },
+
+        {
+            "key": "field_fl_tab_filter",
+            "label": "Bộ lọc sản phẩm",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_fl_categories",
+            "label": "Danh mục sản phẩm (filter)",
+            "name": "categories",
+            "type": "taxonomy",
+            "taxonomy": "product_cat",
+            "field_type": "multi_select",
+            "allow_null": 1,
+            "multiple": 1,
+            "return_format": "id",
+            "instructions": "Chọn danh mục để lọc sản phẩm. VD: Máy ảnh không gương."
+        },
+        {
+            "key": "field_fl_brands",
+            "label": "Thương hiệu (filter)",
+            "name": "brands",
+            "type": "taxonomy",
+            "taxonomy": "product_brand",
+            "field_type": "multi_select",
+            "allow_null": 1,
+            "multiple": 1,
+            "return_format": "id",
+            "instructions": "Chọn brand để lọc. VD: Sony, Canon."
+        },
+        {
+            "key": "field_fl_min_price",
+            "label": "Giá tối thiểu (VND)",
+            "name": "min_price",
+            "type": "number",
+            "wrapper": { "width": "50" },
+            "instructions": "Để trống = không lọc giá."
+        },
+        {
+            "key": "field_fl_max_price",
+            "label": "Giá tối đa (VND)",
+            "name": "max_price",
+            "type": "number",
+            "wrapper": { "width": "50" },
+            "instructions": "VD: 15000000 = dưới 15 triệu."
+        },
+        {
+            "key": "field_fl_on_sale",
+            "label": "Chỉ sản phẩm đang giảm giá",
+            "name": "on_sale",
+            "type": "true_false",
+            "ui": 1,
+            "default_value": 0
+        },
+        {
+            "key": "field_fl_count",
+            "label": "Số sản phẩm hiển thị",
+            "name": "count",
+            "type": "number",
+            "default_value": 12,
+            "wrapper": { "width": "50" }
+        },
+        {
+            "key": "field_fl_orderby",
+            "label": "Sắp xếp",
+            "name": "orderby",
+            "type": "select",
+            "choices": {
+                "date": "Mới nhất",
+                "price_asc": "Giá thấp → cao",
+                "price_desc": "Giá cao → thấp",
+                "popularity": "Bán chạy",
+                "rating": "Đánh giá cao"
+            },
+            "default_value": "date",
+            "wrapper": { "width": "50" }
+        },
+
+        {
+            "key": "field_fl_tab_faq",
+            "label": "FAQ (schema)",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_fl_faq",
+            "label": "Câu hỏi FAQ",
+            "name": "faq",
+            "type": "repeater",
+            "layout": "block",
+            "button_label": "Thêm câu hỏi",
+            "sub_fields": [
+                { "key": "field_fl_faq_q", "label": "Câu hỏi", "name": "question", "type": "text" },
+                { "key": "field_fl_faq_a", "label": "Trả lời", "name": "answer", "type": "textarea", "rows": 3 }
+            ]
+        }
+    ],
+    "location": [
+        [
+            { "param": "page_template", "operator": "==", "value": "page-template/template-filter-landing.php" }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true
+}

@@ -3,6 +3,40 @@
     "title": "Chi tiết sản phẩm (Pixel Cam)",
     "fields": [
         {
+            "key": "field_pdp_tab_versions",
+            "label": "Phiên bản",
+            "name": "",
+            "type": "tab",
+            "placement": "left"
+        },
+        {
+            "key": "field_pdp_version_label",
+            "label": "Nhãn phiên bản của sản phẩm này",
+            "name": "version_label",
+            "type": "text",
+            "instructions": "Tên ngắn của phiên bản này trong nhóm. VD: 512GB, Body only, 24MP. Hiển thị trên chip đang chọn.",
+            "wrapper": { "width": "50" }
+        },
+        {
+            "key": "field_pdp_version_group_label",
+            "label": "Tên nhóm phiên bản",
+            "name": "version_group_label",
+            "type": "text",
+            "instructions": "Tiêu đề nhóm chọn. VD: Dung lượng, Phiên bản, Cấu hình.",
+            "default_value": "Phiên bản",
+            "wrapper": { "width": "50" }
+        },
+        {
+            "key": "field_pdp_product_versions",
+            "label": "Các phiên bản khác",
+            "name": "product_versions",
+            "type": "relationship",
+            "instructions": "Chọn các sản phẩm là phiên bản khác của cùng dòng (dung lượng/cấu hình khác). Liên kết tự động 2 chiều — chỉ cần khai báo ở 1 sản phẩm.",
+            "post_type": ["product"],
+            "filters": ["search"],
+            "return_format": "id"
+        },
+        {
             "key": "field_pdp_tab_price",
             "label": "Giá & Trả góp",
             "name": "",
@@ -15,6 +49,13 @@
             "name": "install_text",
             "type": "text",
             "instructions": "Hiển thị dưới giá. VD trong thiết kế: Trả góp 0% qua thẻ tín dụng — chỉ từ 4.416.000đ/tháng."
+        },
+        {
+            "key": "field_pdp_stock_note",
+            "label": "Ghi chú tồn kho / giao hàng",
+            "name": "stock_note",
+            "type": "text",
+            "instructions": "Hiển thị cạnh trạng thái 'Còn hàng'. VD: Giao trong 2–4h tại nội thành HN/HCM · Sẵn 12 chi nhánh."
         },
         {
             "key": "field_pdp_tab_gifts",
@@ -244,7 +285,7 @@
         {
             "key": "field_pdp_shipping_policy",
             "label": "Chính sách vận chuyển",
-            "name": "shipping_policy",
+            "name": "pdp_shipping_policy",
             "type": "textarea",
             "rows": 2,
             "instructions": "Xuất cho schema/feed nếu cần. Để trống dùng chính sách mặc định của shop."
@@ -252,7 +293,7 @@
         {
             "key": "field_pdp_return_policy",
             "label": "Chính sách đổi trả",
-            "name": "return_policy",
+            "name": "pdp_return_policy",
             "type": "textarea",
             "rows": 2
         }

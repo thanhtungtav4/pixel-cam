@@ -1,0 +1,35 @@
+{
+    "key": "group_category_filters",
+    "title": "Bộ lọc danh mục",
+    "fields": [
+        {
+            "key": "field_pxc_filter_attributes",
+            "label": "Thuộc tính làm bộ lọc",
+            "name": "pxc_filter_attributes",
+            "type": "checkbox",
+            "instructions": "Chọn thuộc tính WooCommerce (pa_*) hiển thị làm bộ lọc trên trang danh mục này. Danh sách tự lấy từ Sản phẩm → Thuộc tính.",
+            "choices": {},
+            "allow_custom": 0,
+            "layout": "vertical",
+            "return_format": "value"
+        },
+        {
+            "key": "field_pxc_filter_price",
+            "label": "Hiển thị lọc theo giá",
+            "name": "pxc_filter_price",
+            "type": "true_false",
+            "ui": 1,
+            "default_value": 1,
+            "message": "Hiện ô Khoảng giá (Từ — Đến)"
+        }
+    ],
+    "location": [
+        [
+            { "param": "taxonomy", "operator": "==", "value": "product_cat" }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "active": true
+}

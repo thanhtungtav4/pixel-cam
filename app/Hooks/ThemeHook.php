@@ -23,9 +23,27 @@ final class ThemeHook
     {
         $self = new self();
         add_action('after_setup_theme', [$self, 'register_footer_menus'], 11);
+        add_action('after_setup_theme', [$self, 'register_image_sizes'], 11);
         add_action('widgets_init', [$self, 'register_shop_filters_sidebar']);
         add_action('wp_enqueue_scripts', [$self, 'enqueue_common_css_assets'], 10);
         add_action('wp_enqueue_scripts', [$self, 'enqueue_common_js_assets'], 10);
+        add_action('wp_enqueue_scripts', [$self, 'dequeue_parent_obsolete_assets'], 999);
+    }
+
+    /**
+     * Theme image sizes, hard-cropped to match each slot's aspect ratio so the
+     * CSS `object-fit:cover` never upscales or distorts, and the browser only
+     * downloads what it needs. Dimensions are ~2× the display slot for retina.
+     */
+    public function register_image_sizes(): void
+    {
+        add_image_size('pxc_side_banner', 640, 480, true); // 4:3 hero side banner (unused; kept)
+        add_image_size('pxc_tile', 500, 500, true);        // 1:1 category tile
+        add_image_size('pxc_hero', 1600, 700, true);       // 16:7 hero slider
+        add_image_size('pxc_card_16_10', 720, 450, true);  // 16:10 blog card / lead teaser
+        add_image_size('pxc_cover_16_9', 1280, 720, true); // 16:9 post cover / showroom
+        add_image_size('pxc_lead_4_3', 800, 600, true);    // 4:3 featured lead / story photo
+        add_image_size('pxc_thumb_sq', 160, 160, true);    // 1:1 small square (avatar, list thumb)
     }
 
     public function register_shop_filters_sidebar(): void
@@ -63,9 +81,9 @@ final class ThemeHook
 
         wp_enqueue_style(
             'pixel-cam',
-            underscores_child_asset_uri('assets/css/pixel-cam.css'),
+            add_query_arg('v', underscores_child_asset_version('assets/css/pixel-cam.css'), underscores_child_asset_uri('assets/css/pixel-cam.css')),
             ['pixel-cam-fonts'],
-            underscores_child_asset_version('assets/css/pixel-cam.css')
+            null
         );
 
         do_action('underscores_after_common_css');
@@ -77,12 +95,19 @@ final class ThemeHook
 
         wp_enqueue_script(
             'pixel-cam',
-            underscores_child_asset_uri('assets/scripts/pixel-cam.js'),
+            add_query_arg('v', underscores_child_asset_version('assets/scripts/pixel-cam.js'), underscores_child_asset_uri('assets/scripts/pixel-cam.js')),
             [],
-            underscores_child_asset_version('assets/scripts/pixel-cam.js'),
+            null,
             true
         );
 
         do_action('underscores_after_common_js');
+    }
+
+    public function dequeue_parent_obsolete_assets(): void
+    {
+        wp_dequeue_style('swipper');
+        wp_dequeue_style('news');
+        wp_dequeue_script('underscores-template-swiper');
     }
 }

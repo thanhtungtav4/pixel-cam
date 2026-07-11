@@ -3,24 +3,16 @@
  * Blog post TOC — auto-generated from <h2> headings in the_content.
  * Markup matches pixel-cam/blog-post.html .post-toc
  *
+ * Uses the same heading extraction as underscores_child_add_heading_ids()
+ * so TOC anchors always match the rendered heading ids.
+ *
  * @package Underscores
  */
 defined('ABSPATH') || exit;
 
-$content = get_the_content();
-$headings = [];
-
-// Match <h2>...</h2> or <h2 class="...">...</h2>
-if (preg_match_all('#<h2[^>]*>(.*?)</h2>#is', $content, $matches)) {
-    foreach ($matches[1] as $heading_html) {
-        $text = trim(wp_strip_all_tags($heading_html));
-        if ($text === '') {
-            continue;
-        }
-        $id = sanitize_title($text);
-        $headings[] = ['id' => $id, 'text' => $text];
-    }
-}
+$headings = function_exists('underscores_child_extract_headings')
+    ? underscores_child_extract_headings(get_the_content())
+    : [];
 
 if (empty($headings)) {
     return;

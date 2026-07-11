@@ -36,24 +36,8 @@ $name       = $product->get_name();
 $brand_terms = get_the_terms($product_id, 'product_brand');
 $brand       = (! is_wp_error($brand_terms) && ! empty($brand_terms)) ? $brand_terms[0]->name : '';
 
-// Badge: design shows a sale % (falls back to "SALE"), plus HOT / MỚI flags.
-// Map Woo state → the design's .bd variants.
-$badge_class = '';
-$badge_label = '';
-if ($product->is_on_sale()) {
-    $regular = (float) $product->get_regular_price();
-    $sale    = (float) $product->get_sale_price();
-    $badge_class = 'sale';
-    $badge_label = ($regular > 0 && $sale > 0 && $sale < $regular)
-        ? '-' . (int) round((1 - $sale / $regular) * 100) . '%'
-        : __('SALE', 'underscores');
-} elseif ($product->is_featured()) {
-    $badge_class = 'hot';
-    $badge_label = 'HOT';
-} elseif (($ts = get_post_time('U', true, $product_id)) && (time() - $ts) < 30 * DAY_IN_SECONDS) {
-    $badge_class = 'new';
-    $badge_label = __('MỚI', 'underscores');
-}
+// Badge: sale % (falls back to "SALE") → HOT → MỚI. Card shows the "new" flag.
+['class' => $badge_class, 'label' => $badge_label] = underscores_child_product_badge($product, true);
 
 // LCP-aware image attrs. Non-eager cards keep native lazy-load (below fold).
 $image_attr = $eager
@@ -74,17 +58,26 @@ $spec_line = function_exists('get_field') ? (string) (get_field('card_spec', $pr
             <div class="badges"><span class="bd <?php echo esc_attr($badge_class); ?>"><?php echo esc_html($badge_label); ?></span></div>
         <?php endif; ?>
 
-        <?php if (defined('YITH_WCWL')) : ?>
-            <?php echo do_shortcode('[yith_wcwl_add_to_wishlist product_id="' . $product_id . '"]'); ?>
-        <?php else : ?>
-            <button class="wish" type="button" data-product-id="<?php echo esc_attr((string) $product_id); ?>" aria-label="<?php esc_attr_e('Thêm vào yêu thích', 'underscores'); ?>" aria-pressed="false">
-                <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg>
-            </button>
-        <?php endif; ?>
+        <?php
+        // Wishlist toggle — icon-only .wish button matching the design. We do NOT
+        // add YITH's .add_to_wishlist class (its JS injects an extra text label +
+        // icon we don't want). Instead the button carries YITH's add URL and theme
+        // JS posts to it, so the heart stays the only visible element.
+        $has_yith    = defined('YITH_WCWL') && function_exists('YITH_WCWL');
+        $in_wishlist = $has_yith && YITH_WCWL()->is_product_in_wishlist($product_id);
+        $add_url     = $has_yith ? add_query_arg('add_to_wishlist', $product_id, get_permalink($product_id)) : '';
+        ?>
+        <button
+            class="wish<?php echo $in_wishlist ? ' on' : ''; ?>"
+            type="button"
+            data-product-id="<?php echo esc_attr((string) $product_id); ?>"
+            <?php if ($add_url) : ?>data-add-url="<?php echo esc_url($add_url); ?>"<?php endif; ?>
+            aria-label="<?php esc_attr_e('Thêm vào yêu thích', 'underscores'); ?>"
+            aria-pressed="<?php echo $in_wishlist ? 'true' : 'false'; ?>">
+            <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
 
-        <span class="ph" data-label="<?php echo esc_attr(trim($brand . ' ' . $name)); ?>">
-            <?php echo $product->get_image('woocommerce_thumbnail', $image_attr); ?>
-        </span>
+        <?php echo $product->get_image('pxc_card', $image_attr); ?>
     </a>
 
     <div class="body">
@@ -102,9 +95,15 @@ $spec_line = function_exists('get_field') ? (string) (get_field('card_spec', $pr
         </div>
 
         <?php
-        woocommerce_template_loop_add_to_cart([
-            'class' => 'addcart button',
-        ]);
+        // Add-to-cart: Woo's loop button reads the GLOBAL $product, but this card
+        // is also rendered from the front page / internal-links partials where that
+        // global may be a different product or unset. Point it at this card's
+        // product for the call, then restore. Keeps Woo's AJAX classes intact so
+        // the add is ajax + refreshes the mini-cart fragment.
+        $previous_product = $GLOBALS['product'] ?? null;
+        $GLOBALS['product'] = $product; // $product here = this card's WC_Product
+        woocommerce_template_loop_add_to_cart();
+        $GLOBALS['product'] = $previous_product;
         ?>
     </div>
 </article>

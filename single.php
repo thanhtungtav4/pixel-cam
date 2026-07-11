@@ -22,21 +22,26 @@ while (have_posts()) :
     the_post();
     $cats = get_the_category();
     $cat  = ! empty($cats) ? $cats[0] : null;
+
+    $acf_fields = function_exists('get_fields') ? (get_fields() ?: []) : [];
+    $related_posts_is_show    = ! empty($acf_fields['related_posts_is_show']);
+    $related_products_is_show = ! empty($acf_fields['related_products_is_show']);
+    $related_posts            = ! empty($acf_fields['related_posts']) ? array_map('intval', (array) $acf_fields['related_posts']) : [];
+    $related_products         = ! empty($acf_fields['related_products']) ? array_map('intval', (array) $acf_fields['related_products']) : [];
     ?>
     <div class="wrap">
-        <nav class="crumb" aria-label="Breadcrumb">
-            <a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Trang chủ', 'underscores'); ?></a>
-            <span class="sep">/</span>
-            <?php $blog = get_option('page_for_posts'); if ($blog) : ?>
-                <a href="<?php echo esc_url(get_permalink($blog)); ?>"><?php echo esc_html(get_the_title($blog)); ?></a>
-                <span class="sep">/</span>
-            <?php endif; ?>
-            <?php if ($cat) : ?>
-                <a href="<?php echo esc_url(get_category_link($cat->term_id)); ?>"><?php echo esc_html($cat->name); ?></a>
-                <span class="sep">/</span>
-            <?php endif; ?>
-            <span class="cur"><?php the_title(); ?></span>
-        </nav>
+        <?php
+        $crumb_items = [];
+        $blog = get_option('page_for_posts');
+        if ($blog) {
+            $crumb_items[] = ['label' => get_the_title($blog), 'url' => get_permalink($blog)];
+        }
+        if ($cat) {
+            $crumb_items[] = ['label' => $cat->name, 'url' => get_category_link($cat->term_id)];
+        }
+        $crumb_items[] = ['label' => get_the_title()];
+        get_template_part('partials/components/breadcrumb', null, ['items' => $crumb_items]);
+        ?>
     </div>
 
     <section style="padding-top:0;padding-bottom:0"><div class="wrap post-hero">
@@ -54,7 +59,7 @@ while (have_posts()) :
     </div></section>
 
     <?php if (has_post_thumbnail()) : ?>
-        <div class="wrap"><div class="post-cover"><?php the_post_thumbnail('large'); ?></div></div>
+        <div class="wrap"><div class="post-cover"><?php the_post_thumbnail('pxc_cover_16_9', ['fetchpriority' => 'high']); ?></div></div>
     <?php endif; ?>
 
     <section style="padding-top:0"><div class="wrap post-layout">
@@ -80,6 +85,20 @@ while (have_posts()) :
 
         <?php get_template_part('partials/components/post-toc'); ?>
     </div></section>
+
+    <?php if ($related_posts_is_show) : ?>
+        <?php get_template_part('partials/components/post-related', null, [
+            'post_id'        => get_the_ID(),
+            'selected_posts' => $related_posts,
+        ]); ?>
+    <?php endif; ?>
+
+    <?php if ($related_products_is_show) : ?>
+        <?php get_template_part('partials/components/post-related-products', null, [
+            'post_id'           => get_the_ID(),
+            'selected_products' => $related_products,
+        ]); ?>
+    <?php endif; ?>
 
     <?php
 endwhile;

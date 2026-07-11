@@ -14,11 +14,7 @@ get_header();
 the_post();
 ?>
 <div class="wrap">
-    <nav class="crumb" aria-label="Breadcrumb">
-        <a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Trang chủ', 'underscores'); ?></a>
-        <span class="sep">/</span>
-        <span class="cur"><?php the_title(); ?></span>
-    </nav>
+    <?php get_template_part('partials/components/breadcrumb', null, ['items' => [['label' => get_the_title()]]]); ?>
 </div>
 
 <div class="wrap page-main">
