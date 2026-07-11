@@ -14,7 +14,7 @@
             "label": "GTIN / EAN / Barcode",
             "name": "gtin",
             "type": "text",
-            "wrapper": { "width": "33" },
+            "wrapper": { "width": "50" },
             "instructions": "Mã vạch quốc tế (13 số). Dùng cho Merchant Center feed + Product schema."
         },
         {
@@ -22,18 +22,8 @@
             "label": "MPN (Manufacturer Part Number)",
             "name": "mpn",
             "type": "text",
-            "wrapper": { "width": "33" },
+            "wrapper": { "width": "50" },
             "instructions": "Mã part number của hãng. Dùng khi không có GTIN."
-        },
-        {
-            "key": "field_product_identifier_exists",
-            "label": "Có GTIN/MPN?",
-            "name": "identifier_exists",
-            "type": "true_false",
-            "wrapper": { "width": "34" },
-            "ui": 1,
-            "default_value": 0,
-            "instructions": "Bật = có GTIN/MPN (Merchant Center yêu cầu). Tắt = sản phẩm tự custom không có mã hãng."
         },
         {
             "key": "field_product_seo_shipping_tab",
@@ -51,22 +41,6 @@
             "instructions": "Mô tả vận chuyển cho product schema + Merchant Center. VD: Giao toàn quốc 2-4 ngày, miễn phí đơn từ 5 triệu."
         },
         {
-            "key": "field_product_shipping_time",
-            "label": "Thời gian giao hàng",
-            "name": "shipping_time",
-            "type": "text",
-            "wrapper": { "width": "50" },
-            "placeholder": "2-4 ngày làm việc"
-        },
-        {
-            "key": "field_product_shipping_cost",
-            "label": "Phí ship (VND, 0 = miễn phí)",
-            "name": "shipping_cost",
-            "type": "number",
-            "wrapper": { "width": "50" },
-            "default_value": 0
-        },
-        {
             "key": "field_product_seo_return_tab",
             "label": "Đổi trả",
             "name": "",
@@ -80,14 +54,6 @@
             "type": "textarea",
             "rows": 3,
             "instructions": "Mô tả đổi trả cho product schema. VD: 30 ngày đổi trả, hoàn tiền 100% nếu lỗi hãng."
-        },
-        {
-            "key": "field_product_return_days",
-            "label": "Số ngày đổi trả",
-            "name": "return_days",
-            "type": "number",
-            "wrapper": { "width": "50" },
-            "default_value": 30
         },
         {
             "key": "field_product_seo_cat_tab",

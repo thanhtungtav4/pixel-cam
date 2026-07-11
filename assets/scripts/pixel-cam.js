@@ -93,6 +93,36 @@ function initSearch() {
   }
 }
 
+/* ---------- Mobile nav (burger toggles the <nav.cat> as a fullscreen drawer) ---------- */
+function initMobileNav() {
+  const btn = document.querySelector('.hdr-burger');
+  const closeBtn = document.querySelector('.hdr-burger-close');
+  const nav = document.getElementById('primary-nav');
+  if (!nav) return;
+
+  const setOpen = (open) => {
+    nav.classList.toggle('is-open', open);
+    document.body.classList.toggle('nav-open', open);
+    if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+
+  if (btn) btn.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
+  if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && nav.classList.contains('is-open')) setOpen(false);
+  });
+
+  // Close after clicking a leaf link (sub-menus keep open)
+  nav.querySelectorAll('.cat-list a').forEach(a => {
+    a.addEventListener('click', () => {
+      // Only auto-close on plain links (not on parent items with submenus)
+      if (!a.closest('.has-mega')) setOpen(false);
+    });
+  });
+}
+
 /* ---------- Wishlist button ---------- */
 /*
  * The .wish button sits inside the card's <a class="imgwrap"> link. Stop the
@@ -555,6 +585,7 @@ function boot() {
   initMega();
   initFilters();
   initSearch();
+  initMobileNav();
   initWishlist();
   initViewToggle();
   initShopAjax();

@@ -61,22 +61,6 @@
             "layout": "block",
             "sub_fields": [
                 {
-                    "key": "field_ts_header_hotline",
-                    "label": "Header Hotline",
-                    "name": "hotline",
-                    "type": "text",
-                    "wrapper": {
-                        "width": "50"
-                    }
-                },
-                {
-                    "key": "field_ts_header_cta",
-                    "label": "Header CTA Button",
-                    "name": "cta",
-                    "type": "link",
-                    "return_format": "array"
-                },
-                {
                     "key": "field_ts_header_topbar_text",
                     "label": "Top Bar Text",
                     "name": "topbar_text",
@@ -188,57 +172,6 @@
                             "placeholder": "Toàn quốc với đơn từ 1 triệu — Nội thành nhận trong 2–4h"
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "key": "field_ts_tab_scripts",
-            "label": "Scripts / Tracking",
-            "name": "",
-            "type": "tab",
-            "placement": "left",
-            "endpoint": 0
-        },
-        {
-            "key": "field_ts_scripts_section",
-            "label": "Scripts Section",
-            "name": "scripts_section",
-            "type": "group",
-            "instructions": "Mã tracking và script chèn vào head/body.",
-            "layout": "block",
-            "sub_fields": [
-                {
-                    "key": "field_ts_scripts_ga_id",
-                    "label": "Google Analytics ID",
-                    "name": "ga_id",
-                    "type": "text",
-                    "wrapper": {
-                        "width": "50"
-                    },
-                    "instructions": "VD: G-XXXXXXXXXX"
-                },
-                {
-                    "key": "field_ts_scripts_fb_pixel",
-                    "label": "Facebook Pixel ID",
-                    "name": "fb_pixel",
-                    "type": "text",
-                    "wrapper": {
-                        "width": "50"
-                    }
-                },
-                {
-                    "key": "field_ts_scripts_header",
-                    "label": "Header Scripts",
-                    "name": "header_scripts",
-                    "type": "textarea",
-                    "instructions": "Chèn vào trước </head>."
-                },
-                {
-                    "key": "field_ts_scripts_footer",
-                    "label": "Footer Scripts",
-                    "name": "footer_scripts",
-                    "type": "textarea",
-                    "instructions": "Chèn vào trước </body>."
                 }
             ]
         },

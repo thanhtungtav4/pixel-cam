@@ -7,9 +7,9 @@
  *
  * @param array $args {
  *   'product' => WC_Product|int  Product or ID.
- *   'eager'   => bool            Mark this card's image as LCP (first row only):
- *                                eager load + fetchpriority=high. Default false
- *                                → native lazy-load (below the fold).
+ *   'eager'   => bool            Mark this card's image as LCP. Caller decides;
+ *                                pass true for the first card above the fold.
+ *                                Default false → native lazy-load.
  * }
  * @package Underscores
  */

@@ -122,6 +122,12 @@ while (have_posts()) :
         </div>
 
         <article>
+            <div class="post-share-mobile" aria-label="<?php esc_attr_e('Chia sẻ bài viết', 'underscores'); ?>">
+                <a class="share-btn share-btn--icon" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $share_url; ?>" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Chia sẻ Facebook', 'underscores'); ?>">Facebook</a>
+                <a class="share-btn share-btn--icon" href="https://twitter.com/intent/tweet?url=<?php echo $share_url; ?>" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Chia sẻ X (Twitter)', 'underscores'); ?>">X</a>
+                <button class="share-btn share-btn--icon" type="button" data-copy-link="<?php echo esc_url(get_permalink()); ?>" aria-label="<?php esc_attr_e('Sao chép link', 'underscores'); ?>"><?php esc_html_e('Sao chép', 'underscores'); ?></button>
+            </div>
+
             <div class="prose"><?php the_content(); ?></div>
 
             <?php if (has_tag()) : ?>

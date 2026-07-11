@@ -55,7 +55,18 @@ $posts = array_filter(array_map('get_post', $post_ids));
         ?>
         <article class="hb-lead">
             <?php if (has_post_thumbnail($lead->ID)) : ?>
-                <?php echo get_the_post_thumbnail($lead->ID, 'pxc_card_16_10', ['loading' => 'lazy']); ?>
+                <a class="hb-lead__img" href="<?php echo esc_url(get_permalink($lead->ID)); ?>" aria-hidden="true" tabindex="-1">
+                    <?php
+                    // 16:9 hard-cropped via pxc_lead_16_9. Eager + high priority: this
+                    // is the first (and only) lead on the home — definitely the LCP
+                    // candidate among blog content.
+                    echo wp_get_attachment_image(get_post_thumbnail_id($lead->ID), 'pxc_lead_16_9', false, [
+                        'loading'       => 'eager',
+                        'fetchpriority' => 'high',
+                        'sizes'         => '(max-width:900px) 100vw, 651px',
+                    ]);
+                    ?>
+                </a>
             <?php endif; ?>
             <div class="body">
                 <?php if ($cat) : ?><span class="cat-tag"><?php echo esc_html($cat); ?></span><?php endif; ?>

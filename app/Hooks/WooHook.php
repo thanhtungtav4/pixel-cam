@@ -39,6 +39,7 @@ final class WooHook
         add_filter('template_include', [$self, 'product_search_template'], 99);
         add_filter('woocommerce_add_to_cart_fragments', [$self, 'cart_count_fragment']);
         add_action('wp_enqueue_scripts', [$self, 'trim_cart_fragments'], 99);
+        add_filter('wp_get_attachment_image_attributes', [$self, 'product_gallery_image_attrs'], 10, 3);
 
         // Vietnamese add-to-cart labels (don't rely on the Woo .mo being present).
         add_filter('woocommerce_product_add_to_cart_text', [$self, 'add_to_cart_text'], 10, 2);
@@ -976,6 +977,45 @@ final class WooHook
         // Ceiling: won't detect add-to-cart buttons printed by template tags on
         // arbitrary pages. Upgrade: add_filter('underscores_needs_cart_fragments','__return_true').
         return apply_filters('underscores_needs_cart_fragments', $needs);
+    }
+
+    public function product_gallery_image_attrs(array $attrs, \WP_Post $attachment, string $size): array
+    {
+        // Scope to single-product pages so we don't affect blog / shop / cart
+        // image attributes.
+        if (! function_exists('is_product') || ! is_product()) {
+            return $attrs;
+        }
+
+        $product = wc_get_product();
+        if (! $product instanceof \WC_Product) {
+            return $attrs;
+        }
+
+        // Only touch images attached to the current product's gallery. The
+        // gallery is a list of attachment IDs in the `_product_image_gallery`
+        // post meta; the featured image is the post thumbnail.
+        $thumb_id      = (int) $product->get_image_id();
+        $gallery_ids   = (array) $product->get_gallery_image_ids();
+        $is_thumb      = $attachment->ID === $thumb_id;
+        $is_gallery    = in_array($attachment->ID, $gallery_ids, true);
+
+        if (! $is_thumb && ! $is_gallery) {
+            return $attrs;
+        }
+
+        // Featured image is the LCP candidate — eager + high. Gallery
+        // thumbs are below the fold, lazy + low priority so they don't
+        // compete for bandwidth with the main image.
+        if ($is_thumb) {
+            $attrs['loading']       = 'eager';
+            $attrs['fetchpriority'] = 'high';
+        } else {
+            $attrs['loading']       = 'lazy';
+            $attrs['fetchpriority'] = 'low';
+        }
+
+        return $attrs;
     }
 
     public function register_vietqr_settings(): void

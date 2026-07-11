@@ -31,7 +31,7 @@ if (! $product instanceof WC_Product) {
 $product_id = $product->get_id();
 
 /* ---- Same material -------------------------------------------------------
- * Prefer the Woo attribute pa_material; fall back to ACF feed_material text.
+ * Driven by the Woo attribute pa_material.
  */
 $material_ids = [];
 $material_terms = get_the_terms($product_id, 'pa_material');
