@@ -41,15 +41,6 @@
                     "label": "Address",
                     "name": "address",
                     "type": "textarea"
-                },
-                {
-                    "key": "field_ts_general_copyright",
-                    "label": "Copyright",
-                    "name": "copyright",
-                    "type": "text",
-                    "wrapper": {
-                        "width": "50"
-                    }
                 }
             ]
         },

@@ -38,11 +38,13 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .logo img,.logo .custom-logo{display:block;max-width:150px;height:auto;width:auto;object-fit:contain}
 .logo:hover{opacity:.85}
 @media(max-width:560px){.logo{font-size:19px}.logo .mark{width:30px;height:30px;font-size:16px}.logo img,.logo .custom-logo{max-width:120px}}
-.search{flex:1;display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;min-width:0}
-.search input{flex:1;border:0;padding:10px 14px;font:inherit;font-size:14px;min-width:0;outline:none}
-.search input:focus{outline:none}
-.search:focus-within{border-color:var(--accent)}
-.search button{border:0;background:var(--accent);color:#fff;padding:0 18px;cursor:pointer;font-weight:600;font-size:14px}
+/* .hdr-search — NOT .search: WP adds body.search on search results and that
+   would match a bare .search rule (display:flex) and collapse the whole layout. */
+.hdr-search{flex:1;display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;min-width:0}
+.hdr-search input{flex:1;border:0;padding:10px 14px;font:inherit;font-size:14px;min-width:0;outline:none}
+.hdr-search input:focus{outline:none}
+.hdr-search:focus-within{border-color:var(--accent)}
+.hdr-search button{border:0;background:var(--accent);color:#fff;padding:0 18px;cursor:pointer;font-weight:600;font-size:14px}
 .hdr-actions{display:flex;gap:18px;align-items:center;flex-shrink:0}
 .ha{display:flex;flex-direction:column;align-items:center;font-size:11px;color:var(--muted);gap:2px;cursor:pointer;position:relative;border:0;background:transparent;font-family:inherit}
 .ha svg{width:22px;height:22px;stroke:var(--fg);fill:none;stroke-width:1.6}
@@ -52,7 +54,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .ha .badge{position:absolute;top:-6px;right:2px;background:var(--danger);color:#fff;font-size:10px;
   min-width:16px;height:16px;border-radius:8px;display:grid;place-items:center;padding:0 4px}
 @media(max-width:860px){.ha span{display:none}}
-@media(max-width:640px){.search{display:none}.mob-search-btn{display:flex!important}.hdr{justify-content:space-between}}
+@media(max-width:640px){.hdr-search{display:none}.mob-search-btn{display:flex!important}.hdr{justify-content:space-between}}
 
 /* ===== MINI CART (hover / focus dropdown) ===== */
 .cart-wrap{position:relative}
@@ -2902,11 +2904,11 @@ table.my_account_orders mark.order-status.status-failed {
   max-width:44ch;margin:0 auto 28px;
 }
 .e404-search{max-width:440px;margin:0 auto 22px}
-/* Self-contained: the header's .search is display:none on mobile and relies on
+/* Self-contained: header .hdr-search is display:none on mobile and relies on
    a flex parent, so re-declare here instead of leaning on it. */
-.e404-search .search{display:flex !important;border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.e404-search .search input{flex:1;border:0;padding:10px 14px;font:inherit;font-size:14px;min-width:0;outline:none}
-.e404-search .search button{flex:none;border:0;background:var(--accent);color:#fff;padding:0 18px;cursor:pointer;font-weight:600;font-size:14px}
-.e404-search .search:focus-within{border-color:var(--accent)}
-.e404-search .search button:hover{background:var(--accent-80)}
+.e404-search .hdr-search{display:flex !important;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.e404-search .hdr-search input{flex:1;border:0;padding:10px 14px;font:inherit;font-size:14px;min-width:0;outline:none}
+.e404-search .hdr-search button{flex:none;border:0;background:var(--accent);color:#fff;padding:0 18px;cursor:pointer;font-weight:600;font-size:14px}
+.e404-search .hdr-search:focus-within{border-color:var(--accent)}
+.e404-search .hdr-search button:hover{background:var(--accent-80)}
 .e404-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}

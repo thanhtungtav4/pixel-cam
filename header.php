@@ -63,13 +63,13 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
     <?php endif; ?>
 
     <?php if ($has_woo) : ?>
-        <form class="search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
+        <form class="hdr-search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
             <input type="search" id="searchInput" name="s" value="<?php echo esc_attr(get_search_query()); ?>" placeholder="<?php esc_attr_e('Tìm máy ảnh, lens, flycam, gimbal...', 'underscores'); ?>">
             <input type="hidden" name="post_type" value="product">
             <button type="submit"><?php esc_html_e('Tìm', 'underscores'); ?></button>
         </form>
     <?php else : ?>
-        <form class="search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
+        <form class="hdr-search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
             <input type="search" id="searchInput" name="s" value="<?php echo esc_attr(get_search_query()); ?>" placeholder="<?php esc_attr_e('Tìm kiếm...', 'underscores'); ?>">
             <button type="submit"><?php esc_html_e('Tìm', 'underscores'); ?></button>
         </form>

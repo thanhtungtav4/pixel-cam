@@ -54,6 +54,13 @@ final class WooHook
         // hook before_shop_loop at priority 0 — before open_shop_grid (@1) opens
         // .shop, so the head sits above the sidebar + grid.
         add_action('woocommerce_before_shop_loop', [$self, 'shop_page_head'], 0);
+        // Empty results skip before_shop_loop entirely — still need page head +
+        // shop shell (sidebar layout) so search-no-results isn't a bare notice.
+        add_action('woocommerce_no_products_found', [$self, 'shop_page_head'], 0);
+        add_action('woocommerce_no_products_found', [$self, 'open_shop_grid'], 1);
+        remove_action('woocommerce_no_products_found', 'wc_no_products_found', 10);
+        add_action('woocommerce_no_products_found', [$self, 'no_products_found'], 10);
+        add_action('woocommerce_no_products_found', [$self, 'close_shop_grid'], 20);
         // Woo prints the archive title/description inside the loop by default;
         // we render our own .page-head above, so drop the defaults.
         add_filter('woocommerce_show_page_title', '__return_false');
@@ -741,6 +748,40 @@ final class WooHook
     public function close_shop_grid(): void
     {
         echo '</div></div></div>'; // .shop-main, .shop, .shop-wrap
+    }
+
+    /**
+     * Empty shop / search / filtered archive: design empty-state instead of
+     * Woo's default info notice. Product search gets search-specific copy.
+     */
+    public function no_products_found(): void
+    {
+        $is_product_search = is_search() && get_query_var('post_type') === 'product';
+        $shop_url          = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/');
+
+        echo '<div class="empty-state empty-state--bordered">';
+
+        if ($is_product_search) {
+            $term = get_search_query();
+            echo '<p class="es-title">' . esc_html__('Không tìm thấy sản phẩm', 'underscores') . '</p>';
+            echo '<p class="es-sub">';
+            echo esc_html(
+                $term !== ''
+                    /* translators: %s: search term */
+                    ? sprintf(__('Không có sản phẩm nào khớp với “%s”. Thử từ khóa khác hoặc xem toàn bộ cửa hàng.', 'underscores'), $term)
+                    : __('Không có sản phẩm nào khớp. Thử từ khóa khác hoặc xem toàn bộ cửa hàng.', 'underscores')
+            );
+            echo '</p>';
+        } else {
+            echo '<p class="es-title">' . esc_html__('Không tìm thấy sản phẩm', 'underscores') . '</p>';
+            echo '<p class="es-sub">' . esc_html__('Không có sản phẩm phù hợp với bộ lọc. Thử bỏ bớt điều kiện hoặc xem toàn bộ cửa hàng.', 'underscores') . '</p>';
+        }
+
+        if ($shop_url) {
+            echo '<a class="btn btn-primary" href="' . esc_url($shop_url) . '">' . esc_html__('Xem cửa hàng', 'underscores') . '</a>';
+        }
+
+        echo '</div>';
     }
 
     /**

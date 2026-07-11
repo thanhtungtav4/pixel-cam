@@ -12,7 +12,7 @@ $general      = function_exists('underscores_get_option') ? (underscores_get_opt
 $footer       = function_exists('underscores_get_option') ? (underscores_get_option('footer_general_section') ?: []) : [];
 
 $description  = $footer['description'] ?? '';
-$copyright    = $footer['copyright'] ?? ($general['copyright'] ?? '');
+$copyright    = $footer['copyright'] ?? '';
 $hotline      = $general['hotline'] ?? '';
 $email        = $general['email'] ?? '';
 $address      = $general['address'] ?? '';

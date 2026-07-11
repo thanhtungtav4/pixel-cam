@@ -40,8 +40,8 @@ $shop_url = (function_exists('wc_get_page_id') && wc_get_page_id('shop') > 0)
         </p>
 
         <div class="e404-search">
-            <?php // Reuse the header's product search (styled .search) so it matches. ?>
-            <form class="search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
+            <?php // Reuse the header product search (.hdr-search) so it matches. ?>
+            <form class="hdr-search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
                 <input type="search" name="s" value="<?php echo esc_attr(get_search_query()); ?>"
                        placeholder="<?php esc_attr_e('Tìm máy ảnh, lens, flycam, gimbal...', 'underscores'); ?>"
                        aria-label="<?php esc_attr_e('Tìm sản phẩm', 'underscores'); ?>">
