@@ -40,9 +40,11 @@ final class ThemeHook
         add_image_size('pxc_side_banner', 640, 480, true); // 4:3 hero side banner (unused; kept)
         add_image_size('pxc_tile', 500, 500, true);        // 1:1 category tile
         add_image_size('pxc_hero', 1600, 700, true);       // 16:7 hero slider
-        add_image_size('pxc_card_16_10', 720, 450, true);  // 16:10 blog card / lead teaser
+        add_image_size('pxc_card_16_10', 720, 450, true);  // 16:10 blog card (legacy; kept)
+        add_image_size('pxc_card_16_9', 720, 405, true);   // 16:9 blog card grid (current)
         add_image_size('pxc_cover_16_9', 1280, 720, true); // 16:9 post cover / showroom
-        add_image_size('pxc_lead_4_3', 800, 600, true);    // 4:3 featured lead / story photo
+        add_image_size('pxc_lead_4_3', 800, 600, true);    // 4:3 featured lead (legacy; kept)
+        add_image_size('pxc_lead_16_9', 800, 450, true);   // 16:9 featured lead (current)
         add_image_size('pxc_thumb_sq', 160, 160, true);    // 1:1 small square (avatar, list thumb)
     }
 

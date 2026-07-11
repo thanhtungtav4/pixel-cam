@@ -53,7 +53,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .ha:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
 .ha .badge{position:absolute;top:-6px;right:2px;background:var(--danger);color:#fff;font-size:10px;
   min-width:16px;height:16px;border-radius:8px;display:grid;place-items:center;padding:0 4px}
-@media(max-width:860px){.ha span{display:none}}
+@media(max-width:860px){.ha span{display:none}.ha .badge{right:-10px}}
 @media(max-width:640px){.hdr-search{display:none}.mob-search-btn{display:flex!important}.hdr{justify-content:space-between}}
 
 /* ===== MINI CART (hover / focus dropdown) ===== */
@@ -379,7 +379,7 @@ footer a:hover{color:#fff}
 
 .featured{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:0;border:1px solid var(--border);border-radius:14px;
   background:var(--surface);overflow:hidden;margin-bottom:32px;align-items:stretch}
-.featured .ph{aspect-ratio:4/3;border:0;border-radius:0;min-height:100%}
+.featured .ph{aspect-ratio:16/9;border:0;border-radius:0;min-height:100%}
 .featured .body{padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:12px;justify-content:center}
 .featured .cat-tag{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
   color:var(--accent);background:rgba(4,82,105,.08);padding:4px 10px;border-radius:6px;align-self:flex-start}
@@ -387,14 +387,14 @@ footer a:hover{color:#fff}
 .featured h2 a:hover{color:var(--accent)}
 .featured p{color:var(--muted);font-size:14.5px;line-height:1.6}
 .featured .meta{display:flex;gap:14px;color:var(--muted);font-size:13px;margin-top:4px;flex-wrap:wrap}
-@media(max-width:720px){.featured{grid-template-columns:minmax(0,1fr)}.featured .ph{aspect-ratio:16/9;min-height:0}}
+@media(max-width:720px){.featured{grid-template-columns:minmax(0,1fr)}.featured .ph{min-height:0}}
 
 .blog-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
 @media(max-width:640px){.blog-grid{grid-template-columns:minmax(0,1fr)}}
 .bcard{border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden;display:flex;
   flex-direction:column;transition:.15s}
 .bcard:hover{border-color:var(--accent)}
-.bcard .ph{aspect-ratio:16/10;border:0;border-radius:0}
+.bcard .ph{aspect-ratio:16/9;border:0;border-radius:0}
 .bcard .body{padding:18px;display:flex;flex-direction:column;gap:8px;flex:1}
 .bcard .cat-tag{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
   color:var(--accent);align-self:flex-start}
@@ -1891,10 +1891,10 @@ footer a:hover{color:#fff}
    ratio, no crop, per earlier decision.) */
 /* Home featured blog lead. */
 .featured{overflow:hidden}
-.featured > img,.featured a > img{width:100%;height:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#f2f2f2}
+.featured > img,.featured a > img{width:100%;height:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#f2f2f2}
 /* Blog card grid. */
 .bcard{overflow:hidden}
-.bcard > a > img,.bcard > img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#f2f2f2}
+.bcard > a > img,.bcard > img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#f2f2f2}
 /* Single post cover (16:9 box). */
 .post-cover img{width:100%;height:100%;object-fit:cover;display:block;background:#f2f2f2}
 /* About: story photo (4:3) + showroom rooms (16:9). */

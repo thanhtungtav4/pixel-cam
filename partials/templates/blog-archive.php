@@ -70,10 +70,22 @@ $blog_url     = $blog_page_id ? get_permalink($blog_page_id) : home_url('/');
                 the_post();
                 $cats = get_the_category();
                 $cat  = ! empty($cats) ? $cats[0]->name : '';
+                $featured_thumb_id = get_post_thumbnail_id();
                 ?>
                 <article class="featured">
-                <?php if (has_post_thumbnail()) : ?>
-                    <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail('pxc_lead_4_3', ['loading' => 'lazy']); ?></a>
+                <?php if ($featured_thumb_id) : ?>
+                    <a href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+                        <?php
+                        // LCP image — eager load + high fetch priority, no lazy.
+                        // Sizes: full-width on mobile, ~651px on desktop (1.4fr/2.4fr split
+                        // inside a ~1116px content column with a 300px sidebar).
+                        echo wp_get_attachment_image($featured_thumb_id, 'pxc_lead_16_9', false, [
+                            'loading'       => 'eager',
+                            'fetchpriority' => 'high',
+                            'sizes'         => '(max-width:720px) 100vw, 651px',
+                        ]);
+                        ?>
+                    </a>
                 <?php endif; ?>
                 <div class="body">
                     <?php if ($cat) : ?><span class="cat-tag"><?php echo esc_html($cat); ?></span><?php endif; ?>
