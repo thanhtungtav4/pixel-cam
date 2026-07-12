@@ -46,6 +46,12 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .logo img,.logo .custom-logo{display:block;max-width:150px;height:auto;width:auto;object-fit:contain}
 .logo:hover{opacity:.85}
 @media(max-width:560px){.logo{font-size:19px}.logo .mark{width:30px;height:30px;font-size:16px}.logo img,.logo .custom-logo{max-width:120px}}
+/* The wordmark is 16 chars; trim it on very small phones so 4×44px tap
+   targets + wordmark fit inside 360px without horizontal overflow. */
+@media(max-width:400px){.logo{font-size:15px;letter-spacing:-.01em}.logo .mark{width:28px;height:28px;font-size:14px}}
+/* Smallest phones (≤360px): the 4 actions + wordmark must share ~328px.
+   Drop the wordmark to a single-line lockup that prioritises the actions. */
+@media(max-width:360px){.logo{font-size:13px;letter-spacing:-.005em;gap:6px}.logo .mark{width:24px;height:24px;font-size:12px;border-radius:6px}.logo .wordmark{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px}}
 /* .hdr-search — NOT .search: WP adds body.search on search results and that
    would match a bare .search rule (display:flex) and collapse the whole layout. */
 .hdr-search{flex:1;display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;min-width:0}
@@ -88,7 +94,12 @@ body.mob-search-open{overflow:hidden}
   .hdr-search{display:none}
   .mob-search-btn{display:flex!important}
   .hdr-burger{display:flex!important}
-  .hdr{justify-content:space-between}
+  .hdr{gap:8px;justify-content:space-between}
+  /* Tighten the actions cluster so 4×44px buttons + logo fit at 360px. */
+  .hdr-actions{gap:4px}
+  /* Wishlist is reachable from the account menu; hide it on small screens to
+     free horizontal space for the remaining 4×44px tap targets. */
+  .ha.is-wishlist{display:none}
   /* On mobile, the nav becomes a fullscreen drawer toggled by the burger. */
   nav.cat{
     display:none;
@@ -229,14 +240,17 @@ nav.cat{background:var(--surface);border-bottom:1px solid var(--border);position
 .hero-side .card img{width:100%;height:auto;display:block}
 .hero-side .ph{height:100%;border-radius:0;border:0}
 .hero-side .lbl{position:absolute;top:14px;left:14px;background:var(--surface);padding:6px 12px;border-radius:6px;font-size:13px;font-weight:600;z-index:2}
-/* Stacked below the slider → cards need their own ratio (no slider to match). */
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-side{grid-template-rows:none;grid-template-columns:1fr 1fr}.hero-side .card{aspect-ratio:16/9}}
+/* Stacked below the slider → cards need their own ratio (no slider to match).
+   The slider also needs an explicit ratio here (≤900px), because once it stops
+   sitting beside the side column it has no intrinsic height — the slide is
+   position:absolute, so without aspect-ratio the slider collapses to 0px on
+   tablet portrait (768–900px) where the side column is still visible. */
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-side{grid-template-rows:none;grid-template-columns:1fr 1fr}.hero-side .card{aspect-ratio:16/9}.slider{aspect-ratio:16/9;height:auto}}
 @media(max-width:560px){.slide .cap{max-width:100%}.hero-side{grid-template-columns:1fr}}
 /* Hero side banners take ~320px of vertical space on small screens. Hide them
-   below 760px so the slider becomes the single hero element (placed after the
-   900px and 560px rules so it wins on cascade order). The slider also needs
-   an explicit height because it used to stretch to the side column's height. */
-@media(max-width:760px){.hero-side{display:none!important}.hero-grid{grid-template-columns:1fr!important}.slider{aspect-ratio:16/9;height:auto}}
+   below 760px so the slider becomes the single hero element. (Placed after the
+   900px and 560px rules so it wins on cascade order.) */
+@media(max-width:760px){.hero-side{display:none!important}.hero-grid{grid-template-columns:1fr!important}}
 
 /* ===== FEATURE STRIP ===== */
 .strip{border-block:1px solid var(--border);background:var(--surface)}
@@ -1950,14 +1964,35 @@ footer a:hover{color:#fff}
 .pdp-info .product_meta>span{display:block;margin-bottom:4px}
 /* SKU already shown under the title (sku_line) → hide Woo's duplicate in meta. */
 .pdp-info .product_meta .sku_wrapper{display:none}
-/* Woo tabs → Pixel Cam tab look */
+/* Woo tabs → Pixel Cam tab look.
+   The WC plugin ships a default ".woocommerce div.product .woocommerce-tabs ul.tabs li"
+   rule with a 1px box border, gray background, and ::before/::after pseudo
+   triangles. We strip that out so the tabs are flat (only the 2px bottom
+   border on the active state) — matching the product-detail.html reference. */
 .woocommerce-tabs{margin-top:56px}
-.woocommerce-tabs ul.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);overflow-x:auto;list-style:none;margin:0;padding:0}
-.woocommerce-tabs ul.tabs li{margin:0}
+.woocommerce-tabs ul.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);overflow-x:auto;list-style:none;margin:0;padding:0;position:static}
+.woocommerce-tabs ul.tabs::before{display:none}
+.woocommerce-tabs ul.tabs li{margin:0;border:0!important;background:transparent!important;color:inherit;display:block;position:static;z-index:auto}
+.woocommerce-tabs ul.tabs li::before,.woocommerce-tabs ul.tabs li::after{display:none!important}
+.woocommerce-tabs ul.tabs li.active{background:transparent!important;border:0!important;color:inherit}
 .woocommerce-tabs ul.tabs li a{display:block;font-size:14.5px;font-weight:600;color:var(--muted);padding:14px 22px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:.15s;text-decoration:none}
 .woocommerce-tabs ul.tabs li.active a,.woocommerce-tabs ul.tabs li a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+/* Description panel → prose look (matches product-detail.html .pdp-tabs .panel .prose) */
 .woocommerce-tabs .panel{padding:28px 0}
-.woocommerce-tabs .panel>h2:first-child{font-size:18px;font-weight:700;margin-bottom:12px}
+.woocommerce-tabs .panel .prose,
+.woocommerce-tabs .panel.woocommerce-Tabs-panel--description{max-width:740px}
+/* The WC default "Description" h2 is redundant (the tab is already named
+   "Mô tả sản phẩm"); hide it on the description panel only. */
+.woocommerce-tabs .panel.woocommerce-Tabs-panel--description>h2:first-child{display:none}
+.woocommerce-tabs .panel h2,
+.woocommerce-tabs .panel h3,
+.woocommerce-tabs .panel h4{font-size:18px;font-weight:700;margin:24px 0 10px;letter-spacing:-.01em}
+.woocommerce-tabs .panel h2:first-child,
+.woocommerce-tabs .panel h3:first-child,
+.woocommerce-tabs .panel h4:first-child{margin-top:0}
+.woocommerce-tabs .panel p{font-size:15px;line-height:1.7;color:#333;margin:8px 0}
+.woocommerce-tabs .panel ul{margin:8px 0 8px 20px;font-size:14.5px;line-height:1.7;color:#333}
+.woocommerce-tabs .panel li{margin:4px 0}
 /* Related / upsells reuse .grid via loop_start filter */
 .related.products>h2,.upsells.products>h2{font-size:20px;font-weight:700;margin:48px 0 18px;letter-spacing:-.01em}
 
