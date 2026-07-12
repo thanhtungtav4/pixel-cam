@@ -233,24 +233,25 @@ nav.cat{background:var(--surface);border-bottom:1px solid var(--border);position
 .dots button.on{background:#fff;width:24px;border-radius:5px}
 /* Side banners define the hero height: each is a fixed 4:3, so two of them
    plus the gap set the column height — the slider then stretches to match. */
-.hero-side{display:flex;flex-direction:column;gap:16px}
+.hero-side{display:grid;grid-template-columns:1fr;gap:16px}
 /* Card height follows the image's real ratio — no crop, no stretch. */
 .hero-side .card{position:relative;border-radius:14px;overflow:hidden;display:block;background:#f2f2f2}
 /* Side banner image fills the card without stretching (cover + centered). */
-.hero-side .card img{width:100%;height:auto;display:block}
+.hero-side .card img{width:100%;height:100%;display:block;object-fit:cover}
 .hero-side .ph{height:100%;border-radius:0;border:0}
 .hero-side .lbl{position:absolute;top:14px;left:14px;background:var(--surface);padding:6px 12px;border-radius:6px;font-size:13px;font-weight:600;z-index:2}
 /* Stacked below the slider → cards need their own ratio (no slider to match).
    The slider also needs an explicit ratio here (≤900px), because once it stops
    sitting beside the side column it has no intrinsic height — the slide is
    position:absolute, so without aspect-ratio the slider collapses to 0px on
-   tablet portrait (768–900px) where the side column is still visible. */
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-side{grid-template-rows:none;grid-template-columns:1fr 1fr}.hero-side .card{aspect-ratio:16/9}.slider{aspect-ratio:16/9;height:auto}}
-@media(max-width:560px){.slide .cap{max-width:100%}.hero-side{grid-template-columns:1fr}}
-/* Hero side banners take ~320px of vertical space on small screens. Hide them
-   below 760px so the slider becomes the single hero element. (Placed after the
-   900px and 560px rules so it wins on cascade order.) */
-@media(max-width:760px){.hero-side{display:none!important}.hero-grid{grid-template-columns:1fr!important}}
+   tablet portrait (768–900px) where the side column is still visible.
+   Side cards: 4:3 matches the natural ratio of the uploaded side banners
+   (1280×960 / 1280×958), so no crop — just letterbox-free fit. */
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:18px}.hero-side{grid-template-rows:none;grid-template-columns:1fr 1fr;gap:12px}.hero-side .card{aspect-ratio:4/3}.slider{aspect-ratio:16/9;height:auto}}
+/* Phones: cap full-width, slide text full-bleed, side stays 2-col but tighter. */
+@media(max-width:560px){.slide .cap{max-width:100%}.hero-side{gap:10px}}
+/* Tiny phones: stack side banners 1-col so each gets full width + impact. */
+@media(max-width:380px){.hero-side{grid-template-columns:1fr}}
 
 /* ===== FEATURE STRIP ===== */
 .strip{border-block:1px solid var(--border);background:var(--surface)}
@@ -1006,6 +1007,79 @@ footer a:hover{color:#fff}
 .qa-item .q::before{content:'Q';color:var(--accent);font-family:var(--mono);font-weight:700;flex-shrink:0}
 .qa-item .a{margin-top:8px;color:#333;font-size:14px;line-height:1.6;display:flex;gap:10px;padding-left:0}
 .qa-item .a::before{content:'A';color:var(--muted);font-family:var(--mono);font-weight:700;flex-shrink:0}
+
+/* ===== PDP REVIEWS (custom summary + cards) ===== */
+.pxc-reviews{margin:0}
+.pxc-reviews .comment-reply-title,
+.pxc-reviews .woocommerce-Reviews-title{display:none}
+/* --- Summary block --- */
+.pxc-review-summary{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center;padding:28px;border:1px solid var(--border);border-radius:14px;background:var(--surface);margin-bottom:32px}
+.pxc-rs-left{text-align:center;min-width:140px}
+.pxc-rs-avg{font-family:var(--mono);font-size:48px;font-weight:700;line-height:1;color:var(--fg);letter-spacing:-.02em}
+.pxc-rs-on{font-size:12px;color:var(--muted);margin-top:4px}
+.pxc-rs-stars{display:flex;justify-content:center;gap:2px;margin-top:8px;color:var(--accent)}
+.pxc-rs-stars .on{color:var(--accent)}
+.pxc-rs-stars .off{color:var(--border)}
+.pxc-rs-stars svg{width:16px;height:16px}
+.pxc-rs-count{font-size:13px;color:var(--muted);margin-top:6px}
+.pxc-rs-right{display:flex;flex-direction:column;gap:8px}
+.pxc-rs-row{display:grid;grid-template-columns:32px 1fr 24px;align-items:center;gap:10px;font-size:13px}
+.pxc-rs-label{color:var(--muted);font-family:var(--mono);font-size:12.5px}
+.pxc-rs-bar{display:block;height:8px;background:var(--bg);border-radius:999px;overflow:hidden}
+.pxc-rs-fill{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s ease}
+.pxc-rs-num{text-align:right;color:var(--fg);font-variant-numeric:tabular-nums}
+/* --- Review cards --- */
+.pxc-review-list{display:flex;flex-direction:column;gap:24px}
+.pxc-review-card{display:flex;gap:14px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.pxc-review-card:last-child{border-bottom:0}
+.pxc-rc-avatar{flex:none;width:44px;height:44px;border-radius:50%;background:var(--bg);color:var(--fg);font-weight:600;font-size:14px;display:grid;place-items:center;border:1px solid var(--border);letter-spacing:.02em}
+.pxc-rc-body{flex:1;min-width:0}
+.pxc-rc-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;font-size:14px}
+.pxc-rc-name{font-weight:600;color:var(--fg)}
+.pxc-rc-verified{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--success);background:color-mix(in srgb, var(--success) 12%, transparent);padding:3px 8px;border-radius:999px;font-weight:500}
+.pxc-rc-time{font-size:12.5px;color:var(--muted)}
+.pxc-rc-stars{display:flex;gap:1px;margin-top:6px;color:var(--accent)}
+.pxc-rc-stars .on{color:var(--accent)}
+.pxc-rc-stars .off{color:var(--border)}
+.pxc-rc-stars svg{width:14px;height:14px}
+.pxc-rc-text{margin-top:8px;font-size:14.5px;line-height:1.65;color:#333}
+.pxc-rc-text p{margin:0 0 6px}
+.pxc-rc-text p:last-child{margin:0}
+.pxc-rc-variant{margin-top:10px;font-size:12.5px;color:var(--muted)}
+.pxc-rc-variant b{color:var(--fg);font-weight:600}
+/* --- Pagination --- */
+.pxc-review-pagination{margin-top:16px}
+.pxc-review-pagination ul{display:flex;gap:6px;justify-content:center;list-style:none;margin:0;padding:0}
+.pxc-review-pagination li a,.pxc-review-pagination li span{display:inline-block;padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--fg);text-decoration:none;background:var(--surface)}
+.pxc-review-pagination li .current,.pxc-review-pagination li a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* --- Empty state --- */
+.pxc-review-empty{text-align:center;color:var(--muted);padding:32px 12px;background:var(--bg);border-radius:12px}
+/* --- Review form (collapsible) --- */
+.pxc-review-form-wrap{margin-top:32px}
+.pxc-review-toggle{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:12px 24px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}
+.pxc-review-toggle:hover{background:var(--accent-80)}
+.pxc-review-form{margin-top:16px;padding:24px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.pxc-rf-title{font-size:18px;font-weight:700;margin:0 0 14px;letter-spacing:-.01em}
+.pxc-rf .pxc-rf-row{margin:0 0 14px}
+.pxc-rf .pxc-rf-row label{display:block;font-size:13px;font-weight:600;color:var(--fg);margin-bottom:6px}
+.pxc-rf .pxc-rf-row input[type=text],
+.pxc-rf .pxc-rf-row input[type=email],
+.pxc-rf .pxc-rf-row textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font:inherit;font-size:14px;background:var(--bg);color:var(--fg)}
+.pxc-rf .pxc-rf-row input:focus,
+.pxc-rf .pxc-rf-row textarea:focus{outline:none;border-color:var(--accent);background:var(--surface)}
+.pxc-rf .pxc-rf-row textarea{min-height:110px;resize:vertical}
+.pxc-rf-stars{display:inline-flex;gap:4px;color:var(--border);margin-top:4px}
+.pxc-rf-stars button{background:transparent;border:0;padding:2px;cursor:pointer;color:inherit;display:inline-flex}
+.pxc-rf-stars button.on{color:var(--accent)}
+.pxc-rf-stars svg{width:20px;height:20px}
+.pxc-rf-submit{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:12px 24px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}
+.pxc-rf-submit:hover{background:var(--accent-80)}
+.pxc-review-locked{color:var(--muted);font-size:13px;padding:14px 16px;background:var(--bg);border-radius:10px}
+/* Mobile stack */
+@media(max-width:640px){
+  .pxc-review-summary{grid-template-columns:1fr;gap:20px;padding:20px}
+  .pxc-rs-left{min-width:0}
+}
 .qa-item .meta{color:var(--muted);font-size:12.5px;margin-top:6px;padding-left:24px}
 
 /* Related products */
@@ -1977,6 +2051,8 @@ footer a:hover{color:#fff}
 .woocommerce-tabs ul.tabs li.active{background:transparent!important;border:0!important;color:inherit}
 .woocommerce-tabs ul.tabs li a{display:block;font-size:14.5px;font-weight:600;color:var(--muted);padding:14px 22px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:.15s;text-decoration:none}
 .woocommerce-tabs ul.tabs li.active a,.woocommerce-tabs ul.tabs li a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+/* "(N)" count appended to review/QA tab labels (set via WooHook::product_tabs) */
+.woocommerce-tabs ul.tabs li a .count{color:var(--muted);font-weight:500;font-size:13px;margin-left:5px}
 /* Description panel → prose look (matches product-detail.html .pdp-tabs .panel .prose) */
 .woocommerce-tabs .panel{padding:28px 0}
 .woocommerce-tabs .panel .prose,
