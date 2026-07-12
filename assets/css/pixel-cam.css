@@ -230,6 +230,53 @@ section{padding:clamp(36px,6vw,56px) 0}
 .tile .t p{font-size:12px;color:var(--muted);margin-top:3px}
 @media(max-width:880px){.tiles{grid-template-columns:1fr 1fr}}
 
+/* ----- Category slider (home: "Danh mục nổi bật") ----- */
+.cat-slider{position:relative;padding:0 40px}
+.cat-slider__track.tiles{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:16px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  padding:4px 2px 12px;
+  -webkit-overflow-scrolling:touch
+}
+.cat-slider__track.tiles::-webkit-scrollbar{display:none}
+.cat-slider__track .tile{
+  flex:0 0 220px;
+  scroll-snap-align:start
+}
+.cat-slider__nav{
+  position:absolute;
+  top:90px;
+  width:36px;height:36px;
+  border-radius:50%;
+  background:var(--surface);
+  border:1px solid var(--border);
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  color:var(--fg);
+  transition:opacity .15s,transform .15s,box-shadow .15s;
+  z-index:2
+}
+.cat-slider__nav svg{width:18px;height:18px}
+.cat-slider__nav:hover{box-shadow:0 4px 12px rgba(0,0,0,.12);transform:translateY(-50%)}
+.cat-slider__nav--prev{left:0;transform:translateY(-50%)}
+.cat-slider__nav--next{right:0;transform:translateY(-50%)}
+.cat-slider__nav[disabled]{opacity:0;pointer-events:none}
+@media(max-width:640px){
+  .cat-slider{padding:0}
+  .cat-slider__nav{display:none}
+  .cat-slider__track .tile{flex:0 0 160px}
+  .cat-slider__track .tile img{height:120px}
+  .cat-slider__track .tile .t{padding:10px}
+  .cat-slider__track .tile .t b{font-size:14px}
+}
+
 /* ===== PRODUCT LAYOUT: FILTER + GRID ===== */
 /* woocommerce_content() skips before/after_main_content so .woo-content never
    wraps shop/search — give .shop-wrap its own bottom gap from the footer. */

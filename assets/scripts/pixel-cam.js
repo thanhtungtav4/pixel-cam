@@ -93,6 +93,36 @@ function initSearch() {
   }
 }
 
+/* ---------- Category slider (home: "Danh mục nổi bật") ---------- */
+function initCatSlider() {
+  document.querySelectorAll('[data-cat-slider]').forEach(slider => {
+    const track = slider.querySelector('.cat-slider__track');
+    const prev  = slider.querySelector('[data-cat-prev]');
+    const next  = slider.querySelector('[data-cat-next]');
+    if (!track || !prev || !next) return;
+
+    const step = () => {
+      const tile = track.querySelector('.tile');
+      if (!tile) return track.clientWidth;
+      const cs = getComputedStyle(track);
+      const gap = parseInt(cs.columnGap || cs.gap || '16', 10);
+      return tile.getBoundingClientRect().width + gap;
+    };
+
+    const updateNav = () => {
+      const max = track.scrollWidth - track.clientWidth - 1;
+      prev.toggleAttribute('disabled', track.scrollLeft <= 0);
+      next.toggleAttribute('disabled', track.scrollLeft >= max);
+    };
+
+    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left:  step(), behavior: 'smooth' }));
+    track.addEventListener('scroll', updateNav, { passive: true });
+    window.addEventListener('resize', updateNav);
+    updateNav();
+  });
+}
+
 /* ---------- Mobile nav (burger toggles the <nav.cat> as a fullscreen drawer) ---------- */
 function initMobileNav() {
   const btn = document.querySelector('.hdr-burger');
@@ -585,6 +615,7 @@ function boot() {
   initMega();
   initFilters();
   initSearch();
+  initCatSlider();
   initMobileNav();
   initWishlist();
   initViewToggle();
