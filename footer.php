@@ -3,88 +3,75 @@
 /**
  * Footer — Pixel Cam.
  *
+ * Thin orchestrator: load Theme Settings, pass per-section slices to
+ * dedicated partials under partials/footer/.
+ *
  * @package Underscores
  */
 
 defined('ABSPATH') || exit;
 
-$general      = function_exists('underscores_get_option') ? (underscores_get_option('general_section') ?: []) : [];
-$footer       = function_exists('underscores_get_option') ? (underscores_get_option('footer_general_section') ?: []) : [];
+$general = function_exists('underscores_get_option') ? (underscores_get_option('general_section') ?: []) : [];
+$footer  = function_exists('underscores_get_option') ? (underscores_get_option('footer_general_section') ?: []) : [];
 
-$description  = $footer['description'] ?? '';
-$copyright    = $footer['copyright'] ?? '';
-$hotline      = $general['hotline'] ?? '';
-$email        = $general['email'] ?? '';
-$address      = $general['address'] ?? '';
+$hotline         = $general['hotline'] ?? '';
+$email           = $general['email'] ?? '';
+$address         = $general['address'] ?? '';
+$description     = $footer['description'] ?? '';
+$copyright       = $footer['copyright'] ?? '';
+$social_links    = $footer['social_links'] ?? [];
+$payment_methods = $footer['payment_methods'] ?? [];
+$business        = $footer['business_info'] ?? [];
+
+// Skip the whole footer if literally nothing to show. Keeps output clean on empty config.
+$has_brand       = $description || ! empty($social_links) || has_custom_logo() || get_bloginfo('name');
+$has_products    = has_nav_menu('footer-products');
+$has_support     = has_nav_menu('footer-support');
+$has_contact     = $hotline || $email || $address || ! empty($payment_methods);
+$has_bottom      = $copyright || ! empty($business);
+$has_any_section = $has_brand || $has_products || $has_support || $has_contact || $has_bottom;
 ?>
 </main>
 
-<footer><div class="wrap">
-    <div class="foot-grid">
-        <div>
-            <div class="foot-logo"><span class="mark">P</span> <?php echo esc_html(get_bloginfo('name')); ?></div>
-            <?php if ($description) : ?>
-                <p class="foot-desc"><?php echo esc_html($description); ?></p>
-            <?php endif; ?>
-        </div>
-
-        <?php if (has_nav_menu('footer-products')) : ?>
-        <div>
-            <h5><?php esc_html_e('Sản phẩm', 'underscores'); ?></h5>
-            <?php
-            wp_nav_menu([
-                'theme_location' => 'footer-products',
-                'container'      => false,
-                'menu_class'     => '',
-                'fallback_cb'    => false,
-                'depth'          => 1,
-            ]);
-            ?>
-        </div>
-        <?php endif; ?>
-
-        <?php if (has_nav_menu('footer-support')) : ?>
-        <div>
-            <h5><?php esc_html_e('Hỗ trợ', 'underscores'); ?></h5>
-            <?php
-            wp_nav_menu([
-                'theme_location' => 'footer-support',
-                'container'      => false,
-                'menu_class'     => '',
-                'fallback_cb'    => false,
-                'depth'          => 1,
-            ]);
-            ?>
-        </div>
-        <?php endif; ?>
-
-        <?php if ($hotline || $email || $address) : ?>
-        <div>
-            <h5><?php esc_html_e('Liên hệ', 'underscores'); ?></h5>
-            <ul>
-                <?php if ($hotline) : ?><li><?php echo esc_html($hotline); ?></li><?php endif; ?>
-                <?php if ($email) : ?><li><a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a></li><?php endif; ?>
-                <?php if ($address) :
-                    foreach (preg_split('/\r\n|\r|\n/', $address) as $line) :
-                        $line = trim($line);
-                        if ($line === '') {
-                            continue;
-                        }
-                        ?>
-                        <li><?php echo esc_html($line); ?></li>
-                    <?php endforeach;
-                endif; ?>
-            </ul>
-        </div>
-        <?php endif; ?>
-    </div>
-
-    <?php if ($copyright) : ?>
-        <div class="foot-bottom">
-            <span><?php echo esc_html($copyright); ?></span>
+<?php if ($has_any_section) : ?>
+<footer>
+    <?php if ($has_brand || $has_products || $has_support || $has_contact) : ?>
+        <div class="wrap">
+            <div class="foot-grid foot-grid--four">
+                <?php
+                if ($has_brand) {
+                    get_template_part('partials/footer/section-brand', null, [
+                        'description'  => $description,
+                        'social_links' => $social_links,
+                    ]);
+                }
+                if ($has_products) {
+                    get_template_part('partials/footer/section-products');
+                }
+                if ($has_support) {
+                    get_template_part('partials/footer/section-support');
+                }
+                if ($has_contact) {
+                    get_template_part('partials/footer/section-contact', null, [
+                        'hotline'         => $hotline,
+                        'email'           => $email,
+                        'address'         => $address,
+                        'payment_methods' => $payment_methods,
+                    ]);
+                }
+                ?>
+            </div>
         </div>
     <?php endif; ?>
-</div></footer>
+
+    <?php
+    get_template_part('partials/footer/section-bottom', null, [
+        'copyright' => $copyright,
+        'business'  => $business,
+    ]);
+    ?>
+</footer>
+<?php endif; ?>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

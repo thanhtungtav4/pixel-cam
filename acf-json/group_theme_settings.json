@@ -103,7 +103,7 @@
             "label": "Footer General Section",
             "name": "footer_general_section",
             "type": "group",
-            "instructions": "Cấu hình footer chung.",
+            "instructions": "Cấu hình footer 4 cột: Brand | Sản phẩm | Hỗ trợ | Liên hệ + thanh toán.",
             "layout": "block",
             "sub_fields": [
                 {
@@ -120,6 +120,126 @@
                     "wrapper": {
                         "width": "50"
                     }
+                },
+                {
+                    "key": "field_ts_footer_social",
+                    "label": "Social Links",
+                    "name": "social_links",
+                    "type": "repeater",
+                    "layout": "table",
+                    "button_label": "Thêm social",
+                    "instructions": "Hiển thị dưới description ở cột Brand.",
+                    "sub_fields": [
+                        {
+                            "key": "field_ts_footer_social_platform",
+                            "label": "Platform",
+                            "name": "platform",
+                            "type": "select",
+                            "wrapper": {"width": "30"},
+                            "choices": {
+                                "facebook": "Facebook",
+                                "instagram": "Instagram",
+                                "youtube": "YouTube",
+                                "tiktok": "TikTok",
+                                "zalo": "Zalo OA",
+                                "x": "X / Twitter",
+                                "linkedin": "LinkedIn",
+                                "shopee": "Shopee",
+                                "lazada": "Lazada"
+                            },
+                            "return_format": "value"
+                        },
+                        {
+                            "key": "field_ts_footer_social_label",
+                            "label": "Label (tuỳ chọn, cho a11y)",
+                            "name": "label",
+                            "type": "text",
+                            "wrapper": {"width": "30"},
+                            "placeholder": "Facebook"
+                        },
+                        {
+                            "key": "field_ts_footer_social_url",
+                            "label": "URL",
+                            "name": "url",
+                            "type": "url",
+                            "wrapper": {"width": "40"},
+                            "placeholder": "https://facebook.com/pixelcam"
+                        }
+                    ]
+                },
+                {
+                    "key": "field_ts_footer_payments",
+                    "label": "Payment Methods",
+                    "name": "payment_methods",
+                    "type": "repeater",
+                    "layout": "table",
+                    "button_label": "Thêm phương thức",
+                    "instructions": "Hiển thị thành hàng icon nhỏ ở cột Liên hệ. Ảnh icon PNG/SVG nền trong suốt, ~32–48px.",
+                    "sub_fields": [
+                        {
+                            "key": "field_ts_footer_payment_label",
+                            "label": "Label (a11y)",
+                            "name": "label",
+                            "type": "text",
+                            "wrapper": {"width": "30"},
+                            "placeholder": "Thanh toán khi nhận hàng (COD)"
+                        },
+                        {
+                            "key": "field_ts_footer_payment_icon",
+                            "label": "Icon (ảnh)",
+                            "name": "icon",
+                            "type": "image",
+                            "wrapper": {"width": "40"},
+                            "return_format": "id"
+                        },
+                        {
+                            "key": "field_ts_footer_payment_link",
+                            "label": "Link (tuỳ chọn)",
+                            "name": "link",
+                            "type": "url",
+                            "wrapper": {"width": "30"},
+                            "placeholder": "https://..."
+                        }
+                    ]
+                },
+                {
+                    "key": "field_ts_footer_business",
+                    "label": "Business Info (MST / ĐKKD)",
+                    "name": "business_info",
+                    "type": "group",
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_ts_footer_business_mst",
+                            "label": "Mã số thuế",
+                            "name": "mst",
+                            "type": "text",
+                            "wrapper": {"width": "50"},
+                            "placeholder": "0123456789"
+                        },
+                        {
+                            "key": "field_ts_footer_business_issued_date",
+                            "label": "Ngày cấp",
+                            "name": "issued_date",
+                            "type": "text",
+                            "wrapper": {"width": "50"},
+                            "placeholder": "01/01/2020"
+                        },
+                        {
+                            "key": "field_ts_footer_business_issued_by",
+                            "label": "Nơi cấp",
+                            "name": "issued_by",
+                            "type": "text",
+                            "placeholder": "Sở KH&ĐT Hà Nội"
+                        },
+                        {
+                            "key": "field_ts_footer_business_representative",
+                            "label": "Người đại diện",
+                            "name": "representative",
+                            "type": "text",
+                            "placeholder": "Nguyễn Văn A"
+                        }
+                    ]
                 }
             ]
         },
