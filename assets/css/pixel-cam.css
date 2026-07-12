@@ -794,15 +794,17 @@ footer a:hover{color:#fff}
   .post-head .post-card{
     margin:-20px 8px 0;
     border-radius:10px;
-    padding:5px 10px 0;
+    padding:14px 14px 16px;
   }
   /* Hide desktop-only bits on mobile */
   .post-card__head .post-tag--inline{display:none}
   .post-card__title{display:none}
   .post-card__sub{display:none}
 
-  /* Author row mobile — red ring avatar + red author + gray date */
-  .post-head .post-author{padding:10px 0 6px;border-top:0}
+  /* Author row mobile — red ring avatar + red author + gray date.
+     No top padding here (card's own padding handles top spacing from cover),
+     only bottom padding so the row reads as a unit. */
+  .post-head .post-author{padding:0 0 4px;border-top:0}
   .post-author__av{width:35px;height:35px;border:1px solid #ef1515;padding:2px;background:#fff}
   .post-author__img{border-radius:50%}
   .post-author__name{color:#DF062D;font-size:14px;font-weight:600}
@@ -1056,25 +1058,61 @@ footer a:hover{color:#fff}
 .pxc-review-empty{text-align:center;color:var(--muted);padding:32px 12px;background:var(--bg);border-radius:12px}
 /* --- Review form (collapsible) --- */
 .pxc-review-form-wrap{margin-top:32px}
-.pxc-review-toggle{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:12px 24px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}
+.pxc-review-toggle{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:13px 26px;font-weight:600;font-size:14.5px;cursor:pointer;font-family:inherit;transition:background .15s, transform .15s;box-shadow:0 1px 2px rgba(0,0,0,.04)}
 .pxc-review-toggle:hover{background:var(--accent-80)}
-.pxc-review-form{margin-top:16px;padding:24px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
-.pxc-rf-title{font-size:18px;font-weight:700;margin:0 0 14px;letter-spacing:-.01em}
-.pxc-rf .pxc-rf-row{margin:0 0 14px}
-.pxc-rf .pxc-rf-row label{display:block;font-size:13px;font-weight:600;color:var(--fg);margin-bottom:6px}
-.pxc-rf .pxc-rf-row input[type=text],
-.pxc-rf .pxc-rf-row input[type=email],
-.pxc-rf .pxc-rf-row textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font:inherit;font-size:14px;background:var(--bg);color:var(--fg)}
-.pxc-rf .pxc-rf-row input:focus,
-.pxc-rf .pxc-rf-row textarea:focus{outline:none;border-color:var(--accent);background:var(--surface)}
-.pxc-rf .pxc-rf-row textarea{min-height:110px;resize:vertical}
-.pxc-rf-stars{display:inline-flex;gap:4px;color:var(--border);margin-top:4px}
-.pxc-rf-stars button{background:transparent;border:0;padding:2px;cursor:pointer;color:inherit;display:inline-flex}
+.pxc-review-toggle:active{transform:scale(.98)}
+.pxc-review-form{margin-top:20px;padding:0;border:1px solid var(--border);border-radius:16px;background:var(--surface);overflow:hidden;box-shadow:0 2px 8px rgba(17,17,17,.04)}
+.pxc-rf-header{padding:24px 28px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg, var(--bg) 0%, transparent 100%)}
+.pxc-rf-title{font-size:20px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;color:var(--fg)}
+.pxc-rf-sub{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5}
+.pxc-rf-trust{display:flex;flex-wrap:wrap;gap:8px 16px;padding:12px 28px;background:var(--bg);border-bottom:1px solid var(--border)}
+.pxc-rf-trust-item{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);font-weight:500}
+.pxc-rf-trust-item svg{color:var(--success);flex-shrink:0}
+.pxc-rf{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:24px 28px 20px}
+.pxc-rf .pxc-rf-cell{grid-column:span 1}
+.pxc-rf .pxc-rf-cell.pxc-rf-rate-cell{grid-column:1/-1;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:18px 20px}
+.pxc-rf .pxc-rf-cell.pxc-rf-text-cell{grid-column:1/-1}
+.pxc-rf .pxc-rf-cell label{display:block;font-size:13.5px;font-weight:600;color:var(--fg);margin-bottom:8px;letter-spacing:-.005em}
+.pxc-rf .pxc-rf-cell .req{color:var(--danger);font-weight:700}
+.pxc-rf .pxc-rf-cell input[type=text],
+.pxc-rf .pxc-rf-cell input[type=email],
+.pxc-rf .pxc-rf-cell textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font:inherit;font-size:14px;background:var(--surface);color:var(--fg);transition:border-color .15s, box-shadow .15s}
+.pxc-rf .pxc-rf-cell input:focus,
+.pxc-rf .pxc-rf-cell textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent)}
+.pxc-rf .pxc-rf-cell input::placeholder,
+.pxc-rf .pxc-rf-cell textarea::placeholder{color:var(--muted);opacity:.7}
+.pxc-rf .pxc-rf-cell textarea{min-height:120px;resize:vertical;line-height:1.55}
+.pxc-rf-rate-label{display:flex;align-items:center;gap:6px;margin-bottom:10px!important}
+.pxc-rf-stars{display:flex;align-items:center;gap:6px;color:var(--border);flex-wrap:wrap}
+.pxc-rf-stars button{background:transparent;border:0;padding:4px;cursor:pointer;color:inherit;display:inline-flex;border-radius:6px;transition:color .15s, transform .1s, background .15s}
+.pxc-rf-stars button:hover{background:color-mix(in srgb, var(--accent) 10%, transparent)}
+.pxc-rf-stars button:active{transform:scale(.92)}
 .pxc-rf-stars button.on{color:var(--accent)}
-.pxc-rf-stars svg{width:20px;height:20px}
-.pxc-rf-submit{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:12px 24px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}
-.pxc-rf-submit:hover{background:var(--accent-80)}
+.pxc-rf-stars button svg{width:28px;height:28px;display:block}
+.pxc-rf-rate-hint{margin-left:8px;font-size:13px;color:var(--muted);font-weight:500;transition:color .15s}
+.pxc-rf-stars:focus-within + .pxc-rf-rate-hint,
+.pxc-rf-rate-hint:has(+ #pxc_rating[value]:not([value=""])){color:var(--accent)}
+.pxc-rf-tips{margin-top:8px;font-size:12.5px;color:var(--muted);line-height:1.5}
+.pxc-rf-tips b{color:var(--fg);font-weight:600}
+.pxc-rf .form-submit{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0;padding-top:8px}
+.pxc-rf-submit{background:var(--accent)!important;color:#fff!important;border:0!important;border-radius:10px!important;padding:14px 32px!important;font-weight:600!important;font-size:15px!important;cursor:pointer;font-family:inherit;transition:background .15s, transform .1s;min-width:160px}
+.pxc-rf-submit:hover{background:var(--accent-80)!important}
+.pxc-rf-submit:active{transform:scale(.98)}
+.pxc-rf-cancel{background:transparent;color:var(--muted);border:0;padding:14px 18px;font:inherit;font-size:14px;cursor:pointer;border-radius:10px}
+.pxc-rf-cancel:hover{color:var(--fg);background:var(--bg)}
+/* Hide WC's default "comment-notes" and "logged-in-as" leftovers (we render our own header) */
+.pxc-rf .comment-notes,.pxc-rf .logged-in-as,.pxc-rf .comment-form-cookies-consent{display:none}
+/* Belt-and-braces: if WC's JS still injects <p class="stars"> somehow, hide it. */
+.pxc-rf #respond p.stars{display:none}
 .pxc-review-locked{color:var(--muted);font-size:13px;padding:14px 16px;background:var(--bg);border-radius:10px}
+/* Mobile */
+@media(max-width:640px){
+  .pxc-rf{grid-template-columns:1fr;padding:20px;gap:16px}
+  .pxc-rf-header{padding:20px 20px 14px}
+  .pxc-rf-trust{padding:10px 20px}
+  .pxc-rf-stars button svg{width:24px;height:24px}
+  .pxc-rf-rate-hint{width:100%;margin-left:0;margin-top:4px}
+}
 /* Mobile stack */
 @media(max-width:640px){
   .pxc-review-summary{grid-template-columns:1fr;gap:20px;padding:20px}
@@ -1615,8 +1653,8 @@ footer a:hover{color:#fff}
 .co-layout{display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start}
 .co-section{border:1px solid var(--border);border-radius:14px;padding:22px;background:var(--surface);margin-bottom:18px}
 .co-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.co-num{width:28px;height:28px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:14px}
-.co-head h2{font-size:17px;font-weight:600}
+.co-num{width:28px;height:28px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:14px;line-height:1}
+.co-head h2{font-size:17px;font-weight:600;line-height:1;margin:0;min-height:28px;display:flex;align-items:center}
 .co-fields{display:grid;gap:14px}
 .co-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .field{display:flex;flex-direction:column;gap:6px;font-size:13px}
@@ -2553,8 +2591,18 @@ footer a:hover{color:#fff}
     display: none !important;
 }
 
-/* Shipping Methods Layout and Overrides */
-.co-summary .woocommerce-checkout-review-order-table tr.shipping {
+/* Shipping Methods Layout and Overrides
+ *
+ * The child theme's review-order.php dumps wc_cart_totals_shipping_html()
+ * directly into <tfoot> without wrapping it in <tr class="shipping">, so
+ * the OLD tr.shipping selector below never matched. The shipping markup
+ * is actually a loose <span class="shipping-label"> + <ul id="shipping_method">
+ * inside <tfoot>. We hide both here.
+ */
+.co-summary .woocommerce-checkout-review-order-table tr.shipping,
+.co-summary .shipping-label,
+.co-summary #shipping_method,
+.co-summary .woocommerce-shipping-methods {
     display: none !important;
 }
 .ship-options {
