@@ -1,7 +1,15 @@
 :root{
   /* THAY MÀU LOGO TẠI ĐÂY */
-  --bg:#FAFAFA; --surface:#FFFFFF; --fg:#111111; --muted:#6B6B6B;
-  --border:#E5E5E5; --accent:#045269; --accent-80:#045269cc;
+  /* Brand palette — see AGENTS.md + design system doc.
+     Chủ đạo (CTA/logo/bao bì): #D9622B (cam đất).
+     Phụ / tin cậy (bảo hành tag, "chính hãng", secondary CTA): #0E5C57 (teal).
+     Nền (web, khoảng trắng): #F5EEF4 (trắng hồng nhạt).
+     Text / outline: #1C1C1A (gần đen).
+     Success / warn / danger giữ chuẩn semantic để không bị lẫn với brand. */
+  --bg:#F5EEF4; --surface:#FFFFFF; --fg:#1C1C1A; --muted:#6B6B6B;
+  --border:#E8DFE3;
+  --accent:#D9622B; --accent-80:#D9622Bcc; --accent-15:#D9622B26;
+  --brand-secondary:#0E5C57; --brand-secondary-80:#0E5C57cc; --brand-secondary-15:#0E5C5726;
   --success:#17A34A; --warn:#EAB308; --danger:#DC2626;
   --font:'Inter','Inter-fallback',-apple-system,system-ui,sans-serif;
   /* Single typeface site-wide: --mono aliases Inter (tabular-nums keeps
@@ -54,6 +62,28 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .ha .badge{position:absolute;top:-6px;right:2px;background:var(--danger);color:#fff;font-size:10px;
   min-width:16px;height:16px;border-radius:8px;display:grid;place-items:center;padding:0 4px}
 @media(max-width:860px){.ha span{display:none}.ha .badge{right:-10px}}
+/* Apple HIG: minimum 44x44 tap target for every header action. Applied at
+   the same breakpoint that hides labels so icon-only buttons stay tappable. */
+@media(max-width:860px){.ha{min-width:44px;min-height:44px;justify-content:center;gap:0}}
+/* Mobile search overlay (toggled by .mob-search-btn). Hidden by default; slides
+   in from the top of the viewport when body has .mob-search-open. */
+.hdr-search-overlay{display:none;position:fixed;top:0;left:0;right:0;z-index:90;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:14px 16px;transform:translateY(-100%);transition:transform .22s ease;
+  box-shadow:0 8px 24px rgba(17,17,17,.08)}
+body.mob-search-open .hdr-search-overlay{display:block;transform:translateY(0)}
+body.mob-search-open{overflow:hidden}
+.hdr-search-overlay form{display:flex;gap:8px;align-items:center;max-width:1280px;margin:0 auto}
+.hdr-search-overlay input[type=search]{flex:1;border:1px solid var(--border);border-radius:8px;
+  padding:12px 14px;font-size:15px;outline:none;min-width:0;font-family:inherit}
+.hdr-search-overlay input[type=search]:focus{border-color:var(--accent)}
+.hdr-search-overlay .ov-submit{background:var(--accent);color:#fff;border:0;border-radius:8px;
+  padding:0 20px;height:44px;font-weight:600;font-size:14px;cursor:pointer;flex:none}
+.hdr-search-close{width:44px;height:44px;border:1px solid var(--border);border-radius:8px;
+  background:var(--surface);font-size:24px;color:var(--fg);display:grid;place-items:center;
+  cursor:pointer;flex:none;line-height:1;padding:0}
+.hdr-search-close:hover{color:var(--accent);border-color:var(--accent)}
+@media(min-width:641px){.hdr-search-overlay{display:none!important}}
 @media(max-width:640px){
   .hdr-search{display:none}
   .mob-search-btn{display:flex!important}
@@ -175,7 +205,7 @@ nav.cat{background:var(--surface);border-bottom:1px solid var(--border);position
 .hero{padding:24px 0}
 .hero-grid{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:stretch}
 /* Slider height follows the side column (two banners + gap), not a fixed ratio. */
-.slider{position:relative;border-radius:14px;overflow:hidden;background:#111;min-height:0}
+.slider{position:relative;border-radius:14px;overflow:hidden;background:var(--fg);min-height:0}
 .slide{position:absolute;inset:0;opacity:0;transition:opacity .5s;display:grid}
 .slide.on{opacity:1}
 .slide .ph{border-radius:0;border:0;height:100%}
@@ -185,7 +215,7 @@ nav.cat{background:var(--surface);border-bottom:1px solid var(--border);position
   background:linear-gradient(90deg,rgba(0,0,0,.6),transparent);color:#fff}
 .slide .cap .kick{font-size:12px;text-transform:uppercase;letter-spacing:.08em;opacity:.85}
 .slide .cap h2{font-size:clamp(22px,3vw,40px);font-weight:700;letter-spacing:-.02em;margin:6px 0 12px;line-height:1.15}
-.slide .cap .btn{display:inline-block;background:#fff;color:#111;padding:10px 22px;border-radius:8px;font-weight:600;font-size:14px}
+.slide .cap .btn{display:inline-block;background:#fff;color:var(--fg);padding:10px 22px;border-radius:8px;font-weight:600;font-size:14px}
 .slide .cap .btn:hover{background:var(--accent);color:#fff}
 .dots{position:absolute;bottom:16px;right:20px;display:flex;gap:8px;z-index:2}
 .dots button{width:9px;height:9px;border-radius:50%;border:0;background:rgba(255,255,255,.5);cursor:pointer;padding:0;transition:.2s}
@@ -202,6 +232,11 @@ nav.cat{background:var(--surface);border-bottom:1px solid var(--border);position
 /* Stacked below the slider → cards need their own ratio (no slider to match). */
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-side{grid-template-rows:none;grid-template-columns:1fr 1fr}.hero-side .card{aspect-ratio:16/9}}
 @media(max-width:560px){.slide .cap{max-width:100%}.hero-side{grid-template-columns:1fr}}
+/* Hero side banners take ~320px of vertical space on small screens. Hide them
+   below 760px so the slider becomes the single hero element (placed after the
+   900px and 560px rules so it wins on cascade order). The slider also needs
+   an explicit height because it used to stretch to the side column's height. */
+@media(max-width:760px){.hero-side{display:none!important}.hero-grid{grid-template-columns:1fr!important}.slider{aspect-ratio:16/9;height:auto}}
 
 /* ===== FEATURE STRIP ===== */
 .strip{border-block:1px solid var(--border);background:var(--surface)}
@@ -339,7 +374,7 @@ section{padding:clamp(36px,6vw,56px) 0}
 .bd{font-size:11px;font-weight:700;padding:3px 8px;border-radius:5px;color:#fff}
 .bd.sale{background:var(--danger)}
 .bd.new{background:var(--success)}
-.bd.hot{background:var(--warn);color:#111}
+.bd.hot{background:var(--warn);color:var(--fg)}
 .wish{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);
   background:var(--surface);display:grid;place-items:center;cursor:pointer;z-index:2}
 .wish svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.6;transition:.15s}
@@ -390,14 +425,20 @@ footer ul{list-style:none;display:flex;flex-direction:column;gap:9px}
 footer a:hover{color:#fff}
 .foot-logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:#fff;margin-bottom:14px}
 .foot-logo .mark{width:32px;height:32px;border-radius:8px;background:var(--accent);display:grid;place-items:center;font-size:16px}
-.foot-logo .custom-logo-link,.foot-logo .custom-logo{display:inline-flex;max-height:40px;width:auto}
-.foot-logo .custom-logo{filter:brightness(0) invert(1)}
-.foot-logo-img{display:inline-flex}
-.foot-logo-text{color:#fff;text-decoration:none}
+/* Brand text-logo (used directly in section-brand.php) */
+.foot-logo-text{display:inline-flex;align-items:center;gap:10px;color:#fff;font-size:20px;font-weight:700;text-decoration:none;margin-bottom:14px}
+.foot-logo-text .mark{width:32px;height:32px;border-radius:8px;background:var(--accent);display:grid;place-items:center;font-size:16px;line-height:1;color:#fff}
+.foot-logo-text:hover{color:var(--accent)}
 .foot-desc{max-width:360px;color:#9a9a9a;line-height:1.6;margin-bottom:14px}
+/* Business info (MST/issued/rep) shown under the description in the brand column */
+.foot-biz-brand{list-style:none;padding:0;margin:0 0 14px;display:flex;flex-direction:column;gap:4px;font-size:12px;line-height:1.5}
+.foot-biz-brand li{display:flex;gap:8px;align-items:baseline}
+.foot-biz-brand .k{flex:0 0 64px;color:#666;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.foot-biz-brand .v{color:#cfcfcf;flex:1;min-width:0}
+.foot-biz-brand .by{color:#888}
 
 /* Footer — social icons (Brand column) */
-.foot-social{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.foot-social{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;flex-direction:row}
 .foot-social-link{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#262626;color:#cfcfcf;transition:.15s;text-decoration:none}
 .foot-social-link svg{width:18px;height:18px;display:block}
 .foot-social-link:hover{background:var(--accent);color:#fff;transform:translateY(-1px)}
@@ -416,10 +457,14 @@ footer a:hover{color:#fff}
 
 /* Footer — payment methods */
 .foot-payments-label{font-family:var(--mono);font-size:11px;color:#888;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
-.foot-payment-list{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
-.foot-payment{display:inline-grid;place-items:center;width:44px;height:30px;background:#fff;border-radius:6px;padding:4px;text-decoration:none;transition:.15s}
-.foot-payment img{max-width:100%;max-height:100%;object-fit:contain;display:block}
-.foot-payment:hover{background:#f0f0f0;transform:translateY(-1px)}
+.foot-payment-list{display:flex;flex-direction:row;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
+/* Icon payment: small white card with image */
+.foot-payment.has-icon{display:flex;align-items:center;justify-content:center;width:48px;height:30px;background:#fff;border-radius:6px;padding:3px;text-decoration:none;transition:.15s;overflow:hidden;flex:0 0 auto}
+.foot-payment.has-icon img{width:100%;height:100%;object-fit:contain;display:block}
+.foot-payment.has-icon:hover{background:#f0f0f0;transform:translateY(-1px)}
+/* Text payment: subtle dark chip, no icon */
+.foot-payment.is-text{display:inline-block;font-size:12px;color:#cfcfcf;background:#262626;border:1px solid #333;border-radius:6px;padding:5px 10px;text-decoration:none;line-height:1.2}
+.foot-payment.is-text:hover{color:#fff;border-color:var(--accent)}
 
 /* Footer — bottom bar (copyright + business info) */
 .foot-bottom{border-top:1px solid #333;padding-top:18px;margin-top:8px;font-size:13px;color:#888}
@@ -703,7 +748,7 @@ footer a:hover{color:#fff}
   line-height:1.2}
 .post-author__date{color:#656565;font-size:12px;font-weight:300;
   display:inline-flex;align-items:center;gap:4px;line-height:1.3}
-.post-author__date svg{color:#1A6DB4;flex-shrink:0}
+.post-author__date svg{color:var(--brand-secondary);flex-shrink:0}
 
 /* Tighter overlap on wider screens */
 @media(min-width:1000px){
@@ -874,7 +919,7 @@ footer a:hover{color:#fff}
 .pdp-perks .perk small{color:var(--muted);font-size:12.5px;line-height:1.45}
 
 /* Gifts + box (PDP) */
-.pdp-gifts{margin-top:18px;border:1px dashed var(--accent);border-radius:10px;background:#0452690d;padding:14px 16px}
+.pdp-gifts{margin-top:18px;border:1px dashed var(--accent);border-radius:10px;background:var(--accent-15);padding:14px 16px}
 .gift-head{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:10px}
 .gift-head svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.6;flex-shrink:0}
 .gift-head .gift-total{margin-left:auto;color:var(--accent);font-weight:600;font-size:12.5px}
