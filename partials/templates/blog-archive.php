@@ -71,22 +71,36 @@ $blog_url     = $blog_page_id ? get_permalink($blog_page_id) : home_url('/');
                 $cats = get_the_category();
                 $cat  = ! empty($cats) ? $cats[0]->name : '';
                 $featured_thumb_id = get_post_thumbnail_id();
+
+                // Fallback alt for the featured image — post title if alt is empty
+                // or just an upload hash. Better than nothing for a11y/SEO.
+                $featured_alt = '';
+                if ($featured_thumb_id) {
+                    $featured_alt = (string) get_post_meta($featured_thumb_id, '_wp_attachment_image_alt', true);
+                    if ($featured_alt === '' || preg_match('/^[a-f0-9]{20,}\.?(jpe?g|png|webp)?$/i', $featured_alt)) {
+                        $featured_alt = get_the_title();
+                    }
+                }
                 ?>
                 <article class="featured">
-                <?php if ($featured_thumb_id) : ?>
-                    <a href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
-                        <?php
-                        // LCP image — eager load + high fetch priority, no lazy.
-                        // Sizes: full-width on mobile, ~651px on desktop (1.4fr/2.4fr split
-                        // inside a ~1116px content column with a 300px sidebar).
-                        echo wp_get_attachment_image($featured_thumb_id, 'pxc_lead_16_9', false, [
-                            'loading'       => 'eager',
-                            'fetchpriority' => 'high',
-                            'sizes'         => '(max-width:720px) 100vw, 651px',
-                        ]);
-                        ?>
-                    </a>
-                <?php endif; ?>
+                <a class="featured__media<?php echo $featured_thumb_id ? '' : ' featured__media--empty'; ?>" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+                <?php if ($featured_thumb_id) :
+                    // LCP image — eager load + high fetch priority, no lazy.
+                    // Sizes: full-width on mobile, ~651px on desktop (1.4fr/2.4fr split
+                    // inside a ~1116px content column with a 300px sidebar).
+                    echo wp_get_attachment_image($featured_thumb_id, 'pxc_lead_16_9', false, [
+                        'loading'       => 'eager',
+                        'fetchpriority' => 'high',
+                        'sizes'         => '(max-width:720px) 100vw, 651px',
+                        'alt'           => $featured_alt,
+                    ]);
+                else :
+                    echo '<svg class="featured__placeholder-icon" viewBox="0 0 24 24" aria-hidden="true">'
+                       . '<path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm0 11 5-5 4 4 3-3 5 5M9.5 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" '
+                       . 'fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>'
+                       . '</svg>';
+                endif; ?>
+                </a>
                 <div class="body">
                     <?php if ($cat) : ?><span class="cat-tag"><?php echo esc_html($cat); ?></span><?php endif; ?>
                     <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
