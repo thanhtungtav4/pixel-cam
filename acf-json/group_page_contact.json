@@ -12,6 +12,17 @@
         { "key": "field_contact_heading", "label": "Tiêu đề trang", "name": "heading", "type": "text", "wrapper": {"width":"50"}, "placeholder": "Liên hệ Pixel Cam" },
         { "key": "field_contact_meta", "label": "Mô tả (HTML cho phép link)", "name": "meta", "type": "textarea" },
         {
+            "key": "field_contact_pills",
+            "label": "Trust pills (chip dưới mô tả)",
+            "name": "pills",
+            "type": "repeater",
+            "layout": "table",
+            "button_label": "Thêm pill",
+            "sub_fields": [
+                { "key": "field_contact_pill_text", "label": "Nội dung (HTML cho phép <b>)", "name": "text", "type": "text" }
+            ]
+        },
+        {
             "key": "field_contact_tab_info",
             "label": "Thẻ thông tin",
             "name": "",
@@ -33,6 +44,21 @@
             ]
         },
         {
+            "key": "field_contact_quick_actions",
+            "label": "Quick actions (Zalo / Messenger / Hotline)",
+            "name": "quick_actions",
+            "type": "repeater",
+            "layout": "block",
+            "button_label": "Thêm nút",
+            "instructions": "Hiển thị thành hàng 3 nút ngay dưới thẻ thông tin — khách bấm nhanh không cần điền form.",
+            "sub_fields": [
+                { "key": "field_contact_qa_icon", "label": "Icon (emoji hoặc text ngắn)", "name": "icon", "type": "text", "wrapper": {"width":"20"}, "placeholder": "💬" },
+                { "key": "field_contact_qa_label", "label": "Label ngắn", "name": "label", "type": "text", "wrapper": {"width":"30"}, "placeholder": "Zalo OA" },
+                { "key": "field_contact_qa_hint", "label": "Hint (mô tả phụ)", "name": "hint", "type": "text", "wrapper": {"width":"25"}, "placeholder": "Phản hồi 5 phút" },
+                { "key": "field_contact_qa_link", "label": "Link (ACF link)", "name": "link", "type": "link", "wrapper": {"width":"25"}, "return_format": "array" }
+            ]
+        },
+        {
             "key": "field_contact_tab_form",
             "label": "Form",
             "name": "",
@@ -51,6 +77,7 @@
             "placement": "left"
         },
         { "key": "field_contact_map_heading", "label": "Tiêu đề", "name": "map_heading", "type": "text", "placeholder": "Vị trí showroom" },
+        { "key": "field_contact_map_caption", "label": "Caption (địa chỉ hiển thị cạnh iframe)", "name": "map_caption", "type": "text", "placeholder": "123 Lý Thường Kiệt, Q. Hoàn Kiếm, Hà Nội" },
         { "key": "field_contact_map_embed", "label": "Mã nhúng bản đồ (iframe)", "name": "map_embed", "type": "textarea", "instructions": "Dán iframe Google Maps. Để trống = ẩn bản đồ." },
         {
             "key": "field_contact_tab_faq",

@@ -73,18 +73,7 @@ defined('ABSPATH') || exit;
         <small><?php esc_html_e('Phản hồi trong 2 giờ làm việc', 'underscores'); ?></small>
     </div>
 </form>
-<script>
-(function(){
-    var f=document.getElementById('contactForm'),ok=document.getElementById('formOk');
-    if(!f) return;
-    f.addEventListener('submit',function(e){
-        e.preventDefault();
-        if(!f.checkValidity()){f.reportValidity();return;}
-        var id='PX-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+new Date().getFullYear();
-        var t=document.getElementById('ticketId');
-        if(t)t.textContent=id;
-        if(ok){ok.classList.add('show');ok.scrollIntoView({behavior:'smooth',block:'center'});}
-        f.reset();
-    });
-})();
-</script>
+<?php
+// Submission handler lives in assets/scripts/pages/contact.js
+// (enqueued by Theme\Child\Hooks\ContactPageHook on the contact template).
+?>

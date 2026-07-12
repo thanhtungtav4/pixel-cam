@@ -1,4 +1,74 @@
 /*
- * Page stylesheet for Lien he
+ * Page stylesheet for Liên hệ — contact page only.
+ * Loaded by Theme\Child\Hooks\ContactPageHook on the contact template.
  */
 
+/* ===== HERO ===== */
+.ct-hero .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.ct-hero .pill{font-family:var(--mono);font-size:12px;border:1px solid var(--border);background:var(--surface);padding:6px 12px;border-radius:999px;color:var(--fg)}
+.ct-hero .pill b{color:var(--accent);font-weight:600}
+
+/* ===== GRID ===== */
+.contact-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:32px;align-items:start}
+@media(max-width:900px){.contact-grid{grid-template-columns:minmax(0,1fr);gap:28px}}
+
+/* ===== INFO COLUMN ===== */
+.ct-info{display:flex;flex-direction:column;gap:16px}
+.ct-info .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px}
+.ct-info .card .eyebrow{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+.ct-info .card h4{font-size:16px;font-weight:600;margin:6px 0 14px;letter-spacing:-.01em}
+.ct-info .row{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px dashed var(--border);font-size:14px}
+.ct-info .row:last-child{border-bottom:0}
+.ct-info .row .k{color:var(--muted);font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;padding-top:3px}
+.ct-info .row .v{color:var(--fg);line-height:1.55}
+.ct-info .row .v a{color:var(--accent);text-decoration:none}
+.ct-info .row .v a:hover{text-decoration:underline}
+
+.ct-info .channels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:4px}
+.ct-info .channels .ch{border:1px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center;color:var(--fg);text-decoration:none;background:var(--surface);display:flex;flex-direction:column;gap:4px;transition:.15s}
+.ct-info .channels .ch:hover{border-color:var(--accent);background:#fafbff}
+.ct-info .channels .ch b{font-size:13.5px;font-weight:600}
+.ct-info .channels .ch small{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+@media(max-width:540px){.ct-info .channels{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.ct-info .channels .ch{padding:12px 6px}.ct-info .channels .ch b{font-size:12.5px}.ct-info .channels .ch small{font-size:9.5px}}
+
+/* ===== FORM COLUMN ===== */
+.ct-form{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px}
+.ct-form .eyebrow{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+.ct-form h3{font-size:20px;font-weight:600;margin:6px 0 6px;letter-spacing:-.01em}
+.ct-form .lead{color:var(--muted);font-size:14px;margin-bottom:22px;line-height:1.55}
+.ct-form .frow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-bottom:14px}
+@media(max-width:600px){.ct-form .frow{grid-template-columns:minmax(0,1fr)}}
+.ct-form label{display:block;font-size:12.5px;font-weight:600;color:var(--fg);margin-bottom:6px}
+.ct-form label .req{color:var(--danger);margin-left:2px}
+.ct-form input[type=text],.ct-form input[type=email],.ct-form input[type=tel],.ct-form select,.ct-form textarea{width:100%;border:1.5px solid var(--border);background:var(--bg);padding:10px 12px;border-radius:8px;font:inherit;font-size:14px;color:var(--fg);outline:none;transition:.15s;font-family:inherit;box-sizing:border-box}
+.ct-form input:focus,.ct-form select:focus,.ct-form textarea:focus{border-color:var(--accent);background:var(--surface)}
+.ct-form textarea{min-height:140px;resize:vertical;line-height:1.55}
+.ct-form .field{margin-bottom:14px}
+.ct-form .consent{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted);margin:8px 0 18px;line-height:1.5}
+.ct-form .consent input{width:16px;height:16px;margin-top:3px;flex-shrink:0;accent-color:var(--accent)}
+.ct-form .submit{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ct-form button[type=submit]{background:var(--fg);color:#fff;border:0;border-radius:8px;padding:12px 24px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;transition:.15s}
+.ct-form button[type=submit]:hover{background:var(--accent)}
+.ct-form .submit small{color:var(--muted);font-size:12.5px;font-family:var(--mono)}
+.ct-form .ok{display:none;background:rgba(4,82,105,.08);border:1px solid var(--accent);color:var(--accent);padding:12px 14px;border-radius:8px;font-size:13.5px;margin-bottom:14px;font-weight:500}
+.ct-form .ok.show{display:block}
+
+/* ===== MAP ===== */
+.ct-map{margin-top:48px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.ct-map .head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);gap:12px;flex-wrap:wrap}
+.ct-map .head h4{font-size:14px;font-weight:600;letter-spacing:-.01em}
+.ct-map .head .caption{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.ct-map .canvas{aspect-ratio:21/9;background:#f7f7f7;position:relative}
+.ct-map .canvas iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media(max-width:720px){.ct-map .canvas{aspect-ratio:4/3}}
+
+/* ===== FAQ ===== */
+.ct-faq{margin-top:48px}
+.ct-faq h3{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+.ct-faq .head-meta{color:var(--muted);font-size:14px;margin-bottom:18px}
+.ct-faq .item{border-bottom:1px solid var(--border);padding:18px 0}
+.ct-faq .item summary{font-weight:600;font-size:15px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--fg);gap:12px}
+.ct-faq .item summary::-webkit-details-marker{display:none}
+.ct-faq .item summary::after{content:'+';font-family:var(--mono);font-size:20px;color:var(--accent);font-weight:400;transition:.2s;line-height:1;flex-shrink:0}
+.ct-faq .item[open] summary::after{content:'−'}
+.ct-faq .item .answer{color:#333;font-size:14px;line-height:1.7;padding-top:12px;max-width:72ch}
