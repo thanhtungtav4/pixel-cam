@@ -45,10 +45,13 @@ final class AuthorPageHook
             return;
         }
 
+        // No deps: 'underscores-child-style' is not registered (child theme uses 'pixel-cam' as
+        // the common stylesheet handle). Passing a non-existent dependency handle causes WP to
+        // silently skip outputting the stylesheet — confirmed on live 2026-07-12.
         wp_enqueue_style(
             'underscores-page-author-style',
             underscores_child_asset_uri($css_relative_path),
-            ['underscores-child-style'],
+            [],
             underscores_child_asset_version($css_relative_path)
         );
     }
