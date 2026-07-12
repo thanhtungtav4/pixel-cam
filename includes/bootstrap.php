@@ -29,6 +29,7 @@ require_once UNDERSCORES_CHILD_THEME_INCLUDES_PATH . '/functions/template-functi
 \Theme\Child\Product\Versions::register();
 \Theme\Child\Hooks\AboutPageHook::register();
 \Theme\Child\Hooks\ContactPageHook::register();
+\Theme\Child\Hooks\AuthorPageHook::register();
 
 // WP-CLI scaffolder (global classes, dev tooling only).
 // Scaffolds page template/partial/ACF/assets only; wire page hooks manually under app/Hooks/.

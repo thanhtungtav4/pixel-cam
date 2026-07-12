@@ -1,0 +1,238 @@
+/* ===== AUTHOR HERO ===== */
+.author-hero {
+  padding: 24px 0 16px;
+}
+.author-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+@media (min-width: 720px) {
+  .author-card {
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    gap: 32px;
+    padding: 24px 28px;
+    align-items: center;
+  }
+}
+
+/* ----- Identity block (avatar + name + count) ----- */
+.author-card__id {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+@media (min-width: 720px) {
+  .author-card__id {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 180px;
+    text-align: center;
+  }
+}
+
+.author-card__avatar {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  padding: 4px;
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+  overflow: visible;
+}
+.author-card__avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  aspect-ratio: 1 / 1;
+}
+.author-card__avatar.has-badge {
+  /* leave room for the badge that sits below the circle */
+  margin-bottom: 14px;
+}
+.author-card__avatar-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--surface);
+}
+.author-card__badge {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.author-card__id-meta {
+  min-width: 0;
+}
+.author-card__name {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  margin: 0 0 4px;
+}
+.author-card__name .first {
+  color: var(--accent);
+}
+@media (min-width: 720px) {
+  .author-card__name {
+    font-size: 22px;
+  }
+}
+.author-card__count {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.author-card__count strong {
+  color: var(--fg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ----- Body block (quote + social) ----- */
+.author-card__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+.author-card__quote {
+  position: relative;
+  padding: 4px 24px;
+}
+.author-card__qmark {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+  opacity: 0.85;
+}
+.author-card__qmark--top {
+  top: 0;
+  left: 0;
+}
+.author-card__qmark--bot {
+  bottom: 0;
+  right: 0;
+}
+.author-card__bio {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--fg);
+  text-align: justify;
+}
+.author-card__bio p {
+  margin: 0 0 8px;
+}
+.author-card__bio p:last-child {
+  margin-bottom: 0;
+}
+
+.author-card__social {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2px;
+}
+.author-card__fb {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #1877f2;
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.author-card__fb:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(24, 119, 242, 0.35);
+  color: #fff;
+}
+.author-card__fb svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+@media (min-width: 720px) {
+  .author-card__fb {
+    width: 36px;
+    height: 36px;
+  }
+  .author-card__fb svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ===== AUTHOR POSTS LIST ===== */
+.author-posts {
+  padding: 8px 0 48px;
+}
+.author-posts__title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 18px;
+  color: var(--fg);
+  position: relative;
+  padding-bottom: 10px;
+}
+.author-posts__title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.author-posts__title span {
+  color: var(--accent);
+}
+@media (min-width: 720px) {
+  .author-posts__title {
+    font-size: 22px;
+  }
+}
+
+/* Reduced motion: keep layout, drop transitions */
+@media (prefers-reduced-motion: reduce) {
+  .author-card__fb {
+    transition: none;
+  }
+}

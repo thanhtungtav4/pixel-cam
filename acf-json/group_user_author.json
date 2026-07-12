@@ -1,0 +1,55 @@
+{
+    "key": "group_user_author",
+    "title": "Hồ sơ tác giả",
+    "fields": [
+        {
+            "key": "field_user_author_avatar",
+            "label": "Ảnh đại diện",
+            "name": "pxc_author_avatar",
+            "type": "image",
+            "instructions": "Tải ảnh tùy chỉnh cho trang tác giả. Nếu để trống sẽ dùng Gravatar theo email tài khoản. Ảnh vuông, tối thiểu 200×200.",
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": 200,
+            "min_height": 200
+        },
+        {
+            "key": "field_user_author_badge",
+            "label": "Huy hiệu vai trò",
+            "name": "pxc_author_badge",
+            "type": "text",
+            "instructions": "Chữ ngắn hiển thị dưới avatar (vd: QTV, Biên tập viên, CTV). Tối đa ~10 ký tự. Để trống nếu không muốn hiện.",
+            "maxlength": 10,
+            "placeholder": "QTV"
+        },
+        {
+            "key": "field_user_author_bio",
+            "label": "Giới thiệu tác giả",
+            "name": "pxc_author_bio",
+            "type": "textarea",
+            "instructions": "Đoạn giới thiệu hiển thị trong khung trích dẫn. Nếu để trống sẽ dùng 'Thông tin tiểu sử' mặc định của WordPress. Có thể dùng HTML cơ bản.",
+            "rows": 4,
+            "placeholder": "Hải Củ Cải - Editor Sforum, có hơn 4 năm kinh nghiệm..."
+        },
+        {
+            "key": "field_user_author_facebook",
+            "label": "Facebook",
+            "name": "pxc_author_facebook",
+            "type": "url",
+            "instructions": "URL trang Facebook cá nhân. Để trống nếu không muốn hiện icon.",
+            "placeholder": "https://facebook.com/username"
+        }
+    ],
+    "location": [
+        [
+            { "param": "user_form", "operator": "==", "value": "edit" }
+        ]
+    ],
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "show_in_rest": 0
+}
