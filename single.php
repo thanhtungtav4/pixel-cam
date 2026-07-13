@@ -110,7 +110,7 @@ while (have_posts()) :
         </div>
     </div>
 
-    <section style="padding-top:0"><div class="wrap post-layout">
+    <section><div class="wrap post-layout">
         <div class="post-share">
             <h5><?php esc_html_e('Chia sẻ', 'underscores'); ?></h5>
             <?php
