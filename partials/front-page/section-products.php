@@ -39,7 +39,7 @@ if (empty($product_ids)) {
     return;
 }
 ?>
-<section style="padding-top:0"><div class="wrap">
+<section class="section--flush"><div class="wrap">
     <?php if ($heading || $link) : ?>
         <div class="sec-head">
             <?php if ($heading) : ?><h3><?php echo esc_html($heading); ?></h3><?php endif; ?>

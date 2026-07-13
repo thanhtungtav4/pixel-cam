@@ -84,13 +84,40 @@ function initFilters() {
   if (btn && panel) btn.addEventListener('click', () => panel.classList.toggle('open'));
 }
 
-/* ---------- Search hint ---------- */
+/* ---------- Search hint / mobile overlay ---------- */
+/* On desktop the form is always visible. On mobile the form is hidden and the
+   search icon toggles a fixed overlay at the top of the viewport. */
 function initSearch() {
-  const mobBtn = document.querySelector('.mob-search-btn');
-  const input = document.getElementById('searchInput');
-  if (mobBtn && input) {
-    mobBtn.addEventListener('click', () => { input.focus(); });
-  }
+  const mobBtn   = document.querySelector('.mob-search-btn');
+  const overlay  = document.getElementById('hdrSearchOverlay');
+  if (!mobBtn || !overlay) return;
+
+  const closeBtn = overlay.querySelector('.hdr-search-close');
+  const input    = overlay.querySelector('input[name="s"]');
+
+  const open = () => {
+    document.body.classList.add('mob-search-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    // Defer focus until after the slide-in transition has started.
+    setTimeout(() => input && input.focus(), 60);
+  };
+  const close = () => {
+    document.body.classList.remove('mob-search-open');
+    overlay.setAttribute('aria-hidden', 'true');
+  };
+
+  mobBtn.addEventListener('click', open);
+  if (closeBtn) closeBtn.addEventListener('click', close);
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && document.body.classList.contains('mob-search-open')) close();
+  });
+
+  // Close when tapping the dimmed area outside the form row.
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) close();
+  });
 }
 
 /* ---------- Category slider (home: "Danh mục nổi bật") ---------- */

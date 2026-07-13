@@ -39,14 +39,14 @@ final class MenuHook
         ?>
         <p class="field-pxc-icon description description-wide">
             <label><?php esc_html_e('Icon (SVG/PNG)', 'underscores'); ?></label><br>
-            <span class="pxc-icon-preview" style="display:inline-block;vertical-align:middle;margin-right:8px">
+            <span class="pxc-icon-preview">
                 <?php if ($icon_url) : ?>
-                    <img src="<?php echo esc_url($icon_url); ?>" alt="" style="width:24px;height:24px;object-fit:contain">
+                    <img src="<?php echo esc_url($icon_url); ?>" alt="">
                 <?php endif; ?>
             </span>
             <input type="hidden" class="pxc-icon-id" name="pxc_menu_icon[<?php echo (int) $item_id; ?>]" value="<?php echo esc_attr((string) $icon_id); ?>">
             <button type="button" class="button pxc-icon-pick"><?php esc_html_e('Chọn icon', 'underscores'); ?></button>
-            <button type="button" class="button-link pxc-icon-remove" style="<?php echo $icon_id ? '' : 'display:none'; ?>;color:#b32d2e;margin-left:6px"><?php esc_html_e('Xóa', 'underscores'); ?></button>
+            <button type="button" class="button-link pxc-icon-remove<?php echo $icon_id ? '' : ' is-hidden'; ?>"><?php esc_html_e('Xóa', 'underscores'); ?></button>
         </p>
         <?php
     }
@@ -116,8 +116,8 @@ jQuery(function($){
     frame.on('select',function(){
       var a=frame.state().get('selection').first().toJSON();
       $row.find('.pxc-icon-id').val(a.id);
-      $row.find('.pxc-icon-preview').html('<img src="'+a.url+'" alt="" style="width:24px;height:24px;object-fit:contain">');
-      $row.find('.pxc-icon-remove').show();
+      $row.find('.pxc-icon-preview').html('<img src="'+a.url+'" alt="">');
+      $row.find('.pxc-icon-remove').removeClass('is-hidden');
     });
     frame.open();
   });
@@ -126,7 +126,7 @@ jQuery(function($){
     var $row=$(this).closest('.field-pxc-icon');
     $row.find('.pxc-icon-id').val('');
     $row.find('.pxc-icon-preview').empty();
-    $(this).hide();
+    $(this).addClass('is-hidden');
   });
 });
 JS);

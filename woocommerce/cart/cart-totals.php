@@ -68,10 +68,10 @@ defined('ABSPATH') || exit;
     
     <?php if (wc_coupons_enabled()) : ?>
         <div class="voucher">
-            <label style="font-size:13px;font-weight:600;margin-bottom:8px;display:block"><?php esc_html_e('Mã giảm giá', 'underscores'); ?></label>
-            <div class="vch-row">
-                <input type="text" name="coupon_code" class="input-text" id="coupon_code_summary" value="" placeholder="<?php esc_attr_e('Nhập mã...', 'underscores'); ?>" style="flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px" />
-                <button type="submit" class="btn btn-ghost" name="apply_coupon" value="<?php esc_attr_e('Áp dụng', 'underscores'); ?>" style="padding:10px 14px"><?php esc_html_e('Áp dụng', 'underscores'); ?></button>
+            <label class="cart-coupon-label"><?php esc_html_e('Mã giảm giá', 'underscores'); ?></label>
+            <div class="cart-coupon-row">
+                <input type="text" name="coupon_code" class="input-text cart-coupon-input" id="coupon_code_summary" value="" placeholder="<?php esc_attr_e('Nhập mã...', 'underscores'); ?>" />
+                <button type="submit" class="btn btn-ghost cart-coupon-btn" name="apply_coupon" value="<?php esc_attr_e('Áp dụng', 'underscores'); ?>"><?php esc_html_e('Áp dụng', 'underscores'); ?></button>
             </div>
         </div>
     <?php endif; ?>

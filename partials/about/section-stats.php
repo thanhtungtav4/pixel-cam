@@ -6,7 +6,7 @@ if (empty($items)) {
     return;
 }
 ?>
-<section style="padding:0"><div class="wrap">
+<section class="section--no-y"><div class="wrap">
     <div class="ab-stats">
         <?php foreach ($items as $item) : ?>
             <div class="stat">

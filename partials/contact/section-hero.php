@@ -11,7 +11,7 @@ $heading = $args['heading'] ?? '';
 $meta    = $args['meta'] ?? '';
 $pills   = $args['pills'] ?? [];
 ?>
-<section class="ct-hero" style="padding-top:0;padding-bottom:24px"><div class="wrap page-head">
+<section class="ct-hero section--flush"><div class="wrap page-head">
     <h1><?php echo esc_html($heading ?: get_the_title()); ?></h1>
     <?php if ($meta) : ?><p class="meta"><?php echo wp_kses_post($meta); ?></p><?php endif; ?>
     <?php if (! empty($pills)) : ?>

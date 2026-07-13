@@ -29,7 +29,7 @@ $blog_url     = $blog_page_id ? get_permalink($blog_page_id) : home_url('/');
     ?>
 </div>
 
-<section style="padding-top:0;padding-bottom:24px"><div class="wrap page-head">
+<section class="section--flush"><div class="wrap page-head">
     <?php if ($title) : ?><h1><?php echo esc_html($title); ?></h1><?php endif; ?>
     <?php if ($description) : ?><p class="meta"><?php echo esc_html($description); ?></p><?php endif; ?>
 
@@ -63,7 +63,7 @@ $blog_url     = $blog_page_id ? get_permalink($blog_page_id) : home_url('/');
     <?php endif; ?>
 </div></section>
 
-<section style="padding-top:0"><div class="wrap blog-layout">
+<section class="section--flush"><div class="wrap blog-layout">
     <div>
         <?php if (have_posts()) : ?>
             <?php if (! is_paged()) :

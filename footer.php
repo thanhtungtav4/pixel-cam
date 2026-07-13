@@ -43,6 +43,7 @@ $has_any_section = $has_brand || $has_products || $has_support || $has_contact |
                     get_template_part('partials/footer/section-brand', null, [
                         'description'  => $description,
                         'social_links' => $social_links,
+                        'business'     => $business,
                     ]);
                 }
                 if ($has_products) {
@@ -67,7 +68,6 @@ $has_any_section = $has_brand || $has_products || $has_support || $has_contact |
     <?php
     get_template_part('partials/footer/section-bottom', null, [
         'copyright' => $copyright,
-        'business'  => $business,
     ]);
     ?>
 </footer>

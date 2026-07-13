@@ -6,7 +6,7 @@ $heading = $args['heading'] ?? '';
 $lead    = $args['lead'] ?? '';
 $pills   = $args['pills'] ?? [];
 ?>
-<section class="about-hero" style="padding-top:0"><div class="wrap">
+<section class="about-hero section--flush"><div class="wrap">
     <?php if ($kicker) : ?><div class="kicker"><?php echo esc_html($kicker); ?></div><?php endif; ?>
     <?php if ($heading) : ?><h1><?php echo esc_html($heading); ?></h1><?php endif; ?>
     <?php if ($lead) : ?><p class="lead"><?php echo esc_html($lead); ?></p><?php endif; ?>

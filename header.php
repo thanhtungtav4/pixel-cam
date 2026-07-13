@@ -50,15 +50,12 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
 <!-- HEADER -->
 <header><div class="wrap hdr">
     <?php if (has_custom_logo()) :
-        // the_custom_logo() prints its own <a class="custom-logo-link"> — do NOT
-        // wrap it in another <a> (nested anchors are invalid HTML). Add .logo to
-        // that link via the core filter so the design styles still apply.
         add_filter('get_custom_logo', 'underscores_child_logo_class');
         the_custom_logo();
         remove_filter('get_custom_logo', 'underscores_child_logo_class');
     else : ?>
-        <a href="<?php echo esc_url(home_url('/')); ?>" class="logo">
-            <span class="mark">P</span> <?php echo esc_html(get_bloginfo('name')); ?>
+        <a href="<?php echo esc_url(home_url('/')); ?>" class="logo" aria-label="<?php echo esc_attr(get_bloginfo('name')); ?> — Trang chủ">
+            <span class="mark">P</span> <span class="wordmark"><?php echo esc_html(get_bloginfo('name')); ?></span>
         </a>
     <?php endif; ?>
 
@@ -98,7 +95,7 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
             $wishlist_url = esc_url(YITH_WCWL()->get_wishlist_url());
             $wish_count   = function_exists('yith_wcwl_count_all_products') ? (int) yith_wcwl_count_all_products() : 0;
             ?>
-            <a class="ha" href="<?php echo $wishlist_url; ?>" aria-label="<?php esc_attr_e('Yêu thích', 'underscores'); ?>">
+            <a class="ha is-wishlist" href="<?php echo $wishlist_url; ?>" aria-label="<?php esc_attr_e('Yêu thích', 'underscores'); ?>">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg>
                 <span><?php esc_html_e('Yêu thích', 'underscores'); ?></span>
                 <span class="badge" id="wishBadge"><?php echo $wish_count; ?></span>
@@ -120,6 +117,18 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
         <?php endif; ?>
     </div>
 </div></header>
+
+<!-- MOBILE SEARCH OVERLAY -->
+<div class="hdr-search-overlay" id="hdrSearchOverlay" aria-hidden="true">
+    <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
+        <input type="search" name="s" value="<?php echo esc_attr(get_search_query()); ?>" placeholder="<?php esc_attr_e('Tìm máy ảnh, lens, flycam, gimbal...', 'underscores'); ?>" autocomplete="off">
+        <?php if ($has_woo) : ?>
+            <input type="hidden" name="post_type" value="product">
+        <?php endif; ?>
+        <button type="submit" class="ov-submit"><?php esc_html_e('Tìm', 'underscores'); ?></button>
+        <button type="button" class="hdr-search-close" aria-label="<?php esc_attr_e('Đóng tìm kiếm', 'underscores'); ?>">×</button>
+    </form>
+</div>
 
 <!-- NAV -->
 <?php if (has_nav_menu('header-menu')) : ?>

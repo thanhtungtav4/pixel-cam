@@ -44,7 +44,7 @@ $has_grid = ! empty($info_args['cards'])
     || ! empty($form_args['shortcode']);
 ?>
 <?php if ($has_grid) : ?>
-    <section class="ct-main" style="padding-top:0"><div class="wrap">
+    <section class="ct-main section--flush"><div class="wrap">
         <div class="contact-grid">
             <?php get_template_part('partials/contact/section-info', null, $info_args); ?>
             <?php get_template_part('partials/contact/section-form', null, $form_args); ?>

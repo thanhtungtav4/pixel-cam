@@ -10,7 +10,7 @@ defined('ABSPATH') || exit;
 
 $about_acf = function_exists('get_fields') ? (get_fields() ?: []) : [];
 
-$hero     = $about_acf['hero_settings'] ?? [];
+$hero     = $about_acf['about_hero'] ?? [];
 $stats    = $about_acf['stats_settings'] ?? [];
 $story    = $about_acf['story_settings'] ?? [];
 $values   = $about_acf['values_settings'] ?? [];

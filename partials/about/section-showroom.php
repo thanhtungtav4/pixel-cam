@@ -9,7 +9,7 @@ if (empty($rooms)) {
     return;
 }
 ?>
-<section class="ab-section"><div class="wrap">
+<section id="showroom" class="ab-section"><div class="wrap">
     <div class="head">
         <?php if ($eyebrow) : ?><div class="eyebrow"><?php echo esc_html($eyebrow); ?></div><?php endif; ?>
         <?php if ($heading) : ?><h2><?php echo esc_html($heading); ?></h2><?php endif; ?>

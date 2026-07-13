@@ -62,15 +62,26 @@ if (! $has_contact && ! $has_payments) {
                     if (! $icon_id && ! $label) {
                         continue;
                     }
-                    $icon_html = $icon_id ? wp_get_attachment_image((int) $icon_id, 'thumbnail', false, ['loading' => 'lazy', 'decoding' => 'async']) : '';
+                    // Prefer icon when present; fall back to a compact text label.
+                    // For SVGs, 'thumbnail' size returns 1×1 — use 'full' to render at native dims.
                     $tag       = $link ? 'a' : 'span';
                     $attrs     = $link ? sprintf(' href="%s" target="_blank" rel="noopener noreferrer"', esc_url($link)) : '';
+                    if ($icon_id) {
+                        $mime = get_post_mime_type((int) $icon_id);
+                        $size = ($mime === 'image/svg+xml') ? 'full' : 'thumbnail';
+                        $icon_html = wp_get_attachment_image((int) $icon_id, $size, false, ['loading' => 'lazy', 'decoding' => 'async', 'alt' => $label]);
+                    } else {
+                        $icon_html = '';
+                    }
+                    $inner     = $icon_html !== ''
+                        ? $icon_html
+                        : '<span class="foot-payment-text">' . esc_html($label) . '</span>';
                     ?>
                     <li>
                         <<?php echo $tag; ?><?php echo $attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $attrs already escaped. ?>
-                            class="foot-payment"
+                            class="foot-payment <?php echo $icon_id ? 'has-icon' : 'is-text'; ?>"
                             <?php echo $label ? 'title="' . esc_attr($label) . '" aria-label="' . esc_attr($label) . '"' : ''; ?>>
-                            <?php echo $icon_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core image markup. ?>
+                            <?php echo $inner; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- image markup or pre-escaped span. ?>
                         </<?php echo $tag; ?>>
                     </li>
                 <?php endforeach; ?>

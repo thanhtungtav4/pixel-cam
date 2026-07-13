@@ -102,12 +102,12 @@ $total = (int) $products->found_posts;
     <?php get_template_part('partials/components/breadcrumb', null, ['items' => [['label' => $h1 ?: get_the_title()]]]); ?>
 </div>
 
-<section style="padding-top:0;padding-bottom:24px"><div class="wrap page-head">
+<section class="section--flush"><div class="wrap page-head">
     <h1><?php echo esc_html($h1 ?: get_the_title()); ?></h1>
     <?php if ($meta) : ?><p class="meta"><?php echo esc_html($meta); ?> <b><?php echo $total; ?></b> <?php esc_html_e('sản phẩm', 'underscores'); ?></p><?php endif; ?>
 </div></section>
 
-<section style="padding-top:0"><div class="wrap">
+<section class="section--flush"><div class="wrap">
     <?php if ($products->have_posts()) : ?>
         <div class="grid">
             <?php $i = 0;

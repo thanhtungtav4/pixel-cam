@@ -184,7 +184,12 @@ final class WooHook
             $tabs['additional_information']['title'] = __('Thông tin thêm', 'underscores');
         }
         if (isset($tabs['reviews'])) {
-            $tabs['reviews']['title'] = __('Đánh giá', 'underscores');
+            $review_count = (int) get_comments_number($product_id);
+            /* translators: %s = number of reviews */
+            $tabs['reviews']['title'] = sprintf(
+                _n('Đánh giá <span class="count">(%s)</span>', 'Đánh giá <span class="count">(%s)</span>', $review_count, 'underscores'),
+                number_format_i18n($review_count)
+            );
         }
 
         if (! function_exists('get_field')) {
@@ -452,7 +457,7 @@ final class WooHook
         printf(
             '<div class="lbl">%s%s</div>',
             esc_html($label_text),
-            $active_label !== '' ? ': <span class="sel" style="font-weight: 500; color: var(--muted); margin-left: 4px;">' . esc_html($active_label) . '</span>' : ''
+            $active_label !== '' ? ': <span class="sel">' . esc_html($active_label) . '</span>' : ''
         );
         echo '<div class="opts">';
         foreach ($chips as $chip) {
@@ -1129,22 +1134,22 @@ final class WooHook
 
         $qr_url = "https://img.vietqr.io/image/{$bank_id}-{$account_number}-{$template}.png?amount={$amount}&addInfo={$encoded_desc}&accountName={$encoded_name}";
         ?>
-        <div class="vietqr-payment-info" style="margin: 28px 0; padding: 24px; border: 1.5px solid var(--border); border-radius: 14px; background: var(--surface); text-align: center;">
-            <h3 style="font-size: 18px; margin-bottom: 14px; color: var(--fg);"><?php esc_html_e('Thanh toán quét mã VietQR', 'underscores'); ?></h3>
-            <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;">
+        <div class="vietqr-payment-info">
+            <h3><?php esc_html_e('Thanh toán quét mã VietQR', 'underscores'); ?></h3>
+            <p>
                 <?php esc_html_e('Quét mã QR dưới đây bằng ứng dụng Ngân hàng để thanh toán nhanh chóng và chính xác số tiền.', 'underscores'); ?>
             </p>
-            
-            <div class="vietqr-qr-wrap" style="display: inline-block; padding: 14px; background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px;">
-                <img src="<?php echo esc_url($qr_url); ?>" alt="VietQR Payment Code" style="max-width: 320px; width: 100%; display: block; border-radius: 6px;" />
+
+            <div class="vietqr-qr-wrap">
+                <img class="vietqr-qr-img" src="<?php echo esc_url($qr_url); ?>" alt="VietQR Payment Code" />
             </div>
 
-            <div class="vietqr-details" style="max-width: 400px; margin: 0 auto; text-align: left; font-size: 14px; display: grid; gap: 8px; border-top: 1px solid var(--border); padding-top: 18px;">
+            <div class="vietqr-details">
                 <div><strong><?php esc_html_e('Ngân hàng:', 'underscores'); ?></strong> <?php echo esc_html($bank_id); ?></div>
                 <div><strong><?php esc_html_e('Số tài khoản:', 'underscores'); ?></strong> <?php echo esc_html($account_number); ?></div>
                 <div><strong><?php esc_html_e('Tên chủ tài khoản:', 'underscores'); ?></strong> <?php echo esc_html($account_name); ?></div>
-                <div><strong><?php esc_html_e('Số tiền chuyển khoản:', 'underscores'); ?></strong> <span style="color: var(--danger); font-weight: 700;"><?php echo wc_price($amount); ?></span></div>
-                <div><strong><?php esc_html_e('Nội dung chuyển khoản:', 'underscores'); ?></strong> <span style="font-family: var(--mono); background: var(--bg); padding: 2px 6px; border-radius: 4px; font-weight: 600; color: var(--accent);"><?php echo esc_html($description); ?></span></div>
+                <div><strong><?php esc_html_e('Số tiền chuyển khoản:', 'underscores'); ?></strong> <span class="vietqr-amount"><?php echo wc_price($amount); ?></span></div>
+                <div><strong><?php esc_html_e('Nội dung chuyển khoản:', 'underscores'); ?></strong> <span class="vietqr-transfer-note"><?php echo esc_html($description); ?></span></div>
             </div>
         </div>
         <?php

@@ -51,13 +51,13 @@ defined('ABSPATH') || exit;
         </div>
     <?php endif; ?>
 
-    <div class="block" style="background:linear-gradient(135deg,var(--accent),var(--accent-80));color:#fff;border-color:transparent">
-        <h4 style="color:#fff;opacity:.85"><?php esc_html_e('Đăng ký nhận tin', 'underscores'); ?></h4>
-        <p style="font-size:14px;opacity:.95;margin-bottom:14px"><?php esc_html_e('Tổng hợp bài hay mỗi tuần — và voucher khuyến mãi nội bộ.', 'underscores'); ?></p>
+    <div class="block block--newsletter">
+        <h4><?php esc_html_e('Đăng ký nhận tin', 'underscores'); ?></h4>
+        <p><?php esc_html_e('Tổng hợp bài hay mỗi tuần — và voucher khuyến mãi nội bộ.', 'underscores'); ?></p>
         <form onsubmit="event.preventDefault();this.querySelector('input').value='';this.querySelector('.ok').textContent='✓ <?php esc_attr_e('Đã đăng ký!', 'underscores'); ?>'">
-            <input type="email" required placeholder="<?php esc_attr_e('Email của bạn', 'underscores'); ?>" style="width:100%;padding:10px 12px;border-radius:8px;border:0;font:inherit;font-size:14px;margin-bottom:8px">
-            <button type="submit" style="width:100%;background:#fff;color:var(--accent);border:0;border-radius:8px;padding:10px;font:inherit;font-weight:700;font-size:14px;cursor:pointer"><?php esc_html_e('Đăng ký', 'underscores'); ?></button>
-            <small class="ok" style="display:block;text-align:center;margin-top:8px;font-size:12.5px;opacity:.9;min-height:16px"></small>
+            <input type="email" required placeholder="<?php esc_attr_e('Email của bạn', 'underscores'); ?>">
+            <button type="submit"><?php esc_html_e('Đăng ký', 'underscores'); ?></button>
+            <small class="ok"></small>
         </form>
     </div>
 </aside>

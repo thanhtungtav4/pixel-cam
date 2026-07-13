@@ -1,6 +1,10 @@
 <?php
 /**
- * Shipping details & Order notes
+ * Shipping address only — order notes are rendered separately in
+ * form-checkout.php so the numbered sections (1→2→3→4) stay in the
+ * right visual order.
+ *
+ * @package Underscores
  */
 
 defined('ABSPATH') || exit;
@@ -26,24 +30,4 @@ defined('ABSPATH') || exit;
             <?php do_action('woocommerce_after_checkout_shipping_form', $checkout); ?>
         </div>
     <?php endif; ?>
-</div>
-
-<div class="co-section">
-    <div class="co-head">
-        <span class="co-num">4</span>
-        <h2><?php esc_html_e('Ghi chú đơn hàng', 'underscores'); ?></h2>
-    </div>
-    <div class="woocommerce-additional-fields">
-        <?php do_action('woocommerce_before_order_notes', $checkout); ?>
-
-        <?php if (apply_filters('woocommerce_enable_order_notes_field', 'yes' === get_option('woocommerce_enable_order_notes', 'yes'))) : ?>
-            <div class="woocommerce-additional-fields__field-wrapper">
-                <?php foreach ($checkout->get_checkout_fields('order') as $key => $field) : ?>
-                    <?php woocommerce_form_field($key, $field, $checkout->get_value($key)); ?>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-
-        <?php do_action('woocommerce_after_order_notes', $checkout); ?>
-    </div>
 </div>
