@@ -51,6 +51,12 @@ final class MediaHook
         // Alt-text auto-fill for content images.
         add_filter('wp_get_attachment_image_attributes', [$self, 'autofill_alt'], 10, 3);
 
+        // `sizes` attribute for responsive images. Without this, WP strips
+        // `sizes` from the rendered <img> and the browser defaults to 100vw,
+        // which always picks the full-size variant (wasteful on mobile, and
+        // can also push grid items past their column on desktop).
+        add_filter('wp_calculate_image_sizes', [$self, 'theme_image_sizes'], 10, 4);
+
         if (defined('WP_CLI') && \WP_CLI) {
             \WP_CLI::add_command('pxc generate-modern-formats', [$self, 'cli_bulk_generate']);
         }
@@ -587,5 +593,39 @@ final class MediaHook
         }
         $title = trim((string) get_the_title($attachment_id));
         return $title;
+    }
+
+    /**
+     * Default `sizes` attribute when WP would otherwise emit a 100vw default.
+     * Returns a sizes string matched to the image's actual layout slot.
+     *
+     *   pxc_lead_16_9  (800×450)  — blog-archive featured post card (1.4fr column)
+     *   pxc_card_16_9   (720×405)  — blog-archive regular card (2-col, 50% wrap)
+     *   pxc_cover_16_9  (1280×720) — single post featured (full-width)
+     *   pxc_hero        (1600×700) — front-page hero slider
+     *   pxc_card        (600×600)  — product card (4-col on desktop, 2-col tablet)
+     *
+     * WP will only ever call this when the size has a real registered width
+     * (so the $size strings below are a closed set). Unknown sizes return
+     * `false` to leave the default 100vw behaviour alone.
+     */
+    public function theme_image_sizes($default_sizes, array $image_src, array $image_meta, int $attachment_id)
+    {
+        $size_slug = (string) ($image_meta['size'] ?? '');
+
+        $sizes = match ($size_slug) {
+            // Blog archive featured card: 1.4fr column inside ~816px wrap at desktop.
+            'pxc_lead_16_9'  => '(max-width:720px) 100vw, (max-width:980px) calc(50vw - 24px), 651px',
+            // Blog archive regular card: 2-col grid → ~408px per col on desktop.
+            'pxc_card_16_9'   => '(max-width:640px) 100vw, (max-width:980px) calc(50vw - 24px), 408px',
+            // Single post featured: edge-to-edge on mobile, ~1100px on desktop.
+            'pxc_cover_16_9'  => '(max-width:720px) 100vw, 1100px',
+            // Front-page hero slider: full-width hero on every viewport.
+            'pxc_hero'        => '(max-width:720px) 100vw, 1600px',
+            // Product card grid: 4-col desktop, 2-col tablet, 1-col mobile.
+            'pxc_card'        => '(max-width:560px) 100vw, (max-width:860px) 50vw, 25vw',
+            default           => $default_sizes,
+        };
+        return $sizes;
     }
 }
