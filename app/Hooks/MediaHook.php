@@ -607,25 +607,34 @@ final class MediaHook
      *
      * WP will only ever call this when the size has a real registered width
      * (so the $size strings below are a closed set). Unknown sizes return
-     * `false` to leave the default 100vw behaviour alone.
+     * the WP default.
+     *
+     * Signature is intentionally loose (no type hints) — WP passes mixed
+     * shapes depending on context (false when srcset is missing, array
+     * otherwise), and strict hints would TypeError on the false path.
      */
-    public function theme_image_sizes($default_sizes, array $image_src, array $image_meta, int $attachment_id)
+    public function theme_image_sizes($default_sizes, $image_src, $image_meta, $attachment_id)
     {
+        if (! is_array($image_meta)) {
+            return $default_sizes;
+        }
         $size_slug = (string) ($image_meta['size'] ?? '');
 
-        $sizes = match ($size_slug) {
-            // Blog archive featured card: 1.4fr column inside ~816px wrap at desktop.
-            'pxc_lead_16_9'  => '(max-width:720px) 100vw, (max-width:980px) calc(50vw - 24px), 651px',
-            // Blog archive regular card: 2-col grid → ~408px per col on desktop.
-            'pxc_card_16_9'   => '(max-width:640px) 100vw, (max-width:980px) calc(50vw - 24px), 408px',
-            // Single post featured: edge-to-edge on mobile, ~1100px on desktop.
-            'pxc_cover_16_9'  => '(max-width:720px) 100vw, 1100px',
-            // Front-page hero slider: full-width hero on every viewport.
-            'pxc_hero'        => '(max-width:720px) 100vw, 1600px',
-            // Product card grid: 4-col desktop, 2-col tablet, 1-col mobile.
-            'pxc_card'        => '(max-width:560px) 100vw, (max-width:860px) 50vw, 25vw',
-            default           => $default_sizes,
-        };
-        return $sizes;
+        if ($size_slug === 'pxc_lead_16_9') {
+            return '(max-width:720px) 100vw, (max-width:980px) calc(50vw - 24px), 651px';
+        }
+        if ($size_slug === 'pxc_card_16_9') {
+            return '(max-width:640px) 100vw, (max-width:980px) calc(50vw - 24px), 408px';
+        }
+        if ($size_slug === 'pxc_cover_16_9') {
+            return '(max-width:720px) 100vw, 1100px';
+        }
+        if ($size_slug === 'pxc_hero') {
+            return '(max-width:720px) 100vw, 1600px';
+        }
+        if ($size_slug === 'pxc_card') {
+            return '(max-width:560px) 100vw, (max-width:860px) 50vw, 25vw';
+        }
+        return $default_sizes;
     }
 }
