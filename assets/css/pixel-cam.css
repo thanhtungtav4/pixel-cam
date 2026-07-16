@@ -65,7 +65,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .ha:hover{color:var(--accent)}
 .ha:hover svg{stroke:var(--accent)}
 .ha:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
-.ha .badge{position:absolute;top:-6px;right:2px;background:var(--danger);color:#fff;font-size:10px;
+.ha .badge{position:absolute;top:-6px;right:2px;background:var(--accent);color:#fff;font-size:10px;
   min-width:16px;height:16px;border-radius:8px;display:grid;place-items:center;padding:0 4px}
 @media(max-width:860px){.ha span{display:none}.ha .badge{right:-10px}}
 /* Apple HIG: minimum 44x44 tap target for every header action. Applied at
@@ -168,7 +168,7 @@ body.mob-search-open{overflow:hidden}
 
 .mini-cart .woocommerce-mini-cart__total{display:flex;justify-content:space-between;align-items:center;
   font-size:14px;font-weight:700;margin:4px 0 12px;padding-top:12px;border-top:1px solid var(--border)}
-.mini-cart .woocommerce-mini-cart__total .amount{color:var(--danger)}
+.mini-cart .woocommerce-mini-cart__total .amount{color:var(--accent)}
 .mini-cart .woocommerce-mini-cart__buttons{display:flex;gap:8px;margin:0}
 .mini-cart .woocommerce-mini-cart__buttons .button{flex:1;text-align:center;border-radius:8px;padding:10px;
   font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--accent);color:var(--accent);background:transparent;transition:.15s}
@@ -226,7 +226,7 @@ nav.cat{background:var(--surface);border-bottom:1px solid var(--border);position
   background:linear-gradient(90deg,rgba(0,0,0,.6),transparent);color:#fff}
 .slide .cap .kick{font-size:12px;text-transform:uppercase;letter-spacing:.08em;opacity:.85}
 .slide .cap h2{font-size:clamp(22px,3vw,40px);font-weight:700;letter-spacing:-.02em;margin:6px 0 12px;line-height:1.15}
-.slide .cap .btn{display:inline-block;background:#fff;color:var(--fg);padding:10px 22px;border-radius:8px;font-weight:600;font-size:14px}
+.slide .cap .btn{display:inline-block;background:#fff;color:var(--accent);padding:10px 22px;border-radius:8px;font-weight:600;font-size:14px;border:1.5px solid var(--accent)}
 .slide .cap .btn:hover{background:var(--accent);color:#fff}
 .dots{position:absolute;bottom:16px;right:20px;display:flex;gap:8px;z-index:2}
 .dots button{width:9px;height:9px;border-radius:50%;border:0;background:rgba(255,255,255,.5);cursor:pointer;padding:0;transition:.2s}
@@ -349,7 +349,7 @@ section{padding:clamp(36px,6vw,56px) 0}
 .price-row input{flex:1;border:1px solid var(--border);border-radius:6px;padding:8px;font:inherit;font-size:13px;min-width:0}
 .fgroup-price .filter-apply{margin-top:10px;width:100%;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:8px;padding:8px;font:inherit;font-weight:600;font-size:13px;cursor:pointer;transition:.15s}
 .fgroup-price .filter-apply:hover{filter:brightness(.92)}
-.filter-reset{display:inline-block;color:var(--danger);font-size:13px;font-weight:600;text-decoration:none}
+.filter-reset{display:inline-block;color:var(--accent);font-size:13px;font-weight:600;text-decoration:none}
 .filter-reset:hover{text-decoration:underline}
 .filter-toggle{display:none}
 @media(max-width:860px){
@@ -387,14 +387,14 @@ section{padding:clamp(36px,6vw,56px) 0}
 }
 .badges{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:6px;z-index:2}
 .bd{font-size:11px;font-weight:700;padding:3px 8px;border-radius:5px;color:#fff}
-.bd.sale{background:var(--danger)}
-.bd.new{background:var(--success)}
+.bd.sale{background:var(--accent)}
+.bd.new{background:var(--brand-secondary)}
 .bd.hot{background:var(--warn);color:var(--fg)}
 .wish{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);
   background:var(--surface);display:grid;place-items:center;cursor:pointer;z-index:2}
 .wish svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.6;transition:.15s}
-.wish:hover svg{stroke:var(--danger)}
-.wish.on svg{stroke:var(--danger);fill:var(--danger)}
+.wish:hover svg{stroke:var(--accent)}
+.wish.on svg{stroke:var(--accent);fill:var(--accent)}
 .pcard .body{padding:12px 14px 14px;display:flex;flex-direction:column;flex:1;gap:4px}
 /* Brand is a sub-label of the name → sit it tight above, not evenly spaced. */
 .pcard .brand{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;line-height:1;margin-bottom:2px}
@@ -402,7 +402,7 @@ section{padding:clamp(36px,6vw,56px) 0}
 .pcard .spec{font-size:12px;color:var(--muted);line-height:1.3}
 .price{margin-top:auto;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .price{font-variant-numeric:tabular-nums}
-.price .now{font-size:17px;font-weight:700;color:var(--danger)}
+.price .now{font-size:17px;font-weight:700;color:var(--accent)}
 .price .old{font-size:13px;color:var(--muted);text-decoration:line-through}
 /* Add-to-cart button (Woo outputs <a> in the loop → style both a/button). */
 .pcard .addcart{margin-top:8px;display:block;width:100%;text-align:center;border:1px solid var(--accent);
@@ -531,7 +531,7 @@ footer a:hover{color:#fff}
   border-radius:99px;text-decoration:none;transition:.15s}
 .af-chip:hover{background:var(--accent);color:#fff}
 .af-chip .af-x{font-size:15px;line-height:1;opacity:.8}
-.af-clear{font-size:13px;font-weight:600;color:var(--danger);text-decoration:none;margin-left:2px}
+.af-clear{font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;margin-left:2px}
 .af-clear:hover{text-decoration:underline}
 
 /* ===== SORT BAR ===== */
@@ -736,11 +736,11 @@ footer a:hover{color:#fff}
 /* Mobile overlay: hidden on desktop, shown on mobile */
 .post-cover__overlay{display:none}
 
-/* Red sforum-style category tag */
-.post-tag{display:inline-block;background:#DF062D;color:#fff;font-size:14px;
+/* Brand sforum-style category tag */
+.post-tag{display:inline-block;background:var(--accent);color:#fff;font-size:14px;
   font-weight:600;padding:5px 8px;border-radius:5px;text-decoration:none;
   line-height:1.2;letter-spacing:.01em}
-.post-tag:hover,.post-tag:focus-visible{background:#c70528;color:#fff}
+.post-tag:hover,.post-tag:focus-visible{background:var(--accent-80);color:#fff}
 
 /* White card overlapping the image (desktop) */
 .post-card{background:var(--surface);border-radius:14px;padding:18px 20px;
@@ -806,9 +806,9 @@ footer a:hover{color:#fff}
      No top padding here (card's own padding handles top spacing from cover),
      only bottom padding so the row reads as a unit. */
   .post-head .post-author{padding:0 0 4px;border-top:0}
-  .post-author__av{width:35px;height:35px;border:1px solid #ef1515;padding:2px;background:#fff}
+  .post-author__av{width:35px;height:35px;border:1px solid var(--accent);padding:2px;background:#fff}
   .post-author__img{border-radius:50%}
-  .post-author__name{color:#DF062D;font-size:14px;font-weight:600}
+  .post-author__name{color:var(--accent);font-size:14px;font-weight:600}
   .post-author__date{color:#656565;font-size:10px;font-weight:300}
   .post-author__date svg{width:11px;height:11px}
 }
@@ -876,9 +876,9 @@ footer a:hover{color:#fff}
 .pdp-info .rate-row .sep{color:var(--border)}
 
 .pdp-price{margin:18px 0;padding:16px 18px;background:var(--bg);border-radius:10px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.pdp-price .now{font-family:var(--mono);font-size:clamp(24px,2.6vw,30px);color:var(--danger);font-weight:700;letter-spacing:-.01em}
+.pdp-price .now{font-family:var(--mono);font-size:clamp(24px,2.6vw,30px);color:var(--accent);font-weight:700;letter-spacing:-.01em}
 .pdp-price .old{color:var(--muted);text-decoration:line-through;font-family:var(--mono);font-size:15px}
-.pdp-price .save{font-size:12px;font-weight:700;color:var(--danger);background:rgba(220,38,38,.1);padding:3px 8px;border-radius:6px;letter-spacing:.02em}
+.pdp-price .save{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-15);padding:3px 8px;border-radius:6px;letter-spacing:.02em}
 .pdp-price .install{flex-basis:100%;font-size:13px;color:var(--muted);margin-top:2px}
 .pdp-price .install b{color:var(--fg);font-family:var(--mono)}
 
@@ -898,7 +898,7 @@ footer a:hover{color:#fff}
 
 /* Stock + qty */
 .pdp-stock{display:flex;align-items:center;gap:8px;margin-top:18px;font-size:13.5px}
-.pdp-stock .dot{width:8px;height:8px;border-radius:50%;background:#16A34A;box-shadow:0 0 0 3px rgba(22,163,74,.18)}
+.pdp-stock .dot{width:8px;height:8px;border-radius:50%;background:var(--brand-secondary);box-shadow:0 0 0 3px var(--brand-secondary-15)}
 .pdp-stock b{font-weight:600}
 .pdp-stock .muted{color:var(--muted)}
 
@@ -915,7 +915,7 @@ footer a:hover{color:#fff}
 .cta-row{display:grid;grid-template-columns:1fr 1fr 48px;gap:10px;margin-top:22px}
 @media(max-width:480px){.cta-row{grid-template-columns:1fr 48px;grid-auto-rows:auto}.cta-row .buy{grid-column:1/-1}}
 .cta-row button{font:inherit;font-weight:700;font-size:14px;border-radius:10px;cursor:pointer;padding:14px 18px;transition:.15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.cta-row .buy{background:var(--danger);color:#fff;border:0}
+.cta-row .buy{background:var(--accent);color:#fff;border:0}
 .cta-row .buy:hover{filter:brightness(1.08)}
 .cta-row .buy small{display:block;font-size:11.5px;font-weight:500;opacity:.85;margin-top:1px}
 .cta-row .buy span{display:flex;flex-direction:column;line-height:1.15}
@@ -996,7 +996,7 @@ footer a:hover{color:#fff}
 .review-item .av{width:48px;height:48px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:grid;place-items:center;font-weight:700;color:var(--fg)}
 .review-item .head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .review-item .head b{font-size:14px;font-weight:600}
-.review-item .head .ver{font-size:11px;font-weight:600;color:#16A34A;background:rgba(22,163,74,.1);padding:2px 7px;border-radius:5px}
+.review-item .head .ver{font-size:11px;font-weight:600;color:var(--brand-secondary);background:var(--brand-secondary-15);padding:2px 7px;border-radius:5px}
 .review-item .head .time{color:var(--muted);font-size:12.5px}
 .review-item .stars{color:#F5A623;font-size:13px;letter-spacing:1.5px;margin-top:4px}
 .review-item .stars span{color:var(--border)}
@@ -1771,8 +1771,8 @@ footer a:hover{color:#fff}
 .pcard .yith-wcwl-add-to-wishlist{position:absolute;top:10px;right:10px;z-index:3;margin:0}
 .pcard .yith-wcwl-add-to-wishlist a{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);display:grid;place-items:center;color:var(--muted);text-decoration:none;font-size:0}
 .pcard .yith-wcwl-add-to-wishlist a::before{content:"\2661";font-size:18px;line-height:1}
-.pcard .yith-wcwl-wishlistaddedbrowse a::before,.pcard .yith-wcwl-wishlistexistsbrowse a::before{content:"\2665";color:var(--danger)}
-.pcard .yith-wcwl-add-to-wishlist a:hover{border-color:var(--danger);color:var(--danger)}
+.pcard .yith-wcwl-wishlistaddedbrowse a::before,.pcard .yith-wcwl-wishlistexistsbrowse a::before{content:"\2665";color:var(--accent)}
+.pcard .yith-wcwl-add-to-wishlist a:hover{border-color:var(--accent);color:var(--accent)}
 .pcard .yith-wcwl-add-to-wishlist .feedback{display:none}
 /* YITH wishlist page table reuses .shop_table styles */
 .wishlist_table .product-remove a{color:var(--danger)}
@@ -1780,7 +1780,7 @@ footer a:hover{color:#fff}
 
 /* ----- Single product (PDP) bridge ----- */
 .pdp-layout .pdp-gallery-col{position:sticky;top:1rem}
-.pdp-stock .dot--out{background:var(--danger);box-shadow:0 0 0 3px rgba(220,38,38,.18)}
+.pdp-stock .dot--out{background:var(--accent);box-shadow:0 0 0 3px var(--accent-15)}
 @media(max-width:900px){.pdp-layout .pdp-gallery-col{position:static}}
 
 /* Force Woo columns to fill PDP grid */
@@ -1826,15 +1826,15 @@ footer a:hover{color:#fff}
 .product-type-variable .pdp-info > p.price{display:none}
 .pdp-info .woocommerce-variation-price .price{margin:14px 0;padding:16px 18px;background:var(--bg);border-radius:10px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .pdp-info .price ins{text-decoration:none !important;order:1 !important}
-.pdp-info .price ins .amount{font-size:clamp(22px,2.4vw,28px) !important;color:var(--danger) !important;font-weight:700 !important}
+.pdp-info .price ins .amount{font-size:clamp(22px,2.4vw,28px) !important;color:var(--accent) !important;font-weight:700 !important}
 .pdp-info .price del{opacity:1 !important;order:2 !important}
 .pdp-info .price del .amount{font-size:15px;color:var(--muted);font-weight:500;text-decoration:line-through}
-.pdp-info .price > .amount{font-size:clamp(22px,2.4vw,28px) !important;color:var(--danger) !important;font-weight:700 !important;order:1 !important}
-.pdp-info .price .save{font-size:12px !important;font-weight:700 !important;color:var(--danger) !important;background:rgba(220,38,38,.1) !important;padding:3px 8px !important;border-radius:6px !important;letter-spacing:.02em !important;order:3 !important}
+.pdp-info .price > .amount{font-size:clamp(22px,2.4vw,28px) !important;color:var(--accent) !important;font-weight:700 !important;order:1 !important}
+.pdp-info .price .save{font-size:12px !important;font-weight:700 !important;color:var(--accent) !important;background:var(--accent-15) !important;padding:3px 8px !important;border-radius:6px !important;letter-spacing:.02em !important;order:3 !important}
 .pdp-info .price-install{font-size:13px !important;color:var(--muted) !important;margin-top:-10px !important;margin-bottom:18px !important;display:block !important}
 .pdp-info .price-install b{color:var(--fg) !important;font-family:var(--mono) !important}
 /* Single (non-sale) price. */
-.pdp-info .price > .amount{font-size:clamp(22px,2.4vw,28px);color:var(--danger);font-weight:700}
+.pdp-info .price > .amount{font-size:clamp(22px,2.4vw,28px);color:var(--accent);font-weight:700}
 /* Hide Woo's default "Sale!" flash — we render our own .pdp-badges. */
 .pdp-gallery-col .onsale,.woocommerce-product-gallery .onsale{display:none}
 .pdp-info .price del{color:var(--muted);font-size:15px;opacity:1}
@@ -1952,11 +1952,11 @@ footer a:hover{color:#fff}
     cursor: not-allowed !important;
 }
 
-/* Buy Now button (solid red) */
+/* Buy Now button (brand accent) */
 .pdp-info form.cart .buynow {
     grid-column: 1 !important;
     order: 1 !important;
-    background: var(--danger) !important;
+    background: var(--accent) !important;
     color: #fff !important;
     border: 0 !important;
     border-radius: 10px !important;
@@ -2025,7 +2025,7 @@ footer a:hover{color:#fff}
 .pdp-info form.cart .wish.ic.on {
     color: var(--accent) !important;
     border-color: var(--accent) !important;
-    background: rgba(47,111,235,.06) !important;
+    background: var(--accent-15) !important;
 }
 .pdp-info form.cart .wish.ic.on svg {
     fill: var(--accent) !important;
@@ -2072,7 +2072,7 @@ footer a:hover{color:#fff}
 /* Version chips row (storage/config siblings). */
 .pdp-versions{margin:18px 0}
 .pdp-versions .variant-chip{text-decoration:none}
-.pdp-versions .variant-chip small .amount{color:var(--danger)}
+.pdp-versions .variant-chip small .amount{color:var(--accent)}
 .pdp-info .product_meta{margin-top:18px;font-size:13px;color:var(--muted)}
 .pdp-info .product_meta>span{display:block;margin-bottom:4px}
 /* SKU already shown under the title (sku_line) → hide Woo's duplicate in meta. */
@@ -2123,7 +2123,7 @@ footer a:hover{color:#fff}
 .woocommerce .cart_totals h2{font-size:17px;font-weight:700;margin-bottom:14px}
 .woocommerce .cart_totals table{border-radius:12px}
 .woocommerce .actions .button,.woocommerce .checkout-button,.woocommerce button.button,.woocommerce input.button,.woocommerce a.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#fff;border:1px solid transparent;border-radius:9px;padding:12px 20px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;text-decoration:none;transition:.15s}
-.woocommerce .button.alt,.woocommerce .checkout-button,.woocommerce #place_order{background:var(--danger)}
+.woocommerce .button.alt,.woocommerce .checkout-button,.woocommerce #place_order{background:var(--accent)}
 .woocommerce button.button:hover,.woocommerce a.button:hover{filter:brightness(1.06)}
 .woocommerce .button.wc-backward{background:var(--surface);color:var(--fg);border-color:var(--border)}
 
@@ -2789,7 +2789,7 @@ p.woocommerce-notice.woocommerce-thankyou-order-received {
     font-size: 16px !important;
 }
 .woocommerce-order-details table.shop_table tfoot tr:last-child td span.amount {
-    color: var(--danger) !important;
+    color: var(--accent) !important;
     font-weight: 700 !important;
 }
 
@@ -3321,7 +3321,7 @@ table.my_account_orders mark.order-status.status-failed {
 .vietqr-qr-wrap{display:inline-block;padding:14px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.05);margin-bottom:20px}
 .vietqr-qr-img{max-width:320px;width:100%;display:block;border-radius:6px}
 .vietqr-details{max-width:400px;margin:0 auto;text-align:left;font-size:14px;display:grid;gap:8px;border-top:1px solid var(--border);padding-top:18px}
-.vietqr-amount{color:var(--danger);font-weight:700}
+.vietqr-amount{color:var(--accent);font-weight:700}
 .vietqr-transfer-note{font-family:var(--mono);background:var(--bg);padding:2px 6px;border-radius:4px;font-weight:600;color:var(--accent)}
 
 /* Newsletter signup block (blog sidebar) — accent-gradient CTA card */
