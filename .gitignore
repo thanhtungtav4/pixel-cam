@@ -22,3 +22,8 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Server / deploy secrets (do NOT commit)
+**/server-credentials.md
+**/.env.production
+**/deploy-keys/*
