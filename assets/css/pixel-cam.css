@@ -416,13 +416,13 @@ section{padding:clamp(36px,6vw,56px) 0}
 .price .now{font-size:15px;font-weight:700;color:var(--accent)}
 .price .old{font-size:12px;color:var(--muted);text-decoration:line-through}
 /* Add-to-cart button (Woo outputs <a> in the loop → style both a/button). */
-.pcard .addcart{margin-top:8px;display:block;width:100%;text-align:center;border:1px solid var(--accent);
+.woocommerce .pcard .addcart{margin-top:8px;display:block;width:100%;text-align:center;border:1px solid var(--accent);
   color:var(--accent);background:transparent;border-radius:8px;padding:9px;font:inherit;font-weight:600;
   font-size:13px;line-height:1.2;text-decoration:none;cursor:pointer;transition:.15s}
-.pcard .addcart:hover{background:var(--accent);color:#fff}
+.woocommerce .pcard .addcart:hover{background:var(--accent);color:#fff}
 /* Woo toggles .added + .loading during AJAX; reflect both. */
-.pcard .addcart.added{background:var(--success);border-color:var(--success);color:#fff}
-.pcard .addcart.loading{opacity:.6;pointer-events:none}
+.woocommerce .pcard .addcart.added{background:var(--success);border-color:var(--success);color:#fff}
+.woocommerce .pcard .addcart.loading{opacity:.6;pointer-events:none}
 /* Woo appends a "View cart" link after an AJAX add — hide it in cards. */
 .pcard .added_to_cart{display:none}
 
