@@ -355,7 +355,7 @@ section{padding:clamp(36px,6vw,56px) 0}
 .fopt.on .fopt-box::after{content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
 .price-row{display:flex;gap:8px;align-items:center}
 .price-row input{flex:1;border:1px solid var(--border);border-radius:6px;padding:8px;font:inherit;font-size:13px;min-width:0}
-.fgroup-price .filter-apply{margin-top:16px;width:100%;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:8px;padding:8px;font:inherit;font-weight:600;font-size:13px;cursor:pointer;transition:.15s}
+.fgroup-price .filter-apply{margin-top:16px;width:100%;border:0;background:var(--accent);color:#fff;border-radius:8px;padding:8px;font:inherit;font-weight:600;font-size:13px;cursor:pointer;transition:.15s}
 .fgroup-price .filter-apply:hover{filter:brightness(.92)}
 .filter-reset{display:inline-block;color:var(--accent);font-size:13px;font-weight:600;text-decoration:none}
 .filter-reset:hover{text-decoration:underline}
