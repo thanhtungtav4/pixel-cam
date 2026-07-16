@@ -391,7 +391,10 @@ final class WooHook
             return;
         }
         $id    = $product->get_id();
-        $gifts = get_field('gifts', $id) ?: [];
+        $gifts = array_values(array_filter(
+            (array) (get_field('gifts', $id) ?: []),
+            static fn($gift): bool => is_array($gift) && trim((string) ($gift['name'] ?? '')) !== ''
+        ));
         if (empty($gifts)) {
             return;
         }

@@ -43,18 +43,18 @@ final class ContactPageHook
         if (file_exists(underscores_child_asset_path($css_relative_path))) {
             wp_enqueue_style(
                 'underscores-page-contact-style',
-                underscores_child_asset_uri($css_relative_path),
-                ['underscores-child-style'],
-                underscores_child_asset_version($css_relative_path)
+                add_query_arg('v', underscores_child_asset_version($css_relative_path), underscores_child_asset_uri($css_relative_path)),
+                ['pixel-cam'],
+                null
             );
         }
 
         if (file_exists(underscores_child_asset_path($js_relative_path))) {
             wp_enqueue_script(
                 'underscores-page-contact-script',
-                underscores_child_asset_uri($js_relative_path),
-                ['underscores-child-script'],
-                underscores_child_asset_version($js_relative_path),
+                add_query_arg('v', underscores_child_asset_version($js_relative_path), underscores_child_asset_uri($js_relative_path)),
+                ['pixel-cam'],
+                null,
                 true
             );
         }

@@ -54,15 +54,26 @@ $has_grid = ! empty($info_args['cards'])
 
 <?php
 // 3. Map (single iframe)
-get_template_part('partials/contact/section-map', null, [
-    'heading' => $contact_acf['map_heading'] ?? '',
-    'caption' => $contact_acf['map_caption'] ?? '',
-    'embed'   => $contact_acf['map_embed'] ?? '',
-]);
+?>
+<div class="wrap">
+    <?php
+    get_template_part('partials/contact/section-map', null, [
+        'heading' => $contact_acf['map_heading'] ?? '',
+        'caption' => $contact_acf['map_caption'] ?? '',
+        'embed'   => $contact_acf['map_embed'] ?? '',
+    ]);
+    ?>
+</div>
+<?php
 
 // 4. FAQ
-get_template_part('partials/contact/section-faq', null, [
-    'heading' => $contact_acf['faq_heading'] ?? '',
-    'meta'    => $contact_acf['faq_meta'] ?? '',
-    'items'   => $contact_acf['faq_items'] ?? [],
-]);
+?>
+<div class="wrap">
+    <?php
+    get_template_part('partials/contact/section-faq', null, [
+        'heading' => $contact_acf['faq_heading'] ?? '',
+        'meta'    => $contact_acf['faq_meta'] ?? '',
+        'items'   => $contact_acf['faq_items'] ?? [],
+    ]);
+    ?>
+</div>
