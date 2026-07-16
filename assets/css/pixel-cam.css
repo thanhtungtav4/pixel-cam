@@ -339,7 +339,7 @@ section{padding:clamp(36px,6vw,56px) 0}
 /* woocommerce_content() skips before/after_main_content so .woo-content never
    wraps shop/search — give .shop-wrap its own bottom gap from the footer. */
 .shop-wrap{padding-bottom:clamp(40px,6vw,64px)}
-.shop{display:grid;grid-template-columns:240px 1fr;gap:28px;align-items:start}
+.shop{display:grid;grid-template-columns:240px minmax(0,1fr);gap:28px;align-items:start}
 .filters{border:1px solid var(--border);border-radius:12px;background:var(--surface);position:sticky;top:120px}
 .fgroup{padding:16px;border-bottom:1px solid var(--border)}
 .fgroup:last-child{border-bottom:0}
@@ -1251,9 +1251,9 @@ footer a:hover{color:#fff}
 .btn-block{width:100%}
 
 /* empty / placeholder state */
-.empty-state{text-align:center;padding:80px 20px}
+.empty-state{text-align:center;padding:80px 20px;max-width:100%;overflow-wrap:break-word}
 .empty-state .es-title{font-size:20px;margin-bottom:10px}
-.empty-state .es-sub{color:var(--muted);margin-bottom:20px}
+.empty-state .es-sub{color:var(--muted);margin-bottom:20px;max-width:60ch;margin-inline:auto}
 .empty-state--bordered{border:1px dashed var(--border);border-radius:12px}
 
 /* ===== AUTH (forgot-password) ===== */
