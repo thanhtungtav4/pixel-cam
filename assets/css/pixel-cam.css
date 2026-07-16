@@ -341,9 +341,9 @@ section{padding:clamp(36px,6vw,56px) 0}
 .shop-wrap{padding-bottom:clamp(40px,6vw,64px)}
 .shop{display:grid;grid-template-columns:240px minmax(0,1fr);gap:28px;align-items:start}
 .filters{border:1px solid var(--border);border-radius:12px;background:var(--surface);position:sticky;top:120px}
-.fgroup{padding:16px;border-bottom:1px solid var(--border)}
+.fgroup{padding:20px 18px;border-bottom:1px solid var(--border)}
 .fgroup:last-child{border-bottom:0}
-.fgroup h5{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:12px}
+.fgroup h5{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:2px 0 14px}
 .fopt{display:flex;align-items:center;gap:9px;font-size:14px;padding:5px 0;cursor:pointer;color:var(--fg);text-decoration:none}
 .fopt input{accent-color:var(--accent);width:16px;height:16px}
 .fopt .ct{margin-left:auto;font-size:12px;color:var(--muted)}
