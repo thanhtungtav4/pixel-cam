@@ -1728,7 +1728,13 @@ footer a:hover{color:#fff}
 @media(max-width:820px){.acc-layout{grid-template-columns:1fr}.acc-side{position:static}.acc-cards{grid-template-columns:1fr}}
 
 /* ===== WOOCOMMERCE BRIDGE (map Woo core markup → Pixel Cam) ===== */
-/* Fallback if the loop is not replaced by the .grid wrapper */
+/* Shop page: 5-col grid on the custom .grid wrapper that WooHook outputs
+   (overrides the generic .grid 3-col default in core.css). */
+.shop .grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+@media(max-width:1100px){.shop .grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:780px){.shop .grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.shop .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
+/* Fallback if a template still emits the raw Woo loop (no .grid wrapper) */
 .woocommerce ul.products{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
 @media(max-width:1100px){.woocommerce ul.products{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:780px){.woocommerce ul.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
