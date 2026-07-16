@@ -395,15 +395,15 @@ section{padding:clamp(36px,6vw,56px) 0}
 .wish svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.6;transition:.15s}
 .wish:hover svg{stroke:var(--accent)}
 .wish.on svg{stroke:var(--accent);fill:var(--accent)}
-.pcard .body{padding:12px 14px 14px;display:flex;flex-direction:column;flex:1;gap:4px}
+.pcard .body{padding:10px 12px 12px;display:flex;flex-direction:column;flex:1;gap:4px}
 /* Brand is a sub-label of the name → sit it tight above, not evenly spaced. */
 .pcard .brand{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;line-height:1;margin-bottom:2px}
-.pcard .name{font-size:14px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:38px}
+.pcard .name{font-size:13px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}
 .pcard .spec{font-size:12px;color:var(--muted);line-height:1.3}
-.price{margin-top:auto;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.price{margin-top:auto;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
 .price{font-variant-numeric:tabular-nums}
-.price .now{font-size:17px;font-weight:700;color:var(--accent)}
-.price .old{font-size:13px;color:var(--muted);text-decoration:line-through}
+.price .now{font-size:15px;font-weight:700;color:var(--accent)}
+.price .old{font-size:12px;color:var(--muted);text-decoration:line-through}
 /* Add-to-cart button (Woo outputs <a> in the loop → style both a/button). */
 .pcard .addcart{margin-top:8px;display:block;width:100%;text-align:center;border:1px solid var(--accent);
   color:var(--accent);background:transparent;border-radius:8px;padding:9px;font:inherit;font-weight:600;
@@ -1729,8 +1729,10 @@ footer a:hover{color:#fff}
 
 /* ===== WOOCOMMERCE BRIDGE (map Woo core markup → Pixel Cam) ===== */
 /* Fallback if the loop is not replaced by the .grid wrapper */
-.woocommerce ul.products{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-@media(max-width:680px){.woocommerce ul.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
+.woocommerce ul.products{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+@media(max-width:1100px){.woocommerce ul.products{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:780px){.woocommerce ul.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.woocommerce ul.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
 .woocommerce ul.products>li{margin:0}
 /* Shop container padding */
 .woo-content{padding-block:clamp(24px,4vw,40px)}
