@@ -7,7 +7,7 @@
  * `initPdpTabs()` JS hook can toggle without a hash-change.
  *
  * Tab definitions come from the same `woocommerce_product_tabs` filter as
- * Woo default — the callbacks we register in WooHook::product_tabs() are
+ * Woo default — the callbacks we register in WooProductHook::product_tabs() are
  * invoked here exactly like Woo would.
  *
  * @package Underscores

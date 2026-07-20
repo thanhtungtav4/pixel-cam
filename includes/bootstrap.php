@@ -20,7 +20,12 @@ require_once UNDERSCORES_CHILD_THEME_INCLUDES_PATH . '/functions/template-functi
 \Theme\Child\Acf\LocalJson::register();
 \Theme\Child\Hooks\PerformanceHook::register();
 \Theme\Child\Hooks\ThemeHook::register();
-\Theme\Child\Hooks\WooHook::register();
+// Woo concerns split by surface area (see PR notes):
+\Theme\Child\Hooks\WooTemplateHook::register();   // wrappers, page head, sort bar, view toggle, no-results
+\Theme\Child\Hooks\WooProductHook::register();    // gallery, PDP blocks, tabs, swatches, related/upsell args
+\Theme\Child\Hooks\WooCartHook::register();       // cart fragments, cross-sells, inline string translate
+\Theme\Child\Hooks\WooAccountHook::register();    // my-account menu + auth-toggle JS
+\Theme\Child\Hooks\PaymentVietQrHook::register();  // bank-transfer (bacs) VietQR thank-you block
 \Theme\Child\Hooks\SeoHook::register();
 \Theme\Child\Hooks\MediaHook::register();
 \Theme\Child\Hooks\SecurityHook::register();

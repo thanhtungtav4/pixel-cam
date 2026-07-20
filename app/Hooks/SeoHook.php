@@ -151,13 +151,19 @@ final class SeoHook
             wp_safe_redirect(esc_url_raw($redirect), 301);
             exit;
         }
+        // 410 Gone: status header is what crawlers honor. wp_die() lets
+        // maintenance/security plugins still hook in (vs raw echo+exit), and
+        // automatically applies the proper 410 status.
         status_header(410);
         nocache_headers();
-        $home  = esc_url(home_url('/'));
-        $title = esc_html__('Sản phẩm đã ngừng bán', 'underscores');
-        $msg   = esc_html__('Sản phẩm này đã ngừng kinh doanh. Vui lòng quay lại cửa hàng.', 'underscores');
-        echo "<!doctype html><html lang=\"vi\"><head><meta charset=\"utf-8\"><title>$title</title></head><body><h1>$title</h1><p>$msg</p><p><a href=\"$home\">Về trang chủ</a></p></body></html>";
-        exit;
+        wp_die(
+            wp_kses_post(
+                '<p>' . esc_html__('Sản phẩm này đã ngừng kinh doanh. Vui lòng quay lại cửa hàng.', 'underscores') . '</p>'
+                . '<p><a href="' . esc_url(home_url('/')) . '">' . esc_html__('Về trang chủ', 'underscores') . '</a></p>'
+            ),
+            esc_html__('Sản phẩm đã ngừng bán', 'underscores'),
+            ['response' => 410]
+        );
     }
 
     public function primary_category_breadcrumb(array $crumbs): array
@@ -198,7 +204,7 @@ final class SeoHook
 
     public function primary_category_permalink(string $permalink, $post): string
     {
-        if (! $post instanceof WP_Post || $post->post_type !== 'product') {
+        if (! $post instanceof \WP_Post || $post->post_type !== 'product') {
             return $permalink;
         }
         if (strpos($permalink, '%product_cat%') === false || ! function_exists('get_field')) {

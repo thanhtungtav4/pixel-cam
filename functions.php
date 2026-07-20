@@ -29,57 +29,18 @@ if (!defined('UNDERSCORES_CHILD_THEME_STUB_PATH')) {
     define('UNDERSCORES_CHILD_THEME_STUB_PATH', UNDERSCORES_CHILD_THEME_PATH . '/stubs');
 }
 
-// ponytail: config_path is a dead field on the scaffold generator; point it at stubs so CLI boots.
+// Scaffold-generator CONST: the class-child-scaffold-generator.php constructor
+// requires a $config_path arg but doesn't actually read it (kept for ABI
+// stability with a future i-dent-derived release). Pointing it at the stubs
+// directory satisfies the constructor while the field itself is dead — the
+// scaffolder reads from the child theme root, not the config dir.
 if (!defined('UNDERSCORES_CHILD_THEME_CONFIG_PATH')) {
     define('UNDERSCORES_CHILD_THEME_CONFIG_PATH', UNDERSCORES_CHILD_THEME_STUB_PATH);
 }
 
-if (!function_exists('get_main_class')) {
-    function get_main_class($css_class = ''): string
-    {
-        $classes = ['main'];
-        $registered_classes = $GLOBALS['underscores_child_main_class'] ?? '';
-
-        if (!empty($registered_classes)) {
-            if (!is_array($registered_classes)) {
-                $registered_classes = preg_split('#\s+#', (string) $registered_classes);
-            }
-
-            $classes = array_merge($classes, $registered_classes);
-        }
-
-        if (!empty($css_class)) {
-            if (!is_array($css_class)) {
-                $css_class = preg_split('#\s+#', (string) $css_class);
-            }
-
-            $classes = array_merge($classes, $css_class);
-        }
-
-        $classes = apply_filters('main_class', $classes, $css_class);
-        $classes = array_filter(array_map('sanitize_html_class', array_unique((array) $classes)));
-
-        if ($classes === []) {
-            return '';
-        }
-
-        return sprintf('class="%s"', esc_attr(implode(' ', $classes)));
-    }
-}
-
-if (!function_exists('main_class')) {
-    function main_class($css_class = ''): void
-    {
-        echo get_main_class($css_class);
-    }
-}
-
-if (!function_exists('underscores_child_set_main_class')) {
-    function underscores_child_set_main_class($css_class = ''): void
-    {
-        $GLOBALS['underscores_child_main_class'] = $css_class;
-    }
-}
+// Template tags get_main_class()/main_class()/underscores_child_set_main_class()
+// live in includes/functions/template-functions.php (loaded by bootstrap.php).
+// functions.php stays constants + bootstrap only.
 
 function underscores_child_bootstrap(): void
 {
@@ -97,5 +58,22 @@ function underscores_child_bootstrap(): void
         require_once $init_file;
     }
 }
+
+/**
+ * Load the theme's text domain so __() / esc_html__() / etc. resolve from
+ * languages/underscores-{locale}.mo.
+ *
+ * Priority 10 (default) — runs after parent theme's after_setup_theme (which
+ * is also @10) so the child .mo wins for matching strings, but the parent
+ * fallback is still available for strings the child didn't override.
+ */
+function underscores_child_load_textdomain(): void
+{
+    load_theme_textdomain(
+        'underscores',
+        UNDERSCORES_CHILD_THEME_PATH . '/languages'
+    );
+}
+add_action('after_setup_theme', 'underscores_child_load_textdomain', 10);
 
 add_action('after_setup_theme', 'underscores_child_bootstrap', 0);

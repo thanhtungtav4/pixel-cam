@@ -231,90 +231,12 @@ $avg_display = $review_count > 0 ? number_format($average, 1) : '0.0';
                 </button>
             </div>
         </div>
-        <script>
-        (function(){
-          var toggle = document.querySelector('.pxc-review-toggle');
-          var panel  = document.getElementById('pxcReviewForm');
-          if (!toggle || !panel) return;
-
-          // Cancel button (inside the form)
-          var cancelBtn = panel.querySelector('.pxc-rf-cancel');
-          var close = function(){
-            panel.setAttribute('hidden','');
-            toggle.setAttribute('aria-expanded','false');
-            toggle.focus();
-            // Reset form
-            var form = panel.querySelector('form.pxc-rf');
-            if (form) form.reset();
-            var hidden = panel.querySelector('#pxc_rating');
-            if (hidden) hidden.value = '';
-            var hint = panel.querySelector('.pxc-rf-rate-hint');
-            if (hint) hint.textContent = 'Chạm để chấm';
-            paintStars(0);
-          };
-          toggle.addEventListener('click', function(){
-            var open = panel.hasAttribute('hidden');
-            if (open) {
-              panel.removeAttribute('hidden');
-              toggle.setAttribute('aria-expanded','true');
-              // Focus the title (or first focusable) — NOT a star (which would
-              // visually mark it as selected via the focus state).
-              setTimeout(function(){
-                var title = panel.querySelector('.pxc-rf-title');
-                if (title) { title.setAttribute('tabindex','-1'); title.focus(); }
-              }, 60);
-            } else {
-              close();
-            }
-          });
-          if (cancelBtn) cancelBtn.addEventListener('click', close);
-
-          // Interactive star picker with live hint labels
-          var wrap  = panel.querySelector('[data-stars]');
-          var hint  = panel.querySelector('.pxc-rf-rate-hint');
-          var HIDDEN_ID = 'pxc_rating';
-          var LABELS = ['', 'Rất tệ', 'Tệ', 'Bình thường', 'Tốt', 'Rất tốt'];
-          function getHidden(){ return panel.querySelector('#' + HIDDEN_ID); }
-          function paintStars(v){
-            if (!wrap) return;
-            var btns = wrap.querySelectorAll('button[data-val]');
-            btns.forEach(function(b, i){
-              var on = (i + 1) <= v;
-              b.classList.toggle('on', on);
-              b.setAttribute('aria-checked', on && (i + 1) === v ? 'true' : 'false');
-            });
-          }
-          if (wrap) {
-            var btns = wrap.querySelectorAll('button[data-val]');
-            btns.forEach(function(b, i){
-              var v = i + 1;
-              b.addEventListener('mouseenter', function(){
-                paintStars(v);
-                if (hint) hint.textContent = v + ' ★ — ' + LABELS[v];
-              });
-              b.addEventListener('focus', function(){
-                paintStars(v);
-                if (hint) hint.textContent = v + ' ★ — ' + LABELS[v];
-              });
-              b.addEventListener('mouseleave', function(){
-                var cur = parseInt((getHidden() && getHidden().value) || 0, 10);
-                paintStars(cur);
-                if (hint) hint.textContent = cur > 0 ? (cur + ' ★ — ' + LABELS[cur]) : 'Chạm để chấm';
-              });
-              b.addEventListener('click', function(){
-                var hidden = getHidden();
-                if (!hidden) return;
-                // Toggle: click same star to clear
-                var cur = parseInt(hidden.value || 0, 10);
-                var next = (cur === v) ? 0 : v;
-                hidden.value = next;
-                paintStars(next);
-                if (hint) hint.textContent = next > 0 ? (next + ' ★ — ' + LABELS[next]) : 'Chạm để chấm';
-              });
-            });
-          }
-        })();
-        </script>
+        <?php
+        // The review form toggle + star picker is enqueued by
+        // Theme\Child\Hooks\WooProductHook::enqueue_review_form_asset() and
+        // lives in assets/scripts/woocommerce/review-form.js. Do not inline
+        // JS here — breaks strict CSP and violates WPCS.
+        ?>
     <?php else : ?>
         <p class="woocommerce-verification-required pxc-review-locked"><?php esc_html_e('Chỉ khách đã mua sản phẩm mới có thể viết đánh giá.', 'underscores'); ?></p>
     <?php endif; ?>

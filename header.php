@@ -29,6 +29,7 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
 
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<a class="skip-link" href="#content"><?php esc_html_e('Bỏ qua đến nội dung chính', 'underscores'); ?></a>
 
 <!-- TOPBAR -->
 <div class="topbar"><div class="wrap">
@@ -92,14 +93,19 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
             </span>
         </a>
         <?php if (defined('YITH_WCWL') && function_exists('YITH_WCWL')) :
-            $wishlist_url = esc_url(YITH_WCWL()->get_wishlist_url());
+            $wishlist_url = (string) YITH_WCWL()->get_wishlist_url();
             $wish_count   = function_exists('yith_wcwl_count_all_products') ? (int) yith_wcwl_count_all_products() : 0;
+            // YITH can return an empty URL when the wishlist page hasn't been
+            // set in Settings → YITH. Skip the link in that case — a bare
+            // href="" would just reload the current page.
+            if ($wishlist_url !== '') :
             ?>
-            <a class="ha is-wishlist" href="<?php echo $wishlist_url; ?>" aria-label="<?php esc_attr_e('Yêu thích', 'underscores'); ?>">
+            <a class="ha is-wishlist" href="<?php echo esc_url($wishlist_url); ?>" aria-label="<?php esc_attr_e('Yêu thích', 'underscores'); ?>">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg>
                 <span><?php esc_html_e('Yêu thích', 'underscores'); ?></span>
-                <span class="badge" id="wishBadge"><?php echo $wish_count; ?></span>
+                <span class="badge" id="wishBadge"><?php echo (int) $wish_count; ?></span>
             </a>
+            <?php endif; ?>
         <?php endif; ?>
         <?php if ($has_woo) : ?>
             <div class="cart-wrap" id="cartWrap">
@@ -110,7 +116,15 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
                 </a>
                 <div class="mini-cart" aria-label="<?php esc_attr_e('Giỏ hàng', 'underscores'); ?>">
                     <div class="widget_shopping_cart_content">
-                        <?php woocommerce_mini_cart(); ?>
+                        <?php
+                        // Only render the mini-cart server-side when the cart has
+                        // items — avoids the mini-cart template cost on every page
+                        // for empty carts. WC fragments (wc-cart-fragments) refresh
+                        // this container on the first add-to-cart.
+                        if ($cart_count > 0) {
+                            woocommerce_mini_cart();
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -151,4 +165,4 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
 </nav>
 <?php endif; ?>
 
-<main <?php echo get_main_class(); ?>>
+<main id="content" tabindex="-1" <?php echo get_main_class(); ?>>
