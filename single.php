@@ -62,7 +62,7 @@ while (have_posts()) :
                                 <?php echo esc_html($cat->name); ?>
                             </a>
                         <?php endif; ?>
-                        <h1 class="post-cover__title"><?php the_title(); ?></h1>
+                        <p class="post-cover__title" aria-hidden="true"><?php the_title(); ?></p>
                     </div>
                 <?php endif; ?>
             </div>

@@ -602,6 +602,13 @@ footer a:hover{color:#fff}
 
 .blog-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
 @media(max-width:640px){.blog-grid{grid-template-columns:minmax(0,1fr)}}
+/* Author posts page has no sidebar, so the default 2-col cards render
+   too wide (~590px). Bump to 3-col on desktop for tighter, more balanced
+   cards (~380px). Scoped to `.author-posts` so the main /tin-tuc/ grid
+   (which shares the `.blog-grid` class) keeps its 2-col layout. */
+@media(min-width:1025px){
+  .author-posts .blog-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
 .bcard{border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden;display:flex;
   flex-direction:column;transition:.15s}
 .bcard:hover{border-color:var(--accent)}
