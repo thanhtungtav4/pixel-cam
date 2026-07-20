@@ -848,7 +848,22 @@ final class WooHook
             }
         }
         if ($desc !== '') {
-            echo '<div class="meta">' . wp_kses_post(wpautop($desc)) . '</div>';
+            // Collapsible description: `.meta-wrap` is hidden by JS when the
+            // content fits within the collapsed height (so short descriptions
+            // show the full text without a button). See `initMetaToggle`.
+            echo '<div class="meta-wrap" data-meta-wrap>'
+                . '<div class="meta" data-meta>' . wp_kses_post(wpautop($desc)) . '</div>'
+                . '<button class="meta-toggle" type="button" data-meta-toggle '
+                . 'aria-expanded="false" aria-controls="' . esc_attr('meta-' . md5($desc)) . '">'
+                . '<span class="meta-toggle__label" data-meta-label>'
+                . esc_html__('Xem thêm', 'underscores') . '</span>'
+                . '<svg class="meta-toggle__icon" viewBox="0 0 24 24" width="14" height="14" '
+                . 'aria-hidden="true" focusable="false">'
+                . '<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" '
+                . 'fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+                . '</svg>'
+                . '</button>'
+                . '</div>';
         }
 
         echo '</div></div>'; // .page-head, .page-head-wrap

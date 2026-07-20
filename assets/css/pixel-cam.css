@@ -529,6 +529,24 @@ footer a:hover{color:#fff}
 .page-head{padding:8px 0 24px}
 .page-head h1{font-size:clamp(24px,3.5vw,34px);font-weight:700;letter-spacing:-.02em}
 .page-head .meta{color:var(--muted);font-size:14px;margin-top:6px}
+/* Collapsible description (category / tag description on Woo archives).
+   JS sets `is-collapsed` on `.meta-wrap` when the content overflows; the
+   mask-image fades the bottom 60px so users see there's more below. */
+.page-head .meta-wrap{position:relative;margin-top:6px}
+.page-head .meta-wrap.is-collapsed .meta{
+  max-height:200px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 60px),transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 60px),transparent 100%);
+  transition:max-height .35s ease}
+.page-head .meta-wrap.is-expanded .meta{max-height:2000px;transition:max-height .5s ease}
+.page-head .meta-wrap:not(.is-collapsed):not(.is-expanded) .meta-toggle{display:none}
+.page-head .meta-toggle{
+  margin-top:10px;background:transparent;border:0;padding:0;
+  font:inherit;font-size:13.5px;font-weight:600;color:var(--accent);
+  cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.page-head .meta-toggle:hover{color:var(--accent-80)}
+.page-head .meta-toggle__icon{transition:transform .25s ease}
+.page-head .meta-wrap.is-expanded .meta-toggle__icon{transform:rotate(180deg)}
 .page-head .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .chip{font-size:13px;border:1px solid var(--border);background:var(--surface);padding:6px 12px;border-radius:99px;
   cursor:pointer;color:var(--fg);font-family:inherit;transition:.15s}

@@ -500,6 +500,41 @@ function initPwToggle() {
   });
 }
 
+/* ---------- Meta toggle (category / tag description expand) ----------
+   Collapses long Woo term descriptions with a bottom fade. JS measures
+   scrollHeight; if it fits inside the CSS max-height (200px), the button
+   stays hidden and the wrap is left untouched. Otherwise we add
+   `is-collapsed` and let the toggle swap to `is-expanded`. */
+function initMetaToggle() {
+  const COLLAPSED_PX = 200; // must match the .is-collapsed .meta max-height in CSS
+  const LABEL_MORE = 'Xem thêm';
+  const LABEL_LESS = 'Thu gọn';
+
+  document.querySelectorAll('[data-meta-wrap]').forEach(wrap => {
+    const meta = wrap.querySelector('[data-meta]');
+    const btn  = wrap.querySelector('[data-meta-toggle]');
+    const lbl  = wrap.querySelector('[data-meta-label]');
+    if (!meta || !btn) return;
+
+    // Measure: clientHeight of the natural (un-collapsed) content.
+    // Temporarily remove any state to read true height.
+    wrap.classList.remove('is-collapsed', 'is-expanded');
+    const natural = meta.scrollHeight;
+    if (natural <= COLLAPSED_PX + 1) {
+      // Short description — no toggle needed, leave it fully visible.
+      return;
+    }
+    wrap.classList.add('is-collapsed');
+
+    btn.addEventListener('click', () => {
+      const expanded = wrap.classList.toggle('is-expanded');
+      wrap.classList.toggle('is-collapsed', !expanded);
+      btn.setAttribute('aria-expanded', String(expanded));
+      if (lbl) lbl.textContent = expanded ? LABEL_LESS : LABEL_MORE;
+    });
+  });
+}
+
 /* ---------- Copy link (blog share) ---------- */
 function initCopyLink() {
   document.querySelectorAll('[data-copy-link]').forEach(btn => {
@@ -651,6 +686,7 @@ function boot() {
   initVariationSwatches();
   initPwToggle();
   initCopyLink();
+  initMetaToggle();
   initCheckoutShippingSync();
 }
 
