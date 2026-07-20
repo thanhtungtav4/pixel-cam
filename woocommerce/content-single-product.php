@@ -103,7 +103,7 @@ $sku         = $product->get_sku();
              * @hooked woocommerce_template_single_meta - 40
              */
             // Gifts (@12), version chips (@15) and stock (@28) are hooked into
-            // woocommerce_single_product_summary in WooHook, so they land in the
+            // woocommerce_single_product_summary in WooProductHook, so they land in the
             // right order (before add-to-cart @30).
             do_action('woocommerce_single_product_summary');
             ?>
@@ -133,7 +133,7 @@ $sku         = $product->get_sku();
             <?php
             // Note: the "Hộp sản phẩm bao gồm" block used to live here in
             // the right info column. It now sits inside the TỔNG QUAN tab
-            // (right side, see WooHook::product_tabs() / pxc_overview).
+            // (right side, see WooProductHook::product_tabs() / pxc_overview).
             ?>
         </div>
     </div>

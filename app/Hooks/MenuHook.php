@@ -26,7 +26,39 @@ final class MenuHook
         add_action('wp_nav_menu_item_custom_fields', [$self, 'render_field'], 10, 2);
         add_action('wp_update_nav_menu_item', [$self, 'save_field'], 10, 2);
         add_filter('walker_nav_menu_start_el', [$self, 'prepend_icon'], 10, 4);
+        add_filter('wp_nav_menu_objects', [$self, 'prime_icon_caches'], 10, 2);
         add_action('admin_enqueue_scripts', [$self, 'enqueue_media_picker']);
+    }
+
+    /**
+     * Batch-prime attachment caches for all menu-item icons before the walk.
+     *
+     * Without this, icon_html() runs wp_get_attachment_url() per item → one
+     * uncached attachment (post + _wp_attached_file meta) lookup each. A 30-item
+     * mega menu = ~30–60 uncached queries on EVERY page. Priming once collapses
+     * that to a single batched query.
+     *
+     * @param array<int,\WP_Post> $items
+     * @param object              $args
+     * @return array<int,\WP_Post>
+     */
+    public function prime_icon_caches($items, $args)
+    {
+        if (! is_array($items) || $items === []) {
+            return $items;
+        }
+        $icon_ids = [];
+        foreach ($items as $item) {
+            $icon_id = (int) get_post_meta((int) $item->ID, self::META_KEY, true);
+            if ($icon_id) {
+                $icon_ids[] = $icon_id;
+            }
+        }
+        if ($icon_ids !== []) {
+            // Prime post objects + their meta (incl. _wp_attached_file) in one go.
+            _prime_post_caches(array_unique($icon_ids), false, true);
+        }
+        return $items;
     }
 
     /**
@@ -56,6 +88,11 @@ final class MenuHook
      */
     public function save_field($menu_id, $menu_item_db_id): void
     {
+        // Defense-in-depth: core already gates the nav-menu screen behind this
+        // cap + the menu nonce, but never trust the calling context implicitly.
+        if (! current_user_can('edit_theme_options')) {
+            return;
+        }
         // phpcs:ignore WordPress.Security.NonceVerification -- core verifies the menu nonce.
         $posted = $_POST['pxc_menu_icon'][$menu_item_db_id] ?? null;
         if ($posted === null || $posted === '') {
@@ -100,6 +137,9 @@ final class MenuHook
 
     /**
      * Load wp.media + a tiny picker script on the menu editor screen only.
+     * The picker is a real enqueued file (not wp_add_inline_script against
+     * jquery-core — that's a dep handle, not an enqueued handle, and silently
+     * no-ops in some WP load orders).
      */
     public function enqueue_media_picker(string $hook): void
     {
@@ -107,28 +147,19 @@ final class MenuHook
             return;
         }
         wp_enqueue_media();
-        wp_add_inline_script('jquery-core', <<<'JS'
-jQuery(function($){
-  $(document).on('click','.pxc-icon-pick',function(e){
-    e.preventDefault();
-    var $row=$(this).closest('.field-pxc-icon');
-    var frame=wp.media({title:'Chọn icon',library:{type:['image/svg+xml','image']},multiple:false,button:{text:'Dùng icon'}});
-    frame.on('select',function(){
-      var a=frame.state().get('selection').first().toJSON();
-      $row.find('.pxc-icon-id').val(a.id);
-      $row.find('.pxc-icon-preview').html('<img src="'+a.url+'" alt="">');
-      $row.find('.pxc-icon-remove').removeClass('is-hidden');
-    });
-    frame.open();
-  });
-  $(document).on('click','.pxc-icon-remove',function(e){
-    e.preventDefault();
-    var $row=$(this).closest('.field-pxc-icon');
-    $row.find('.pxc-icon-id').val('');
-    $row.find('.pxc-icon-preview').empty();
-    $(this).addClass('is-hidden');
-  });
-});
-JS);
+
+        $relative = 'assets/scripts/admin/menu-icon-picker.js';
+        $path     = underscores_child_asset_path($relative);
+        if (! file_exists($path)) {
+            return;
+        }
+
+        wp_enqueue_script(
+            'pxc-menu-icon-picker',
+            underscores_child_asset_uri($relative),
+            [],
+            underscores_child_asset_version($relative),
+            true
+        );
     }
 }

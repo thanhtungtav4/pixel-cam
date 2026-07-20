@@ -42,6 +42,16 @@ final class FilterHook
         add_action('woocommerce_product_set_stock_status', $flush);
         add_action('deleted_post', $flush);
 
+        // Bust the per-term config cache when a product_cat term is edited or
+        // its meta is updated (admin changes the filter config).
+        $flush_term_config = static fn() => underscores_child_bump_cache_version('filter_term_config');
+        add_action('created_term', $flush_term_config);
+        add_action('edited_term', $flush_term_config);
+        add_action('deleted_term', $flush_term_config);
+        add_action('updated_term_meta', $flush_term_config);
+        add_action('added_term_meta', $flush_term_config);
+        add_action('deleted_term_meta', $flush_term_config);
+
         // "Đang lọc" chips above the grid (before result count @20).
         add_action('woocommerce_before_shop_loop', [$self, 'render_active_chips'], 17);
     }
@@ -104,14 +114,23 @@ final class FilterHook
             return null;
         }
 
-        $attrs = get_term_meta($term->term_id, self::META_ATTRS, true);
-        $attrs = is_array($attrs) ? array_values(array_filter(array_map('strval', $attrs))) : [];
-        $price = (string) get_term_meta($term->term_id, self::META_PRICE, true) === '1';
+        // Cached per term: term_meta reads are 2 separate queries each request
+        // for every category page. Bump the cache group on taxonomy edits via
+        // `created_term` / `edited_term` to keep this honest.
+        return underscores_child_versioned_cache(
+            'filter_term_config',
+            't_' . $term->term_id,
+            function () use ($term): ?array {
+                $attrs = get_term_meta($term->term_id, self::META_ATTRS, true);
+                $attrs = is_array($attrs) ? array_values(array_filter(array_map('strval', $attrs))) : [];
+                $price = (string) get_term_meta($term->term_id, self::META_PRICE, true) === '1';
 
-        if (empty($attrs) && ! $price) {
-            return null;
-        }
-        return ['attributes' => $attrs, 'price' => $price];
+                if (empty($attrs) && ! $price) {
+                    return null;
+                }
+                return ['attributes' => $attrs, 'price' => $price];
+            }
+        );
     }
 
     public function has_config(): bool

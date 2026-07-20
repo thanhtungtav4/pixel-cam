@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<!--
+  WPCS configuration for the Pixel Cam child theme.
+
+  Layers:
+    - WordPress              (base WPCS rules)
+    - WordPress-Extra        (stricter rules — turned on for tighter control)
+    - WordPress-Docs         (docblock requirements — opt-in per project)
+    - WordPress-Core         (core compat — informational only, not enforced)
+
+  Severity model:
+    - errors  (e.g. WPCS.Security.NonceVerification) → fail CI
+    - warnings (e.g. WPCS.Files.FileName)            → fail CI
+    - some rules excluded to keep PR reviews focused
+      on real issues instead of style nits.
+
+  Run:
+    composer install
+    vendor/bin/phpcs
+    vendor/bin/phpcbf          # auto-fix what's safe
+-->
+<ruleset name="PixelCamChild">
+
+    <description>WPCS ruleset for the Pixel Cam WordPress child theme.</description>
+
+    <!-- What to scan -->
+    <file>./app</file>
+    <file>./includes</file>
+    <file>./functions.php</file>
+    <file>./header.php</file>
+    <file>./footer.php</file>
+    <file>./front-page.php</file>
+    <file>./home.php</file>
+    <file>./page.php</file>
+    <file>./single.php</file>
+    <file>./category.php</file>
+    <file>./tag.php</file>
+    <file>./taxonomy.php</file>
+    <file>./author.php</file>
+    <file>./404.php</file>
+    <file>./woocommerce.php</file>
+    <file>./page-template</file>
+    <file>./partials</file>
+    <file>./woocommerce</file>
+
+    <!-- Skip the build/PHP-CLI tool scripts and the ACF JSON validator
+         (those are dev-only tools, not theme source). -->
+    <exclude-pattern>*/bin/*</exclude-pattern>
+    <exclude-pattern>*/acf-json/*</exclude-pattern>
+    <exclude-pattern>*/languages/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/.git/*</exclude-pattern>
+    <exclude-pattern>*/.ai/*</exclude-pattern>
+    <exclude-pattern>*/.cursor/*</exclude-pattern>
+    <exclude-pattern>*/stubs/*</exclude-pattern>
+
+    <!-- Standards: enable WordPress + WordPress-Extra. -->
+    <rule ref="WordPress">
+        <!-- We use real namespaces (PSR-4), not the WP-classic class style. -->
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+        <exclude name="WordPress.Files.FileName.NotHyphenated"/>
+    </rule>
+    <rule ref="WordPress-Extra">
+        <!-- WordPress-Extra is strict on inline scripts and escape calls —
+             on by default for this project. -->
+    </rule>
+    <rule ref="WordPress-Docs"/>
+
+    <!-- Text domain: all theme strings use 'underscores'. -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="underscores"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- PHP version compatibility: WP 6.x requires PHP 7.4+, but the
+         theme declares 8.1+. We check against 8.1 to allow modern syntax
+         (readonly properties, first-class callable, never return type, etc.) -->
+    <config name="testVersion" value="8.1-"/>
+
+    <!-- Show progress + a sensible report. -->
+    <arg value="sp"/>
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="8"/>
+
+    <!-- Severity overrides: warnings to errors so CI fails consistently. -->
+    <rule ref="WordPress.Security.NonceVerification">
+        <severity>1</severity>
+    </rule>
+    <rule ref="WordPress.Security.ValidatedSanitizedInput">
+        <severity>1</severity>
+    </rule>
+    <rule ref="WordPress.Security.EscapeOutput">
+        <severity>1</severity>
+    </rule>
+    <rule ref="WordPress.WP.I18n.MissingTranslatorsComment">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Excluded rules (with rationale): -->
+
+    <!-- WP.WP.I18n.NonSingularStringLiteralContext — false positive on
+         placeholders like "Từ %s trở lên" where the placeholder makes
+         the rule think it's a singular form. -->
+    <rule ref="WordPress.WP.I18n.NonSingularStringLiteralContext">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Generic.PHP.NoSilencedErrors — we use @unlink / @mkdir in a few
+         places where the failure is harmless and we have our own error
+         handling. Keep this as a warning, not an error. -->
+    <rule ref="Generic.PHP.NoSilencedErrors">
+        <severity>0</severity>
+    </rule>
+
+    <!-- WordPress.PHP.YodaConditions — readability preference; not a
+         correctness issue. -->
+    <rule ref="WordPress.PHP.YodaConditions">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Squiz.Functions.MultiLineFunctionDeclaration — strict brace style
+         on multi-line function decls; our style is consistent without it. -->
+    <rule ref="Squiz.Functions.MultiLineFunctionDeclaration">
+        <severity>0</severity>
+    </rule>
+
+</ruleset>

@@ -108,36 +108,9 @@ $show_register = isset($_POST['register']) || (isset($_GET['action']) && $_GET['
 
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleBtns = document.querySelectorAll('.auth-toggle-btn');
-    const loginBox = document.querySelector('.auth-login-box');
-    const registerBox = document.querySelector('.auth-register-box');
-    
-    toggleBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = this.getAttribute('data-target');
-            if (target === 'register') {
-                loginBox.style.display = 'none';
-                if (registerBox) {
-                    registerBox.style.display = 'block';
-                    window.location.hash = 'register';
-                }
-            } else {
-                if (registerBox) registerBox.style.display = 'none';
-                loginBox.style.display = 'block';
-                window.location.hash = 'login';
-            }
-        });
-    });
-
-    // Also check URL hash on load
-    if (window.location.hash === '#register' && registerBox) {
-        loginBox.style.display = 'none';
-        registerBox.style.display = 'block';
-    }
-});
-</script>
-
-<?php do_action('woocommerce_after_customer_login_form'); ?>
+<?php
+// Login/register tab toggle JS is enqueued by Theme\Child\Hooks\WooAccountHook
+// (assets/scripts/woocommerce/auth-toggle.js). Do not inline JS here — breaks
+// strict CSP and violates WPCS.
+do_action('woocommerce_after_customer_login_form');
+?>

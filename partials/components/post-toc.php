@@ -3,16 +3,27 @@
  * Blog post TOC — auto-generated from <h2> headings in the_content.
  * Markup matches pixel-cam/blog-post.html .post-toc
  *
- * Uses the same heading extraction as underscores_child_add_heading_ids()
- * so TOC anchors always match the rendered heading ids.
+ * Callers should pre-compute the headings via underscores_child_extract_headings()
+ * and pass them via $args['headings'] so we don't re-run get_the_content() +
+ * the_content filter + regex inside the render. Same data source as
+ * underscores_child_add_heading_ids() so TOC anchors always match the
+ * rendered heading ids.
  *
+ * @param array $args {
+ *   'headings' => list<array{id:string,text:string}>  Pre-computed headings.
+ * }
  * @package Underscores
  */
 defined('ABSPATH') || exit;
 
-$headings = function_exists('underscores_child_extract_headings')
-    ? underscores_child_extract_headings(get_the_content())
-    : [];
+$headings = isset($args['headings']) && is_array($args['headings']) ? $args['headings'] : [];
+
+// Fallback: if the caller didn't pre-compute (legacy include sites), extract
+// here so the partial still works. The compute is cached by the_content
+// upstream so this is cheap in practice.
+if (empty($headings) && function_exists('underscores_child_extract_headings')) {
+    $headings = underscores_child_extract_headings(get_the_content());
+}
 
 if (empty($headings)) {
     return;

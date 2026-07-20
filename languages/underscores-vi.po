@@ -1,0 +1,1051 @@
+# Copyright (C) 2026-07-20 05:41+0000 Pixel Cam
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Pixel Cam Child Theme\n"
+"Report-Msgid-Bugs-To: https://github.com/thanhtungtav4/Omnichannel\n"
+"POT-Creation-Date: 2026-07-20 05:41+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Vietnamese\n"
+"X-Generator: underscores/bin/build-pot.php\n"
+"X-Domain: underscores\n"
+
+
+msgid "%s trước"
+msgstr "%s trước"
+#: woocommerce/single-product-reviews.php:118
+
+msgid "%s đánh giá"
+msgstr "%s đánh giá"
+#: woocommerce/single-product-reviews.php:73
+
+msgid "0903 xxx xxx"
+msgstr "0903 xxx xxx"
+#: partials/components/contact-fallback-form.php:20
+
+msgid "15 – 30 triệu"
+msgstr "15 – 30 triệu"
+#: partials/components/contact-fallback-form.php:47
+
+msgid "30 – 60 triệu"
+msgstr "30 – 60 triệu"
+#: partials/components/contact-fallback-form.php:48
+
+msgid "60 – 100 triệu"
+msgstr "60 – 100 triệu"
+#: partials/components/contact-fallback-form.php:49
+
+msgid "7 ngày · Không phí"
+msgstr "7 ngày · Không phí"
+#: woocommerce/cart/cart-totals.php:85
+
+msgid "Available on backorder"
+msgstr "Available on backorder"
+#: woocommerce/cart/cart.php:93
+
+msgid "Bài viết của %s"
+msgstr "Bài viết của %s"
+#: partials/author/posts.php:23
+#: partials/author/posts.php:27
+
+msgid "Bài viết liên quan"
+msgstr "Bài viết liên quan"
+#: partials/components/product-internal-links.php:94
+#: partials/components/post-related.php:67
+
+msgid "Bài đã đăng:"
+msgstr "Bài đã đăng:"
+#: partials/author/header.php:90
+
+msgid "Bài đọc nhiều"
+msgstr "Bài đọc nhiều"
+#: partials/components/blog-sidebar.php:24
+
+msgid "Bán chạy"
+msgstr "Bán chạy"
+#: app/Hooks/WooTemplateHook.php:329
+
+msgid "Báo giá doanh nghiệp · in hoá đơn VAT"
+msgstr "Báo giá doanh nghiệp · in hoá đơn VAT"
+#: partials/components/contact-fallback-form.php:33
+
+msgid "Bạn chưa thêm sản phẩm nào. Khám phá cửa hàng và chọn thiết bị yêu thích nhé."
+msgstr "Bạn chưa thêm sản phẩm nào. Khám phá cửa hàng và chọn thiết bị yêu thích nhé."
+#: woocommerce/cart/cart-empty.php:19
+
+msgid "Bạn chấm sản phẩm này"
+msgstr "Bạn chấm sản phẩm này"
+#: woocommerce/single-product-reviews.php:211
+
+msgid "Bạn cần đăng nhập để thanh toán."
+msgstr "Bạn cần đăng nhập để thanh toán."
+#: woocommerce/checkout/form-checkout.php:21
+
+msgid "Bảo hành chính hãng 24 tháng"
+msgstr "Bảo hành chính hãng 24 tháng"
+#: app/Hooks/WooProductHook.php:300
+
+msgid "Bảo hành hãng %s 24 tháng"
+msgstr "Bảo hành hãng %s 24 tháng"
+#: app/Hooks/WooProductHook.php:299
+
+msgid "Bảo hành tại cửa hàng 12 tháng"
+msgstr "Bảo hành tại cửa hàng 12 tháng"
+#: app/Hooks/WooProductHook.php:296
+
+msgid "Bỏ qua đến nội dung chính"
+msgstr "Bỏ qua đến nội dung chính"
+#: header.php:32
+
+msgid "Bộ lọc"
+msgstr "Bộ lọc"
+#: app/Hooks/WooTemplateHook.php:116
+
+msgid "Chia sẻ"
+msgstr "Chia sẻ"
+#: single.php:122
+
+msgid "Chia sẻ Facebook"
+msgstr "Chia sẻ Facebook"
+#: single.php:133
+
+msgid "Chia sẻ X (Twitter)"
+msgstr "Chia sẻ X (Twitter)"
+#: single.php:134
+
+msgid "Chia sẻ bài viết"
+msgstr "Chia sẻ bài viết"
+#: single.php:132
+
+msgid "Chia sẻ trải nghiệm của bạn"
+msgstr "Chia sẻ trải nghiệm của bạn"
+#: woocommerce/single-product-reviews.php:172
+
+msgid "Chia sẻ trải nghiệm thực tế: dùng cho mục đích gì, ấn tượng / điểm chưa hài lòng, so sánh với sản phẩm cũ..."
+msgstr "Chia sẻ trải nghiệm thực tế: dùng cho mục đích gì, ấn tượng / điểm chưa hài lòng, so sánh với sản phẩm cũ..."
+#: woocommerce/single-product-reviews.php:222
+
+msgid "Chuyển khoản ngân hàng"
+msgstr "Chuyển khoản ngân hàng"
+#: app/Hooks/PaymentVietQrHook.php:167
+
+msgid "Chào mừng trở lại. Đăng nhập để tiếp tục mua sắm."
+msgstr "Chào mừng trở lại. Đăng nhập để tiếp tục mua sắm."
+#: woocommerce/myaccount/form-login.php:25
+
+msgid "Chúng tôi sẽ gọi lại trong 2 giờ làm việc."
+msgstr "Chúng tôi sẽ gọi lại trong 2 giờ làm việc."
+#: partials/components/contact-fallback-form.php:11
+
+msgid "Chưa có bài viết"
+msgstr "Chưa có bài viết"
+#: partials/templates/blog-archive.php:133
+
+msgid "Chưa có nội dung tổng quan. Hãy dán mô tả / video YouTube vào ô \\ của trình soạn thảo."
+msgstr "Chưa có nội dung tổng quan. Hãy dán mô tả / video YouTube vào ô \\ của trình soạn thảo."
+#: app/Hooks/WooProductHook.php:438
+
+msgid "Chưa có sản phẩm phù hợp"
+msgstr "Chưa có sản phẩm phù hợp"
+#: partials/templates/filter-landing-page.php:141
+
+msgid "Chưa có tài khoản?"
+msgstr "Chưa có tài khoản?"
+#: woocommerce/myaccount/form-login.php:56
+
+msgid "Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá sản phẩm này."
+msgstr "Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá sản phẩm này."
+#: woocommerce/single-product-reviews.php:155
+
+msgid "Chạm để chấm"
+msgstr "Chạm để chấm"
+#: woocommerce/single-product-reviews.php:216
+
+msgid "Chấm điểm"
+msgstr "Chấm điểm"
+#: woocommerce/single-product-reviews.php:212
+
+msgid "Chỉ khách đã mua sản phẩm mới có thể viết đánh giá."
+msgstr "Chỉ khách đã mua sản phẩm mới có thể viết đánh giá."
+#: woocommerce/single-product-reviews.php:241
+
+msgid "Chọn icon"
+msgstr "Chọn icon"
+#: app/Hooks/MenuHook.php:80
+
+msgid "Chọn tùy chọn"
+msgstr "Chọn tùy chọn"
+#: app/Hooks/WooProductHook.php:551
+
+msgid "Chủ đề"
+msgstr "Chủ đề"
+#: partials/components/blog-sidebar.php:45
+#: partials/components/contact-fallback-form.php:29
+
+msgid "Chủ đề bài viết"
+msgstr "Chủ đề bài viết"
+#: partials/templates/blog-archive.php:46
+
+msgid "Cách liên hệ ưa thích"
+msgstr "Cách liên hệ ưa thích"
+#: partials/components/contact-fallback-form.php:54
+
+msgid "Câu hỏi thường gặp"
+msgstr "Câu hỏi thường gặp"
+#: partials/templates/filter-landing-page.php:156
+
+msgid "Còn hàng"
+msgstr "Còn hàng"
+#: app/Hooks/WooProductHook.php:212
+
+msgid "Cùng chất liệu"
+msgstr "Cùng chất liệu"
+#: partials/components/product-internal-links.php:83
+
+msgid "Cập nhật giỏ"
+msgstr "Cập nhật giỏ"
+#: woocommerce/cart/cart.php:123
+
+msgid "Cửa hàng"
+msgstr "Cửa hàng"
+#: page-template/template-sitemap.php:33
+#: page-template/template-sitemap.php:101
+
+msgid "Danh mục sản phẩm"
+msgstr "Danh mục sản phẩm"
+#: page-template/template-sitemap.php:66
+
+msgid "Danh sách"
+msgstr "Danh sách"
+#: app/Hooks/WooTemplateHook.php:314
+
+msgid "Dưới 15 triệu"
+msgstr "Dưới 15 triệu"
+#: partials/components/contact-fallback-form.php:46
+
+msgid "Email"
+msgstr "Email"
+#: woocommerce/myaccount/form-login.php:80
+#: woocommerce/single-product-reviews.php:202
+#: partials/components/contact-fallback-form.php:25
+#: partials/components/contact-fallback-form.php:59
+
+msgid "Email của bạn"
+msgstr "Email của bạn"
+#: partials/components/blog-sidebar.php:58
+
+msgid "Email hoặc tên đăng nhập"
+msgstr "Email hoặc tên đăng nhập"
+#: woocommerce/myaccount/form-lost-password.php:23
+#: woocommerce/myaccount/form-login.php:31
+
+msgid "Email không công khai"
+msgstr "Email không công khai"
+#: woocommerce/single-product-reviews.php:182
+
+msgid "Facebook của %s"
+msgstr "Facebook của %s"
+#: partials/author/header.php:112
+
+msgid "Footer — Hỗ trợ"
+msgstr "Footer — Hỗ trợ"
+#: app/Hooks/ThemeHook.php:69
+
+msgid "Footer — Sản phẩm"
+msgstr "Footer — Sản phẩm"
+#: app/Hooks/ThemeHook.php:68
+
+msgid "Ghi chú đơn hàng"
+msgstr "Ghi chú đơn hàng"
+#: woocommerce/checkout/form-checkout.php:73
+
+msgid "Giao tận tay trong 4 giờ"
+msgstr "Giao tận tay trong 4 giờ"
+#: app/Hooks/WooProductHook.php:234
+
+msgid "Giá từ"
+msgstr "Giá từ"
+#: app/Hooks/FilterHook.php:205
+
+msgid "Giá đến"
+msgstr "Giá đến"
+#: app/Hooks/FilterHook.php:207
+
+msgid "Giá: cao → thấp"
+msgstr "Giá: cao → thấp"
+#: app/Hooks/WooTemplateHook.php:333
+
+msgid "Giá: thấp → cao"
+msgstr "Giá: thấp → cao"
+#: app/Hooks/WooTemplateHook.php:332
+
+msgid "Giỏ hàng"
+msgstr "Giỏ hàng"
+#: header.php:112
+#: header.php:114
+#: header.php:117
+
+msgid "Giỏ hàng đang trống"
+msgstr "Giỏ hàng đang trống"
+#: woocommerce/cart/cart-empty.php:18
+
+msgid "Giới thiệu"
+msgstr "Giới thiệu"
+#: page-template/template-sitemap.php:102
+
+msgid "Giới thiệu tác giả"
+msgstr "Giới thiệu tác giả"
+#: partials/author/header.php:99
+
+msgid "Gọi điện"
+msgstr "Gọi điện"
+#: partials/components/contact-fallback-form.php:56
+
+msgid "Gửi liên kết"
+msgstr "Gửi liên kết"
+#: woocommerce/myaccount/form-lost-password.php:31
+
+msgid "Gửi liên kết đặt lại"
+msgstr "Gửi liên kết đặt lại"
+#: woocommerce/myaccount/form-lost-password.php:31
+
+msgid "Gửi yêu cầu"
+msgstr "Gửi yêu cầu"
+#: partials/components/contact-fallback-form.php:72
+
+msgid "Gửi đánh giá"
+msgstr "Gửi đánh giá"
+#: woocommerce/single-product-reviews.php:193
+
+msgid "Hiển thị %1$s–%2$s trong %3$s sản phẩm"
+msgstr "Hiển thị %1$s–%2$s trong %3$s sản phẩm"
+#: app/Hooks/WooTemplateHook.php:284
+
+msgid "Hết hàng"
+msgstr "Hết hàng"
+#: app/Hooks/WooProductHook.php:214
+#: app/Hooks/WooProductHook.php:342
+#: app/Hooks/WooProductHook.php:548
+
+msgid "Họ tên"
+msgstr "Họ tên"
+#: woocommerce/single-product-reviews.php:201
+
+msgid "Họ và tên"
+msgstr "Họ và tên"
+#: partials/components/contact-fallback-form.php:15
+
+msgid "Hỏi đáp"
+msgstr "Hỏi đáp"
+#: app/Hooks/WooProductHook.php:472
+
+msgid "Hỗ trợ"
+msgstr "Hỗ trợ"
+#: partials/footer/section-support.php:15
+
+msgid "Hợp tác nội dung / KOL"
+msgstr "Hợp tác nội dung / KOL"
+#: partials/components/contact-fallback-form.php:35
+
+msgid "Hủy"
+msgstr "Hủy"
+#: woocommerce/single-product-reviews.php:230
+
+msgid "Icon (SVG/PNG)"
+msgstr "Icon (SVG/PNG)"
+#: app/Hooks/MenuHook.php:73
+
+msgid "Khoảng giá"
+msgstr "Khoảng giá"
+#: app/Hooks/FilterHook.php:199
+
+msgid "Khác"
+msgstr "Khác"
+#: partials/components/contact-fallback-form.php:37
+
+msgid "Khách thường mua kèm"
+msgstr "Khách thường mua kèm"
+#: app/Hooks/WooProductHook.php:602
+
+msgid "Không có sản phẩm nào khớp với “%s”. Thử từ khóa khác hoặc xem toàn bộ cửa hàng."
+msgstr "Không có sản phẩm nào khớp với “%s”. Thử từ khóa khác hoặc xem toàn bộ cửa hàng."
+#: app/Hooks/WooTemplateHook.php:161
+
+msgid "Không có sản phẩm nào khớp. Thử từ khóa khác hoặc xem toàn bộ cửa hàng."
+msgstr "Không có sản phẩm nào khớp. Thử từ khóa khác hoặc xem toàn bộ cửa hàng."
+#: app/Hooks/WooTemplateHook.php:162
+
+msgid "Không có sản phẩm phù hợp với bộ lọc. Thử bỏ bớt điều kiện hoặc xem toàn bộ cửa hàng."
+msgstr "Không có sản phẩm phù hợp với bộ lọc. Thử bỏ bớt điều kiện hoặc xem toàn bộ cửa hàng."
+#: app/Hooks/WooTemplateHook.php:167
+
+msgid "Không phụ kiện"
+msgstr "Không phụ kiện"
+#: app/Hooks/WooProductHook.php:295
+
+msgid "Không tìm thấy sản phẩm"
+msgstr "Không tìm thấy sản phẩm"
+#: app/Hooks/WooTemplateHook.php:156
+#: app/Hooks/WooTemplateHook.php:166
+
+msgid "Không tìm thấy trang này"
+msgstr "Không tìm thấy trang này"
+#: 404.php:37
+
+msgid "Không đọc được file SVG."
+msgstr "Không đọc được file SVG."
+#: app/Hooks/MediaHook.php:461
+
+msgid "Kiểu hiển thị"
+msgstr "Kiểu hiển thị"
+#: app/Hooks/WooTemplateHook.php:312
+
+msgid "Kết quả tìm kiếm: %s"
+msgstr "Kết quả tìm kiếm: %s"
+#: app/Hooks/WooTemplateHook.php:209
+
+msgid "Liên hệ"
+msgstr "Liên hệ"
+#: partials/footer/section-contact.php:23
+#: page-template/template-sitemap.php:103
+
+msgid "Liên kết"
+msgstr "Liên kết"
+#: partials/footer/section-brand.php:53
+
+msgid "Liên kết nhanh"
+msgstr "Liên kết nhanh"
+#: page-template/template-sitemap.php:91
+
+msgid "Liên kết đặt mật khẩu sẽ được gửi tới email của bạn."
+msgstr "Liên kết đặt mật khẩu sẽ được gửi tới email của bạn."
+#: woocommerce/myaccount/form-login.php:91
+
+msgid "Liên quan nhất"
+msgstr "Liên quan nhất"
+#: app/Hooks/WooTemplateHook.php:328
+
+msgid "Làm sạch SVG thất bại."
+msgstr "Làm sạch SVG thất bại."
+#: app/Hooks/MediaHook.php:494
+
+msgid "Lưới"
+msgstr "Lưới"
+#: app/Hooks/WooTemplateHook.php:313
+
+msgid "Lỗi 404 — không tìm thấy trang"
+msgstr "Lỗi 404 — không tìm thấy trang"
+#: 404.php:27
+
+msgid "Menu chính"
+msgstr "Menu chính"
+#: header.php:149
+
+msgid "Messenger"
+msgstr "Messenger"
+#: partials/components/contact-fallback-form.php:58
+
+msgid "Mua ngay"
+msgstr "Mua ngay"
+#: app/Hooks/WooProductHook.php:233
+#: app/Hooks/WooProductHook.php:557
+#: app/Hooks/WooProductHook.php:565
+
+msgid "Mã SKU:"
+msgstr "Mã SKU:"
+#: app/Hooks/WooProductHook.php:123
+
+msgid "Mã VietQR thanh toán"
+msgstr "Mã VietQR thanh toán"
+#: app/Hooks/PaymentVietQrHook.php:150
+
+msgid "Mã giảm giá"
+msgstr "Mã giảm giá"
+#: woocommerce/cart/cart.php:117
+#: woocommerce/cart/cart-totals.php:71
+
+msgid "Mô tả nhu cầu"
+msgstr "Mô tả nhu cầu"
+#: partials/components/contact-fallback-form.php:64
+
+msgid "Mạng xã hội"
+msgstr "Mạng xã hội"
+#: partials/footer/section-brand.php:46
+
+msgid "Mất nét rồi"
+msgstr "Mất nét rồi"
+#: 404.php:24
+
+msgid "Mật khẩu"
+msgstr "Mật khẩu"
+#: woocommerce/myaccount/form-login.php:37
+#: woocommerce/myaccount/form-login.php:87
+
+msgid "Mặc định"
+msgstr "Mặc định"
+#: app/Hooks/WooTemplateHook.php:327
+
+msgid "MỚI"
+msgstr "MỚI"
+#: includes/functions/common-functions.php:91
+
+msgid "Mới nhất"
+msgstr "Mới nhất"
+#: app/Hooks/WooTemplateHook.php:331
+
+msgid "Mở menu"
+msgstr "Mở menu"
+#: header.php:77
+
+msgid "Mục lục"
+msgstr "Mục lục"
+#: partials/components/post-toc.php:33
+#: partials/templates/policy-page.php:25
+
+msgid "Mục lục bài viết"
+msgstr "Mục lục bài viết"
+#: partials/components/post-toc.php:32
+
+msgid "Mục lục chính sách"
+msgstr "Mục lục chính sách"
+#: partials/templates/policy-page.php:24
+
+msgid "Nguyễn Văn A"
+msgstr "Nguyễn Văn A"
+#: woocommerce/single-product-reviews.php:201
+#: partials/components/contact-fallback-form.php:16
+
+msgid "Ngày cập nhật: %s"
+msgstr "Ngày cập nhật: %s"
+#: single.php:110
+
+msgid "Ngân hàng:"
+msgstr "Ngân hàng:"
+#: app/Hooks/PaymentVietQrHook.php:154
+
+msgid "Ngân sách dự kiến"
+msgstr "Ngân sách dự kiến"
+#: partials/components/contact-fallback-form.php:43
+
+msgid "Nhận xét chi tiết"
+msgstr "Nhận xét chi tiết"
+#: woocommerce/single-product-reviews.php:221
+
+msgid "Nhập email hoặc tên đăng nhập. Chúng tôi sẽ gửi liên kết đặt lại mật khẩu."
+msgstr "Nhập email hoặc tên đăng nhập. Chúng tôi sẽ gửi liên kết đặt lại mật khẩu."
+#: woocommerce/myaccount/form-lost-password.php:19
+
+msgid "Nhập mã..."
+msgstr "Nhập mã..."
+#: woocommerce/cart/cart-totals.php:73
+
+msgid "Nhớ tôi"
+msgstr "Nhớ tôi"
+#: woocommerce/myaccount/form-login.php:44
+
+msgid "No shipping options were found for %s."
+msgstr "No shipping options were found for %s."
+#: woocommerce/cart/cart-shipping.php:66
+
+msgid "Nội dung chuyển khoản:"
+msgstr "Nội dung chuyển khoản:"
+#: app/Hooks/PaymentVietQrHook.php:158
+
+msgid "Phiên bản"
+msgstr "Phiên bản"
+#: app/Product/Versions.php:143
+
+msgid "Phân trang"
+msgstr "Phân trang"
+#: woocommerce/loop/pagination.php:31
+
+msgid "Phân trang đánh giá"
+msgstr "Phân trang đánh giá"
+#: woocommerce/single-product-reviews.php:139
+
+msgid "Phương thức thanh toán"
+msgstr "Phương thức thanh toán"
+#: woocommerce/checkout/form-checkout.php:59
+#: partials/footer/section-contact.php:57
+
+msgid "Phương thức vận chuyển"
+msgstr "Phương thức vận chuyển"
+#: woocommerce/checkout/form-checkout.php:51
+
+msgid "Phản hồi trong 2 giờ làm việc"
+msgstr "Phản hồi trong 2 giờ làm việc"
+#: partials/components/contact-fallback-form.php:73
+
+msgid "Phụ kiện"
+msgstr "Phụ kiện"
+#: app/Hooks/WooProductHook.php:497
+
+msgid "Product"
+msgstr "Product"
+#: woocommerce/checkout/review-order.php:11
+
+msgid "Quay lại đăng nhập"
+msgstr "Quay lại đăng nhập"
+#: woocommerce/myaccount/form-lost-password.php:34
+
+msgid "Quà tặng kèm"
+msgstr "Quà tặng kèm"
+#: app/Hooks/WooProductHook.php:142
+
+msgid "Quét mã QR dưới đây bằng ứng dụng Ngân hàng để thanh toán nhanh chóng và chính xác số tiền."
+msgstr "Quét mã QR dưới đây bằng ứng dụng Ngân hàng để thanh toán nhanh chóng và chính xác số tiền."
+#: app/Hooks/PaymentVietQrHook.php:147
+
+msgid "Quét mã VietQR hoặc chuyển khoản trực tiếp vào tài khoản ngân hàng của chúng tôi. Vui lòng nhập đúng Mã đơn hàng làm nội dung chuyển khoản để đơn hàng được xác nhận tự động."
+msgstr "Quét mã VietQR hoặc chuyển khoản trực tiếp vào tài khoản ngân hàng của chúng tôi. Vui lòng nhập đúng Mã đơn hàng làm nội dung chuyển khoản để đơn hàng được xác nhận tự động."
+#: app/Hooks/PaymentVietQrHook.php:175
+
+msgid "Quên mật khẩu"
+msgstr "Quên mật khẩu"
+#: woocommerce/myaccount/form-lost-password.php:18
+
+msgid "Quên mật khẩu?"
+msgstr "Quên mật khẩu?"
+#: woocommerce/myaccount/form-login.php:45
+
+msgid "SALE"
+msgstr "SALE"
+#: includes/functions/common-functions.php:82
+
+msgid "SSL 256-bit · Bảo mật"
+msgstr "SSL 256-bit · Bảo mật"
+#: woocommerce/cart/cart-totals.php:81
+
+msgid "SVG chứa DOCTYPE/ENTITY không hợp lệ."
+msgstr "SVG chứa DOCTYPE/ENTITY không hợp lệ."
+#: app/Hooks/MediaHook.php:441
+
+msgid "Sao chép"
+msgstr "Sao chép"
+#: single.php:135
+
+msgid "Sao chép link"
+msgstr "Sao chép link"
+#: single.php:128
+#: single.php:135
+
+msgid "Ship to a different address?"
+msgstr "Ship to a different address?"
+#: woocommerce/checkout/form-shipping.php:16
+
+msgid "Shipping options will be updated during checkout."
+msgstr "Shipping options will be updated during checkout."
+#: woocommerce/cart/cart-shipping.php:58
+
+msgid "Shop — Bộ lọc"
+msgstr "Shop — Bộ lọc"
+#: app/Hooks/ThemeHook.php:55
+
+msgid "Subtotal"
+msgstr "Subtotal"
+#: woocommerce/checkout/review-order.php:12
+#: woocommerce/checkout/review-order.php:55
+
+msgid "Sản phẩm"
+msgstr "Sản phẩm"
+#: partials/footer/section-products.php:15
+
+msgid "Sản phẩm gắn thẻ: %s"
+msgstr "Sản phẩm gắn thẻ: %s"
+#: app/Hooks/WooTemplateHook.php:214
+
+msgid "Sản phẩm liên quan"
+msgstr "Sản phẩm liên quan"
+#: partials/components/post-related-products.php:70
+
+msgid "Sản phẩm này đã ngừng kinh doanh. Vui lòng quay lại cửa hàng."
+msgstr "Sản phẩm này đã ngừng kinh doanh. Vui lòng quay lại cửa hàng."
+#: app/Hooks/SeoHook.php:161
+
+msgid "Sản phẩm tương tự"
+msgstr "Sản phẩm tương tự"
+#: app/Hooks/WooProductHook.php:597
+
+msgid "Sản phẩm đã ngừng bán"
+msgstr "Sản phẩm đã ngừng bán"
+#: app/Hooks/SeoHook.php:164
+
+msgid "Số tiền chuyển khoản:"
+msgstr "Số tiền chuyển khoản:"
+#: app/Hooks/PaymentVietQrHook.php:157
+
+msgid "Số tài khoản:"
+msgstr "Số tài khoản:"
+#: app/Hooks/PaymentVietQrHook.php:155
+
+msgid "Số điện thoại"
+msgstr "Số điện thoại"
+#: partials/components/contact-fallback-form.php:19
+
+msgid "Tag: %s"
+msgstr "Tag: %s"
+#: tag.php:21
+
+msgid "Thanh toán"
+msgstr "Thanh toán"
+#: woocommerce/checkout/form-checkout.php:26
+#: partials/footer/section-contact.php:56
+
+msgid "Thanh toán an toàn"
+msgstr "Thanh toán an toàn"
+#: woocommerce/cart/cart-totals.php:81
+
+msgid "Thanh toán quét mã VietQR"
+msgstr "Thanh toán quét mã VietQR"
+#: app/Hooks/PaymentVietQrHook.php:146
+
+msgid "Thêm vào giỏ"
+msgstr "Thêm vào giỏ"
+#: app/Hooks/WooProductHook.php:559
+#: app/Hooks/WooProductHook.php:567
+
+msgid "Thêm vào yêu thích"
+msgstr "Thêm vào yêu thích"
+#: includes/functions/common-functions.php:184
+
+msgid "Thông số kỹ thuật"
+msgstr "Thông số kỹ thuật"
+#: app/Hooks/WooProductHook.php:453
+
+msgid "Thông tin doanh nghiệp"
+msgstr "Thông tin doanh nghiệp"
+#: partials/footer/section-brand.php:30
+
+msgid "Thông tin nhận hàng"
+msgstr "Thông tin nhận hàng"
+#: woocommerce/checkout/form-checkout.php:36
+
+msgid "Thông tin sản phẩm"
+msgstr "Thông tin sản phẩm"
+#: woocommerce/single-product/tabs/tabs.php:29
+
+msgid "Tin tức"
+msgstr "Tin tức"
+#: taxonomy.php:17
+#: category.php:17
+#: tag.php:17
+#: home.php:14
+#: page-template/template-sitemap.php:79
+
+msgid "Tiếp tục mua sắm"
+msgstr "Tiếp tục mua sắm"
+#: woocommerce/cart/cart-empty.php:22
+#: woocommerce/cart/cart-totals.php:67
+
+msgid "Total"
+msgstr "Total"
+#: woocommerce/checkout/review-order.php:102
+
+msgid "Trang bạn tìm có thể đã dời ống kính đi nơi khác. Thử tìm sản phẩm, hoặc quay lại khung hình chính."
+msgstr "Trang bạn tìm có thể đã dời ống kính đi nơi khác. Thử tìm sản phẩm, hoặc quay lại khung hình chính."
+#: 404.php:39
+
+msgid "Trang chính"
+msgstr "Trang chính"
+#: page-template/template-sitemap.php:29
+
+msgid "Trang chủ"
+msgstr "Trang chủ"
+#: woocommerce/content-single-product.php:71
+#: app/Hooks/WooTemplateHook.php:199
+#: partials/components/breadcrumb.php:31
+#: page-template/template-sitemap.php:93
+
+msgid "Trên 100 triệu"
+msgstr "Trên 100 triệu"
+#: partials/components/contact-fallback-form.php:50
+
+msgid "Trả góp / Thu cũ đổi mới"
+msgstr "Trả góp / Thu cũ đổi mới"
+#: partials/components/contact-fallback-form.php:34
+
+msgid "Tài khoản"
+msgstr "Tài khoản"
+#: app/Hooks/WooAccountHook.php:66
+#: header.php:83
+#: header.php:88
+
+msgid "Tác giả chưa có bài viết"
+msgstr "Tác giả chưa có bài viết"
+#: partials/author/posts.php:49
+
+msgid "Tác giả: %s"
+msgstr "Tác giả: %s"
+#: partials/author/header.php:64
+
+msgid "Tên chủ tài khoản:"
+msgstr "Tên chủ tài khoản:"
+#: app/Hooks/PaymentVietQrHook.php:156
+
+msgid "Tên đăng nhập"
+msgstr "Tên đăng nhập"
+#: woocommerce/myaccount/form-login.php:73
+
+msgid "Tìm"
+msgstr "Tìm"
+#: 404.php:49
+#: header.php:67
+#: header.php:72
+#: header.php:142
+
+msgid "Tìm kiếm"
+msgstr "Tìm kiếm"
+#: header.php:80
+
+msgid "Tìm kiếm..."
+msgstr "Tìm kiếm..."
+#: header.php:71
+
+msgid "Tìm máy ảnh, lens, flycam, gimbal..."
+msgstr "Tìm máy ảnh, lens, flycam, gimbal..."
+#: 404.php:46
+#: header.php:65
+#: header.php:138
+
+msgid "Tìm sản phẩm"
+msgstr "Tìm sản phẩm"
+#: 404.php:47
+
+msgid "Tóm tắt đơn hàng"
+msgstr "Tóm tắt đơn hàng"
+#: woocommerce/cart/cart-totals.php:20
+
+msgid "Tôi đồng ý cho Pixel Cam liên hệ về yêu cầu này. Thông tin chỉ dùng để tư vấn, không chia sẻ cho bên thứ ba."
+msgstr "Tôi đồng ý cho Pixel Cam liên hệ về yêu cầu này. Thông tin chỉ dùng để tư vấn, không chia sẻ cho bên thứ ba."
+#: partials/components/contact-fallback-form.php:69
+
+msgid "Tư vấn mua máy ảnh / lens"
+msgstr "Tư vấn mua máy ảnh / lens"
+#: partials/components/contact-fallback-form.php:32
+
+msgid "Tạm tính"
+msgstr "Tạm tính"
+#: woocommerce/cart/cart-totals.php:23
+
+msgid "Tạo tài khoản mới để tích điểm và nhận ưu đãi."
+msgstr "Tạo tài khoản mới để tích điểm và nhận ưu đãi."
+#: woocommerce/myaccount/form-login.php:66
+
+msgid "Tải xuống"
+msgstr "Tải xuống"
+#: app/Hooks/WooAccountHook.php:64
+
+msgid "Tất cả"
+msgstr "Tất cả"
+#: partials/templates/blog-archive.php:51
+
+msgid "Tổng cộng"
+msgstr "Tổng cộng"
+#: woocommerce/cart/cart-totals.php:57
+
+msgid "Tổng hợp bài hay mỗi tuần — và voucher khuyến mãi nội bộ."
+msgstr "Tổng hợp bài hay mỗi tuần — và voucher khuyến mãi nội bộ."
+#: partials/components/blog-sidebar.php:56
+
+msgid "Tổng quan"
+msgstr "Tổng quan"
+#: app/Hooks/WooProductHook.php:425
+#: app/Hooks/WooAccountHook.php:62
+
+msgid "Từ"
+msgstr "Từ"
+#: app/Hooks/FilterHook.php:205
+
+msgid "Vai trò: %s"
+msgstr "Vai trò: %s"
+#: partials/author/header.php:75
+
+msgid "Viết đánh giá"
+msgstr "Viết đánh giá"
+#: woocommerce/single-product-reviews.php:168
+
+msgid "Ví dụ: Mình cần combo máy ảnh + lens chân dung cho công việc chụp gia đình cuối tuần, ngân sách ~40 triệu..."
+msgstr "Ví dụ: Mình cần combo máy ảnh + lens chân dung cho công việc chụp gia đình cuối tuần, ngân sách ~40 triệu..."
+#: partials/components/contact-fallback-form.php:65
+
+msgid "Về trang chủ"
+msgstr "Về trang chủ"
+#: 404.php:54
+#: app/Hooks/SeoHook.php:162
+
+msgid "Widget bộ lọc hiển thị bên trái trang cửa hàng (Woo Layered Nav, Filter Products by Price...)."
+msgstr "Widget bộ lọc hiển thị bên trái trang cửa hàng (Woo Layered Nav, Filter Products by Price...)."
+#: app/Hooks/ThemeHook.php:57
+
+msgid "WooCommerce chưa kích hoạt."
+msgstr "WooCommerce chưa kích hoạt."
+#: partials/templates/filter-landing-page.php:14
+
+msgid "Xem cửa hàng"
+msgstr "Xem cửa hàng"
+#: app/Hooks/WooTemplateHook.php:171
+
+msgid "Xem sản phẩm"
+msgstr "Xem sản phẩm"
+#: app/Hooks/WooProductHook.php:554
+
+msgid "Xem thêm"
+msgstr "Xem thêm"
+#: app/Hooks/WooTemplateHook.php:240
+
+msgid "Xem thêm sản phẩm"
+msgstr "Xem thêm sản phẩm"
+#: woocommerce/loop/pagination.php:27
+
+msgid "Xem tất cả máy ảnh"
+msgstr "Xem tất cả máy ảnh"
+#: 404.php:56
+
+msgid "Xác minh đã mua tại Pixel Cam"
+msgstr "Xác minh đã mua tại Pixel Cam"
+#: woocommerce/single-product-reviews.php:178
+
+msgid "Xóa"
+msgstr "Xóa"
+#: app/Hooks/MenuHook.php:81
+
+msgid "Xóa %s khỏi giỏ"
+msgstr "Xóa %s khỏi giỏ"
+#: woocommerce/cart/cart.php:48
+
+msgid "Xóa bộ lọc"
+msgstr "Xóa bộ lọc"
+#: app/Hooks/FilterHook.php:299
+
+msgid "Xóa tất cả"
+msgstr "Xóa tất cả"
+#: app/Hooks/FilterHook.php:277
+
+msgid "Yêu thích"
+msgstr "Yêu thích"
+#: header.php:103
+#: header.php:105
+
+msgid "Zalo"
+msgstr "Zalo"
+#: partials/components/contact-fallback-form.php:57
+
+msgid "email@cua-ban.vn"
+msgstr "email@cua-ban.vn"
+#: partials/components/contact-fallback-form.php:26
+
+msgid "email@example.com"
+msgstr "email@example.com"
+#: woocommerce/single-product-reviews.php:202
+
+msgid "sản phẩm"
+msgstr "sản phẩm"
+#: partials/templates/filter-landing-page.php:107
+
+msgid "Áp dụng"
+msgstr "Áp dụng"
+#: woocommerce/cart/cart.php:118
+#: woocommerce/cart/cart-totals.php:74
+#: app/Hooks/FilterHook.php:209
+
+msgid "ít nhất 30 ký tự, không quảng cáo sản phẩm khác, dùng ngôn ngữ lịch sự."
+msgstr "ít nhất 30 ký tự, không quảng cáo sản phẩm khác, dùng ngôn ngữ lịch sự."
+#: woocommerce/single-product-reviews.php:223
+
+msgid "Đang lọc:"
+msgstr "Đang lọc:"
+#: app/Hooks/FilterHook.php:267
+
+msgid "Đánh giá <span class=\\>(%s)</span>"
+msgstr "Đánh giá <span class=\\>(%s)</span>"
+#: app/Hooks/WooProductHook.php:402
+
+msgid "Đánh giá cao nhất"
+msgstr "Đánh giá cao nhất"
+#: app/Hooks/WooTemplateHook.php:330
+
+msgid "Đánh giá giúp người mua khác hiểu sản phẩm thực tế. Chỉ mất 30 giây."
+msgstr "Đánh giá giúp người mua khác hiểu sản phẩm thực tế. Chỉ mất 30 giây."
+#: woocommerce/single-product-reviews.php:173
+
+msgid "Đã có tài khoản?"
+msgstr "Đã có tài khoản?"
+#: woocommerce/myaccount/form-login.php:103
+
+msgid "Đã gửi yêu cầu. Mã ticket"
+msgstr "Đã gửi yêu cầu. Mã ticket"
+#: partials/components/contact-fallback-form.php:11
+
+msgid "Đã đăng ký!"
+msgstr "Đã đăng ký!"
+#: partials/components/blog-sidebar.php:57
+
+msgid "Đóng menu"
+msgstr "Đóng menu"
+#: header.php:150
+
+msgid "Đóng tìm kiếm"
+msgstr "Đóng tìm kiếm"
+#: header.php:143
+
+msgid "Đăng ký"
+msgstr "Đăng ký"
+#: woocommerce/myaccount/form-login.php:65
+#: woocommerce/myaccount/form-login.php:97
+#: partials/components/blog-sidebar.php:59
+
+msgid "Đăng ký ngay"
+msgstr "Đăng ký ngay"
+#: woocommerce/myaccount/form-login.php:57
+
+msgid "Đăng ký nhận tin"
+msgstr "Đăng ký nhận tin"
+#: partials/components/blog-sidebar.php:55
+
+msgid "Đăng nhập"
+msgstr "Đăng nhập"
+#: woocommerce/myaccount/form-login.php:24
+#: woocommerce/myaccount/form-login.php:49
+#: woocommerce/myaccount/form-login.php:104
+#: header.php:83
+#: header.php:90
+
+msgid "Đăng xuất"
+msgstr "Đăng xuất"
+#: app/Hooks/WooAccountHook.php:67
+
+msgid "Đơn hàng"
+msgstr "Đơn hàng"
+#: app/Hooks/WooAccountHook.php:63
+
+msgid "Đơn hàng của bạn"
+msgstr "Đơn hàng của bạn"
+#: woocommerce/checkout/form-checkout.php:90
+
+msgid "Đặt lịch ghé showroom"
+msgstr "Đặt lịch ghé showroom"
+#: partials/components/contact-fallback-form.php:36
+
+msgid "Đến"
+msgstr "Đến"
+#: app/Hooks/FilterHook.php:207
+
+msgid "Địa chỉ"
+msgstr "Địa chỉ"
+#: app/Hooks/WooAccountHook.php:65
+
+msgid "Đổi trả dễ dàng"
+msgstr "Đổi trả dễ dàng"
+#: woocommerce/cart/cart-totals.php:85
+
+msgid "— Chưa rõ —"
+msgstr "— Chưa rõ —"
+#: partials/components/contact-fallback-form.php:45
+
+msgid "— Chọn chủ đề —"
+msgstr "— Chọn chủ đề —"
+#: partials/components/contact-fallback-form.php:31

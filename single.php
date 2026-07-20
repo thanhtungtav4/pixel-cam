@@ -34,6 +34,13 @@ while (have_posts()) :
     $related_products_is_show = ! empty($acf_fields['related_products_is_show']);
     $related_posts            = ! empty($acf_fields['related_posts']) ? array_map('intval', (array) $acf_fields['related_posts']) : [];
     $related_products         = ! empty($acf_fields['related_products']) ? array_map('intval', (array) $acf_fields['related_products']) : [];
+
+    // Pre-compute TOC headings once here so the post-toc partial doesn't have
+    // to call get_the_content() + run the_content filter + regex inside the
+    // render pass. Same data, zero re-work.
+    $toc_headings = function_exists('underscores_child_extract_headings')
+        ? underscores_child_extract_headings(get_the_content())
+        : [];
     ?>
     <div class="wrap">
         <?php
@@ -137,7 +144,7 @@ while (have_posts()) :
             <?php endif; ?>
         </article>
 
-        <?php get_template_part('partials/components/post-toc'); ?>
+        <?php get_template_part('partials/components/post-toc', null, ['headings' => $toc_headings]); ?>
     </div></section>
 
     <?php if ($related_posts_is_show) : ?>

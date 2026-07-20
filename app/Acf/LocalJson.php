@@ -22,7 +22,8 @@ final class LocalJson
 
     public function save_path(string $path): string
     {
-        // ponytail: single save dir; split per-group only if the folder gets unwieldy.
+        // Single save dir for all field groups. Split per-group only if the
+        // folder ever gets unwieldy (hundreds of groups, IDE slow, etc.).
         return UNDERSCORES_CHILD_THEME_PATH . '/acf-json';
     }
 
