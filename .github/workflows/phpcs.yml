@@ -1,0 +1,90 @@
+name: Lint (WPCS + i18n + ACF JSON)
+
+# Runs on push to master and on any PR.
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+# Cancel in-progress runs for the same branch on a new push.
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpcs:
+    name: PHP CodeSniffer (WPCS)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-php-
+
+      - name: Install dev dependencies
+        working-directory: wp-content/themes/underscores-child
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Run PHPCS
+        working-directory: wp-content/themes/underscores-child
+        run: composer lint
+
+  i18n:
+    name: Build .pot / .po / .mo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer
+
+      - name: Install gettext (for msgfmt)
+        run: sudo apt-get update && sudo apt-get install -y gettext
+
+      - name: Build translations
+        working-directory: wp-content/themes/underscores-child
+        run: bin/build-translations.sh
+
+      - name: Verify .po is up-to-date
+        working-directory: wp-content/themes/underscores-child
+        run: |
+          if [[ -n "$(git status --porcelain languages/)" ]]; then
+            echo "::error::languages/ is out of date. Run bin/build-translations.sh locally and commit."
+            git status --porcelain languages/
+            exit 1
+          fi
+
+  acf:
+    name: ACF Local JSON validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Validate
+        working-directory: wp-content/themes/underscores-child
+        run: composer acf:validate
