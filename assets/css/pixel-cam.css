@@ -1003,18 +1003,50 @@ body.newsdtpage .prose{max-width:none}
 .bought-slider::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 @media(max-width:560px){.bought-slider .pcard{flex-basis:160px}}
 
-.pdp-tabs{margin-top:56px}
-.pdp-tabs .tabbar{display:flex;gap:0;border-bottom:1px solid var(--border);overflow-x:auto}
-.pdp-tabs .tabbar button{border:0;background:transparent;font:inherit;font-size:14.5px;font-weight:600;color:var(--muted);padding:14px 22px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:.15s}
-.pdp-tabs .tabbar button:hover{color:var(--fg)}
-.pdp-tabs .tabbar button.on{color:var(--accent);border-bottom-color:var(--accent)}
-.pdp-tabs .tabbar .count{color:var(--muted);font-weight:500;font-size:13px;margin-left:5px}
+.pdp-tabs{margin-top:48px}
+/* Horizontal pill tab bar (vjshop-style). */
+.pdp-tabs .tabbar{display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--border);padding-bottom:0;overflow-x:auto;scrollbar-width:none}
+.pdp-tabs .tabbar::-webkit-scrollbar{display:none}
+.pdp-tabs .tabbar__btn{
+  border:1px solid var(--border);background:var(--surface);color:var(--fg);
+  font:inherit;font-size:13.5px;font-weight:600;letter-spacing:.01em;
+  padding:10px 18px;border-radius:8px;cursor:pointer;
+  margin-bottom:-1px;white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
+.pdp-tabs .tabbar__btn:hover{border-color:var(--brand-secondary);color:var(--brand-secondary)}
+.pdp-tabs .tabbar__btn.on{background:var(--brand-secondary);border-color:var(--brand-secondary);color:#fff}
+.pdp-tabs .tabbar__btn .count{color:inherit;opacity:.75;font-weight:500;font-size:12.5px;margin-left:5px}
 .pdp-tabs .panel{padding:28px 0;display:none}
 .pdp-tabs .panel.on{display:block}
 .pdp-tabs .panel .prose{max-width:740px}
 .pdp-tabs .panel h3{font-size:18px;font-weight:700;margin:24px 0 10px;letter-spacing:-.01em}
 .pdp-tabs .panel h3:first-child{margin-top:0}
 .pdp-tabs .panel p{font-size:15px;line-height:1.7;color:#333;margin:8px 0}
+
+/* TỔNG QUAN tab: 2-col grid (description + box). */
+.pdp-overview{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:32px;align-items:start}
+@media(max-width:900px){.pdp-overview{grid-template-columns:minmax(0,1fr);gap:24px}}
+.pdp-overview__main .prose{max-width:none}
+/* Some product descriptions include a nested Woo tabs block (often from
+   WP Bakery / Visual Composer). On its own page it's interactive, but
+   inside our TỔNG QUAN tab it adds a confusing second tab bar. Flatten
+   the nested tabs: show all panels stacked, hide the inner tabbar. */
+.pdp-overview__main .prose .woocommerce-tabs .wc-tabs{display:none!important}
+.pdp-overview__main .prose .woocommerce-tabs .tab-panels>.panel,
+.pdp-overview__main .prose .woocommerce-tabs .tab-panels>.woocommerce-Tabs-panel{display:block!important;visibility:visible!important;height:auto!important;opacity:1!important;margin:0 0 16px}
+.pdp-overview__main .prose iframe{width:100%;aspect-ratio:16/9;height:auto;border:0;border-radius:10px;display:block;margin:8px 0 16px}
+.pdp-overview__main .prose p:first-child{margin-top:0}
+.pdp-overview__empty{padding:24px;border:1px dashed var(--border);border-radius:10px;color:var(--muted);font-size:14px;text-align:center;background:var(--surface)}
+.pdp-overview__box{
+  position:sticky;top:120px;
+  border:1px solid var(--border);border-radius:12px;background:var(--bg);
+  padding:16px 18px}
+.pdp-overview__box .box-head{margin-bottom:10px}
+@media(max-width:900px){.pdp-overview__box{position:static}}
+
+/* PHỤ KIỆN tab: render the same .pcard grid as "Sản phẩm tương tự". */
+.pxc-accessories__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+@media(max-width:1024px){.pxc-accessories__grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.pxc-accessories__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
 .pdp-tabs .panel ul{margin:8px 0 8px 20px;font-size:14.5px;line-height:1.7;color:#333}
 
 /* Review summary block */
@@ -1099,7 +1131,7 @@ body.newsdtpage .prose{max-width:none}
 /* --- Empty state --- */
 .pxc-review-empty{text-align:center;color:var(--muted);padding:32px 12px;background:var(--bg);border-radius:12px}
 /* --- Review form (collapsible) --- */
-.pxc-review-form-wrap{margin-top:32px}
+.pxc-review-form-wrap{margin-top:32px;text-align:center}
 .pxc-review-toggle{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:13px 26px;font-weight:600;font-size:14.5px;cursor:pointer;font-family:inherit;transition:background .15s, transform .15s;box-shadow:0 1px 2px rgba(0,0,0,.04)}
 .pxc-review-toggle:hover{background:var(--accent-80)}
 .pxc-review-toggle:active{transform:scale(.98)}

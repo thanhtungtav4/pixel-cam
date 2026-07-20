@@ -172,30 +172,91 @@ final class WooHook
      * @param array<string,array<string,mixed>> $tabs
      * @return array<string,array<string,mixed>>
      */
+    /**
+     * @param array<string,array<string,mixed>> $tabs
+     * @return array<string,array<string,mixed>>
+     */
     public function product_tabs(array $tabs): array
     {
         $product_id = get_the_ID();
 
-        // Vietnamese titles for Woo's default tabs.
-        if (isset($tabs['description'])) {
-            $tabs['description']['title'] = __('Mô tả sản phẩm', 'underscores');
-        }
-        if (isset($tabs['additional_information'])) {
-            $tabs['additional_information']['title'] = __('Thông tin thêm', 'underscores');
-        }
-        if (isset($tabs['reviews'])) {
-            $review_count = (int) get_comments_number($product_id);
+        // Reviews tab — Woo's default only adds it when comments_open() is
+        // true, which can be false for some products (e.g. global setting
+        // off, or a specific post has comments closed). Force it on so the
+        // tab count matches the vjshop-style 5-tab layout; the panel can
+        // still show "no reviews yet" inside.
+        $review_count = (int) get_comments_number($product_id);
+        $tabs['reviews'] = [
             /* translators: %s = number of reviews */
-            $tabs['reviews']['title'] = sprintf(
+            'title'    => sprintf(
                 _n('Đánh giá <span class="count">(%s)</span>', 'Đánh giá <span class="count">(%s)</span>', $review_count, 'underscores'),
                 number_format_i18n($review_count)
-            );
-        }
+            ),
+            'priority' => 30,
+            'callback' => 'comments_template',
+        ];
+
+        // Drop Woo's default "Mô tả sản phẩm" tab — its content (which
+        // usually holds the YouTube embed pasted by the shop owner) moves
+        // into the custom TỔNG QUAN tab below, alongside the "Hộp sản phẩm
+        // bao gồm" card. Same for `additional_information` — empty on most
+        // products and the spec table already covers it.
+        unset($tabs['description'], $tabs['additional_information']);
 
         if (! function_exists('get_field')) {
             return $tabs;
         }
 
+        // Tab 1 — TỔNG QUAN: description (with video embed) + box items.
+        $box_items = get_field('box_items', $product_id) ?: [];
+        $tabs['pxc_overview'] = [
+            'title'    => __('Tổng quan', 'underscores'),
+            'priority' => 5,
+            'callback' => static function () use ($product_id, $box_items): void {
+                $product = wc_get_product($product_id);
+                $description = $product instanceof \WC_Product ? (string) $product->get_description() : '';
+                echo '<div class="pdp-overview">';
+                echo   '<div class="pdp-overview__main">';
+                if ($description !== '') {
+                    // apply_filters('the_content', ...) so oEmbed / YouTube
+                    // iframe shortcodes render properly.
+                    echo '<div class="prose">' . wp_kses_post(apply_filters('the_content', $description)) . '</div>';
+                } else {
+                    echo '<div class="pdp-overview__empty">'
+                       . esc_html__('Chưa có nội dung tổng quan. Hãy dán mô tả / video YouTube vào ô "Mô tả sản phẩm" của trình soạn thảo.', 'underscores')
+                       . '</div>';
+                }
+                echo   '</div>';
+                if (! empty($box_items)) {
+                    echo '<aside class="pdp-overview__box" aria-label="' . esc_attr__('Hộp sản phẩm bao gồm', 'underscores') . '">';
+                    echo   '<div class="box-head">'
+                         .   '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">'
+                         .     '<path d="M3 7l9-4 9 4-9 4-9-4z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/>'
+                         .     '<path d="M3 7v10l9 4 9-4V7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/>'
+                         .     '<path d="M12 11v10" stroke="currentColor" stroke-width="1.6" fill="none"/>'
+                         .   '</svg>'
+                         .   '<b>' . esc_html__('Hộp sản phẩm bao gồm', 'underscores') . '</b>'
+                         . '</div>';
+                    // Reuse `.pdp-box` + `.box-list` styles that the right
+                    // info column used to render with (see the now-removed
+                    // block). The new wrapper just adds a margin-top so it
+                    // sits next to the description.
+                    echo   '<ul class="box-list">';
+                    foreach ($box_items as $item) {
+                        $text = trim((string) ($item['text'] ?? ''));
+                        if ($text === '') {
+                            continue;
+                        }
+                        echo '<li>' . esc_html($text) . '</li>';
+                    }
+                    echo   '</ul>';
+                    echo '</aside>';
+                }
+                echo '</div>';
+            },
+        ];
+
+        // Tab 2 — Thông số kỹ thuật.
         $spec_rows = get_field('spec_rows', $product_id) ?: [];
         if ($spec_rows) {
             $tabs['pxc_spec'] = [
@@ -211,6 +272,7 @@ final class WooHook
             ];
         }
 
+        // Tab 4 — Hỏi đáp.
         $qa_items = get_field('qa', $product_id) ?: [];
         if ($qa_items) {
             $tabs['pxc_qa'] = [
@@ -230,13 +292,31 @@ final class WooHook
             ];
         }
 
-        $warranty = get_field('warranty', $product_id);
-        if ($warranty) {
-            $tabs['pxc_warranty'] = [
-                'title'    => __('Bảo hành', 'underscores'),
-                'priority' => 50,
-                'callback' => static function () use ($warranty): void {
-                    echo '<div class="prose">' . wp_kses_post($warranty) . '</div>';
+        // Tab 5 — Phụ kiện: same Woo upsell source as the "Khách thường
+        // mua kèm" sidebar block, so editing in one place updates both.
+        $upsell_ids = get_post_meta($product_id, '_upsell_ids', true);
+        $upsell_ids = is_array($upsell_ids) ? array_map('intval', $upsell_ids) : [];
+        if (! empty($upsell_ids)) {
+            $tabs['pxc_accessories'] = [
+                'title'    => __('Phụ kiện', 'underscores'),
+                'priority' => 55,
+                'callback' => static function () use ($upsell_ids): void {
+                    // Reuse the existing loop template so cards match the
+                    // "Sản phẩm tương tự" block. We pin a stable wrapper
+                    // class so the section can be styled if needed.
+                    echo '<div class="related products pxc-accessories"><div class="pxc-accessories__grid">';
+                    foreach ($upsell_ids as $pid) {
+                        $post = get_post((int) $pid);
+                        if (! $post instanceof \WP_Post || 'product' !== $post->post_type) {
+                            continue;
+                        }
+                        // phpcs:ignore WordPress.WP.DirectDatabaseQuery
+                        $GLOBALS['post'] = $post; // product-card partial reads get_the_ID()
+                        setup_postdata($post);
+                        get_template_part('partials/components/product-card', null, ['post_id' => (int) $pid]);
+                    }
+                    wp_reset_postdata();
+                    echo '</div></div>';
                 },
             ];
         }

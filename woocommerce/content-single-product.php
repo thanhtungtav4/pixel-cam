@@ -31,19 +31,16 @@ $acf_fields = function_exists('get_field') ? [
     'install_text' => get_field('install_text', $product_id) ?: '',
     'gifts'        => get_field('gifts', $product_id) ?: [],
     'gifts_total'  => get_field('gifts_total', $product_id) ?: '',
-    'box_items'    => get_field('box_items', $product_id) ?: [],
     'stock_note'   => get_field('stock_note', $product_id) ?: '',
 ] : [
     'install_text' => '',
     'gifts'        => [],
     'gifts_total'  => '',
-    'box_items'    => [],
     'stock_note'   => '',
 ];
 $install_text = $acf_fields['install_text'];
 $gifts        = $acf_fields['gifts'];
 $gifts_total  = $acf_fields['gifts_total'];
-$box_items    = $acf_fields['box_items'];
 $stock_note   = $acf_fields['stock_note'];
 
 $product_settings = function_exists('underscores_get_option') ? (underscores_get_option('product_section') ?: []) : [];
@@ -133,16 +130,11 @@ $sku         = $product->get_sku();
                 </div>
             <?php endif; ?>
 
-            <?php if (! empty($box_items)) : ?>
-                <div class="pdp-box">
-                    <div class="box-head"><b><?php esc_html_e('Hộp sản phẩm bao gồm', 'underscores'); ?></b></div>
-                    <ul class="box-list">
-                        <?php foreach ($box_items as $item) : ?>
-                            <li><?php echo esc_html($item['text'] ?? ''); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
+            <?php
+            // Note: the "Hộp sản phẩm bao gồm" block used to live here in
+            // the right info column. It now sits inside the TỔNG QUAN tab
+            // (right side, see WooHook::product_tabs() / pxc_overview).
+            ?>
         </div>
     </div>
 

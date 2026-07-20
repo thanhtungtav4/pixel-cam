@@ -157,18 +157,49 @@ function initMobileNav() {
   const nav = document.getElementById('primary-nav');
   if (!nav) return;
 
+  let lastFocused = null;
+  const focusables = () => nav.querySelectorAll(
+    'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])'
+  );
+
   const setOpen = (open) => {
     nav.classList.toggle('is-open', open);
     document.body.classList.toggle('nav-open', open);
     if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) {
+      lastFocused = document.activeElement;
+      const first = focusables()[0];
+      if (first) first.focus();
+    } else if (lastFocused) {
+      lastFocused.focus();
+      lastFocused = null;
+    }
   };
 
   if (btn) btn.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
   if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
 
-  // Close on Escape
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && nav.classList.contains('is-open')) setOpen(false);
+    if (!nav.classList.contains('is-open')) return;
+    // Close on Escape.
+    if (e.key === 'Escape') {
+      setOpen(false);
+      return;
+    }
+    // Trap Tab within the drawer.
+    if (e.key === 'Tab') {
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
   });
 
   // Close after clicking a leaf link (sub-menus keep open)
@@ -450,7 +481,7 @@ function initVariationSwatches() {
       const label = row.querySelector('th.label label, .lbl');
       if (label) {
         const selectedBtn = group.querySelector('.swatch.on');
-        const selectedText = selectedBtn ? selectedBtn.querySelector('span').textContent : '';
+        const selectedText = selectedBtn?.querySelector('span')?.textContent || '';
         let baseText = label.dataset.baseText;
         if (!baseText) {
           baseText = label.textContent.split(':')[0].trim();
@@ -498,6 +529,54 @@ function initPwToggle() {
     btn.textContent = show ? 'Ẩn' : 'Hiện';
     btn.setAttribute('aria-pressed', String(show));
   });
+}
+
+/* ---------- PDP tabs (vjshop-style) ----------
+   Overrides Woo's default wc-tabs hash-jumping. Click a button in
+   .pdp-tabs .tabbar → swap .on between buttons + panels, update
+   aria-selected / hidden. */
+function initPdpTabs() {
+  const root = document.querySelector('[data-pdp-tabs]');
+  if (!root) return;
+  const btns   = [...root.querySelectorAll('.tabbar__btn')];
+  const panels = [...root.querySelectorAll('.panel[role="tabpanel"]')];
+  if (!btns.length || !panels.length) return;
+
+  function activate(key, focus) {
+    btns.forEach(b => {
+      const on = b.dataset.tab === key;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.setAttribute('tabindex', on ? '0' : '-1');
+      if (on && focus) b.focus();
+    });
+    panels.forEach(p => {
+      const on = p.id === 'tab-' + key;
+      p.classList.toggle('on', on);
+      if (on) p.removeAttribute('hidden');
+      else p.setAttribute('hidden', '');
+    });
+  }
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => activate(btn.dataset.tab, false));
+    btn.addEventListener('keydown', e => {
+      const idx = btns.indexOf(btn);
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        activate(btns[(idx + 1) % btns.length].dataset.tab, true);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        activate(btns[(idx - 1 + btns.length) % btns.length].dataset.tab, true);
+      }
+    });
+  });
+
+  // Allow deep-linking via #tab-KEY (matches Woo's old behaviour).
+  const m = location.hash.match(/^#tab-([\w-]+)$/);
+  if (m && btns.some(b => b.dataset.tab === m[1])) {
+    activate(m[1], false);
+  }
 }
 
 /* ---------- Meta toggle (category / tag description expand) ----------
@@ -669,7 +748,9 @@ function initCheckoutShippingSync() {
   };
 
   sync();
-  jQuery(document.body).on('updated_checkout', sync);
+  if (typeof jQuery !== 'undefined') {
+    jQuery(document.body).on('updated_checkout', sync);
+  }
 }
 
 function boot() {
@@ -684,9 +765,11 @@ function boot() {
   initShopAjax();
   initQtyStepper();
   initVariationSwatches();
+  initVariationPriceSync();
   initPwToggle();
   initCopyLink();
   initMetaToggle();
+  initPdpTabs();
   initCheckoutShippingSync();
 }
 
