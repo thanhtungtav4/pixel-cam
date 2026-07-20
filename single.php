@@ -91,7 +91,7 @@ while (have_posts()) :
                     ?>
                 </span>
                 <span class="post-author__meta">
-                    <b class="post-author__name"><?php the_author(); ?></b>
+                    <a class="post-author__name" href="<?php echo esc_url(get_author_posts_url($author_id)); ?>"><?php the_author(); ?></a>
                     <small class="post-author__date">
                         <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" focusable="false">
                             <rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
