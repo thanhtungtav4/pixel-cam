@@ -313,7 +313,7 @@ final class WooHook
                         // phpcs:ignore WordPress.WP.DirectDatabaseQuery
                         $GLOBALS['post'] = $post; // product-card partial reads get_the_ID()
                         setup_postdata($post);
-                        get_template_part('partials/components/product-card', null, ['post_id' => (int) $pid]);
+                        get_template_part('partials/components/product-card', null, ['product' => (int) $pid]);
                     }
                     wp_reset_postdata();
                     echo '</div></div>';
@@ -725,15 +725,16 @@ final class WooHook
         return $map[$text] ?? $translated;
     }
 
-    public function loop_start(string $html): string
+    public function loop_start(?string $html = ''): string
     {
         // No id here: this filter runs for every Woo loop (shop, related,
         // upsells, [products] shortcode). A shared id would duplicate on pages
-        // that show more than one loop.
+        // that show more than one loop. WooCommerce 10.x occasionally passes
+        // null here on empty loops — default to '' to keep the PDP rendering.
         return '<div class="grid">';
     }
 
-    public function loop_end(string $html): string
+    public function loop_end(?string $html = ''): string
     {
         return '</div>';
     }
