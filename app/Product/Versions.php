@@ -37,20 +37,34 @@ final class Versions
      * Cached per product in a versioned transient (reverse query is a postmeta
      * LIKE scan — don't run it on every PDP view).
      *
+     * Request-scoped memo goes through `wp_cache_*` (object cache) rather than
+     * a static array so the cache can be cleared via `wp_cache_flush()` and
+     * doesn't grow unbounded in long-running processes (cron, WP-CLI).
+     *
      * @return list<int>
      */
     public static function siblings(int $product_id): array
     {
-        static $memo = [];
-        if (isset($memo[$product_id])) {
-            return $memo[$product_id];
+        $cache_key   = 'pxc_versions_siblings_' . $product_id;
+        $cache_group = 'pxc_product';
+
+        $cached = wp_cache_get($cache_key, $cache_group);
+        if (is_array($cached)) {
+            return $cached;
         }
 
-        return $memo[$product_id] = underscores_child_versioned_cache(
+        $value = underscores_child_versioned_cache(
             'versions',
             (string) $product_id,
             static fn(): array => self::compute_siblings($product_id)
         );
+
+        // wp_cache_* needs a non-negative TTL. 0 means "no expire" which
+        // is fine for request-scoped caches; the versioned transient below
+        // still drives the real invalidation.
+        wp_cache_set($cache_key, $value, $cache_group, 0);
+
+        return $value;
     }
 
     /**
