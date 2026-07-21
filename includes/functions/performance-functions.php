@@ -45,6 +45,14 @@ if (!function_exists('underscores_child_versioned_cache')) {
         }
 
         $value = $build();
+        // Don't cache null/false/empty — WP's transient API can't store null
+        // (it ends up as '' in the DB, which then gets returned as a string
+        // on the next hit and breaks typed callers like ?array signatures).
+        // Just return the value and let the next call re-run the closure.
+        if ($value === null || $value === false || $value === '') {
+            return $value;
+        }
+
         set_transient($key, $value, $ttl);
         return $value;
     }
