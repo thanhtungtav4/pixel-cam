@@ -211,17 +211,25 @@ if (!function_exists('underscores_child_get_critical_css_path')) {
 
         $slug = underscores_child_get_current_template_slug();
 
-        if (!$slug) {
-            return null;
+        // Try the template-specific file first (e.g. critical/home.css,
+        // critical/contact.css). If there's no per-template override, fall
+        // back to global.css — the shared above-the-fold chrome (header,
+        // skip-link, nav, hero base) that every page needs. Returning null
+        // here leaves the skip-link visible because the styles that hide it
+        // (.skip-link { top: -48px }) only live in global.css.
+        if ($slug) {
+            $template_specific = underscores_child_asset_path('assets/css/critical/' . $slug . '.css');
+            if (file_exists($template_specific)) {
+                return $template_specific;
+            }
         }
 
-        $critical_css_path = underscores_child_asset_path('assets/css/critical/' . $slug . '.css');
-
-        if (!file_exists($critical_css_path)) {
-            return null;
+        $global = underscores_child_asset_path('assets/css/critical/global.css');
+        if (file_exists($global)) {
+            return $global;
         }
 
-        return $critical_css_path;
+        return null;
     }
 }
 
