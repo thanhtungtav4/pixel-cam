@@ -40,8 +40,19 @@ if (!function_exists('underscores_child_versioned_cache')) {
         $key = 'pxc_' . $group . '_' . $ver . '_' . md5($subkey);
 
         $hit = get_transient($key);
-        if ($hit !== false) {
+        // Treat null/false/'' as a cache miss. WP's transient API can only
+        // store scalars + arrays, so an earlier buggy build() that returned
+        // null got written as '' to the DB and would otherwise be returned
+        // here as a string — breaking typed callers expecting ?array.
+        if ($hit !== false && $hit !== null && $hit !== '' && $hit !== []) {
             return $hit;
+        }
+        // Stale bad value: drop it so the next read doesn't keep replaying
+        // the broken cache. Bump the group version so all old keys (in any
+        // form) become unreachable, then re-run the build.
+        if ($hit !== false) {
+            underscores_child_bump_cache_version($group);
+            delete_transient($key);
         }
 
         $value = $build();
