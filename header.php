@@ -93,11 +93,16 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
             </span>
         </a>
         <?php if (defined('YITH_WCWL') && function_exists('YITH_WCWL')) :
-            $wishlist_url = (string) YITH_WCWL()->get_wishlist_url();
+            $wishlist_page_id = (int) YITH_WCWL()->get_wishlist_page_id();
+            // YITH can return a non-empty but bogus URL when no wishlist page
+            // is configured (get_the_permalink(0) falls back to the current
+            // post / page permalink). Check the source-of-truth (page ID) so
+            // we don't ship a header link that reloads the current page or
+            // jumps to a random product.
+            $wishlist_url = $wishlist_page_id > 0
+                ? (string) YITH_WCWL()->get_wishlist_url()
+                : '';
             $wish_count   = function_exists('yith_wcwl_count_all_products') ? (int) yith_wcwl_count_all_products() : 0;
-            // YITH can return an empty URL when the wishlist page hasn't been
-            // set in Settings → YITH. Skip the link in that case — a bare
-            // href="" would just reload the current page.
             if ($wishlist_url !== '') :
             ?>
             <a class="ha is-wishlist" href="<?php echo esc_url($wishlist_url); ?>" aria-label="<?php esc_attr_e('Yêu thích', 'underscores'); ?>">

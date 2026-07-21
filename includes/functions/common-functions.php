@@ -156,3 +156,41 @@ if (!function_exists('underscores_child_social_icon')) {
         }
     }
 }
+
+if (!function_exists('underscores_child_wishlist_button')) {
+    /**
+     * Icon-only wishlist toggle button (.wish). Single source for the heart
+     * markup + YITH add-URL/state, shared by the product card and the PDP.
+     *
+     * @param int    $product_id  Product ID.
+     * @param string $extra_class Extra class(es) on the button (e.g. 'ic' on PDP).
+     * @return string Escaped button HTML.
+     */
+    function underscores_child_wishlist_button(int $product_id, string $extra_class = ''): string
+    {
+        $has_yith    = defined('YITH_WCWL') && function_exists('YITH_WCWL');
+        $in_wishlist = $has_yith && YITH_WCWL()->is_product_in_wishlist($product_id);
+        // YITH's no-JS form handler (hooked on init) requires a `_wpnonce`
+        // param on the add URL — without it, GET visits to ?add_to_wishlist=ID
+        // are silently dropped. The plugin helper adds the nonce, but defaults
+        // to the current REQUEST_URI as the base, so we pass base_url explicitly
+        // to anchor the add to the product's own permalink (used in card loops
+        // where the request is a category/shop page).
+        $add_url     = $has_yith
+            ? YITH_WCWL()->get_add_to_wishlist_url($product_id, ['base_url' => get_permalink($product_id)])
+            : '';
+
+        $classes = trim('wish ' . $extra_class . ($in_wishlist ? ' on' : ''));
+
+        return sprintf(
+            '<button class="%s" type="button" data-product-id="%d"%s aria-label="%s" aria-pressed="%s">'
+            . '<svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg>'
+            . '</button>',
+            esc_attr($classes),
+            $product_id,
+            $add_url ? ' data-add-url="' . esc_url($add_url) . '"' : '',
+            esc_attr__('Thêm vào yêu thích', 'underscores'),
+            $in_wishlist ? 'true' : 'false'
+        );
+    }
+}
