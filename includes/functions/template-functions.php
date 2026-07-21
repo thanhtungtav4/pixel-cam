@@ -162,3 +162,75 @@ function underscores_child_logo_class(string $html): string
 {
     return str_replace('class="custom-logo-link"', 'class="custom-logo-link logo"', $html);
 }
+
+if (!function_exists('get_main_class')) {
+    /**
+     * Build the class attribute for the page <main> wrapper.
+     *
+     * Pulls any classes registered via underscores_child_set_main_class()
+     * (e.g. from page-specific Hook classes — AboutPageHook, AuthorPageHook,
+     * ContactPageHook all do this on their body_class filter) and merges
+     * them with an optional $css_class arg + the base 'main'. Output is
+     * `class="..."` ready to drop into the markup.
+     *
+     * The `main_class` filter lets other code (incl. the page Hooks above)
+     * add/tweak classes without touching the global directly.
+     *
+     * @param string|array $css_class Optional class(es) to add for this call.
+     * @return string `class="..."` or empty when no classes survive sanitization.
+     */
+    function get_main_class($css_class = ''): string
+    {
+        $classes           = ['main'];
+        $registered_classes = $GLOBALS['underscores_child_main_class'] ?? '';
+
+        if (!empty($registered_classes)) {
+            if (!is_array($registered_classes)) {
+                $registered_classes = preg_split('#\s+#', (string) $registered_classes);
+            }
+
+            $classes = array_merge($classes, $registered_classes);
+        }
+
+        if (!empty($css_class)) {
+            if (!is_array($css_class)) {
+                $css_class = preg_split('#\s+#', (string) $css_class);
+            }
+
+            $classes = array_merge($classes, $css_class);
+        }
+
+        $classes = apply_filters('main_class', $classes, $css_class);
+        $classes = array_filter(array_map('sanitize_html_class', array_unique((array) $classes)));
+
+        if ($classes === []) {
+            return '';
+        }
+
+        return sprintf('class="%s"', esc_attr(implode(' ', $classes)));
+    }
+}
+
+if (!function_exists('main_class')) {
+    /**
+     * Echo the class attribute for the page <main> wrapper. Companion to
+     * get_main_class() for the `<?php main_class(); ?>` shorthand.
+     */
+    function main_class($css_class = ''): void
+    {
+        echo get_main_class($css_class);
+    }
+}
+
+if (!function_exists('underscores_child_set_main_class')) {
+    /**
+     * Register extra class(es) that should land on the next <main> wrapper
+     * rendered via get_main_class(). Page Hooks (About/Author/Contact) call
+     * this from their body_class filter so the value sticks until the main
+     * is rendered.
+     */
+    function underscores_child_set_main_class($css_class = ''): void
+    {
+        $GLOBALS['underscores_child_main_class'] = $css_class;
+    }
+}
