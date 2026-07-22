@@ -1002,6 +1002,34 @@ body.newsdtpage .prose{max-width:none}
 
 .pdp-tabs .panel ul{margin:8px 0 8px 20px;font-size:14.5px;line-height:1.7;color:#333}
 
+/* Product overview: editorial content with a live WooCommerce spec sidebar. */
+.pdp-description-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,360px);gap:clamp(32px,4vw,56px);align-items:start}
+.pdp-description-main{min-width:0;max-width:760px}
+.pdp-description-main>h2:first-child{display:none}
+.pdp-description-main h2,.pdp-description-main h3,.pdp-description-main h4{font-size:18px;font-weight:700;margin:26px 0 10px;letter-spacing:-.01em;color:var(--fg)}
+.pdp-description-main h2:first-child,.pdp-description-main h3:first-child,.pdp-description-main h4:first-child{margin-top:0}
+.pdp-description-sidebar{position:sticky;top:96px;min-width:0}
+.pdp-spec-card{border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:22px;box-shadow:0 2px 10px rgba(17,17,17,.035)}
+.pdp-tabs .panel .pdp-spec-card__title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;line-height:1.25;margin:0 0 12px;color:var(--fg)}
+.pdp-spec-card__title svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.pdp-spec-card .woocommerce-product-attributes{display:table;margin:0;border:0;background:transparent;font-size:13px}
+.pdp-spec-card .woocommerce-product-attributes tr{display:table-row;border:0}
+.pdp-spec-card .woocommerce-product-attributes th,.pdp-spec-card .woocommerce-product-attributes td{display:table-cell;padding:10px 0;border:0;border-top:1px solid var(--border);vertical-align:top;background:transparent;line-height:1.45}
+.pdp-spec-card .woocommerce-product-attributes th{width:43%;padding-right:14px;color:var(--muted);font-size:12.5px;font-weight:600}
+.pdp-spec-card .woocommerce-product-attributes td{color:var(--fg);font-size:13px}
+.pdp-tabs .panel .pdp-spec-card .woocommerce-product-attributes p{margin:0;padding:0;color:inherit;font-size:inherit;line-height:inherit}
+@media(max-width:900px){
+  .pdp-description-layout{grid-template-columns:1fr;gap:32px}
+  .pdp-description-main{max-width:none}
+  .pdp-description-sidebar{position:static}
+  .pdp-spec-card{max-width:none}
+}
+@media(max-width:560px){
+  .pdp-description-layout{gap:24px}
+  .pdp-spec-card{padding:18px 16px;border-radius:10px}
+  .pdp-spec-card .woocommerce-product-attributes th{width:42%;padding-right:12px}
+}
+
 /* Review summary block */
 .review-summary{display:grid;grid-template-columns:200px 1fr;gap:32px;padding:20px;border:1px solid var(--border);border-radius:12px;background:var(--surface);margin-bottom:28px}
 @media(max-width:640px){.review-summary{grid-template-columns:1fr;gap:18px}}
@@ -2144,6 +2172,7 @@ body.newsdtpage .prose{max-width:none}
    Desktop follows the shop's 5-card rhythm; phones keep two cards visible
    and expose the remaining products as a native, keyboard-safe snap slider. */
 .related.products,.upsells.products{padding:0;margin-top:48px}
+.related.products{margin-bottom:clamp(48px,6vw,64px)}
 .related.products>h2,.upsells.products>h2{font-size:20px;font-weight:700;margin:0 0 18px;letter-spacing:-.01em}
 .related.products .grid,.upsells.products .grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
 @media(max-width:1100px){.related.products .grid,.upsells.products .grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
