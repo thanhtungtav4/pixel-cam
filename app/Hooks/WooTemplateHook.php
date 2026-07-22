@@ -277,11 +277,18 @@ final class WooTemplateHook
         if (trim(strip_tags($outro)) === '') {
             return;
         }
+        // The hook fires OUTSIDE .shop-main (after close_shop_grid @ 999),
+        // so wrap in section > .wrap to inherit the site's 1200px max
+        // content width. Without this wrapper, the block sits directly
+        // under <main> and would span the full 1280px viewport.
+        echo '<section class="section--flush seo-block-wrap">';
+        echo '<div class="wrap">';
         get_template_part('partials/components/collapsible-content', null, [
             'content'   => $outro,
             'max_lines' => 4,
             'class'     => 'seo-block--outro',
         ]);
+        echo '</div></section>';
     }
 
     /* ------------------------------------------------------------------ *

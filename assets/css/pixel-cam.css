@@ -3432,8 +3432,12 @@ table.my_account_orders mark.order-status.status-failed {
 .pxc-icon-remove.is-hidden{display:none}
 .pxc-icon-remove{color:#b32d2e;margin-left:6px}
 
-/* SEO intro/outro (collapsible content blocks on term archives) */
-.seo-block{margin:24px auto;max-width:1100px;padding:0 20px;position:relative}
+/* SEO intro/outro (collapsible content blocks on term archives)
+ * No fixed max-width — inherit from the parent .wrap (1200px sitewide) so
+ * the block spans the same width as the product / post grid above it.
+ * The block's own padding handles the gap to the parent's edge on small
+ * screens; the parent .wrap supplies the side padding on larger ones. */
+.seo-block{margin:24px 0;padding:0;position:relative}
 .seo-block__inner{display:-webkit-box;-webkit-line-clamp:var(--clamp,4);-webkit-box-orient:vertical;overflow:hidden;line-height:1.7;color:var(--fg);font-size:15px}
 .seo-block--intro .seo-block__inner{-webkit-line-clamp:3}
 .seo-block--outro .seo-block__inner{-webkit-line-clamp:4}
