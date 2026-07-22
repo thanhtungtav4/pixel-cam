@@ -530,10 +530,16 @@ final class WooProductHook
 
     public function loop_per_page(int $per_page): int
     {
-        // 30 fills a 5-col grid in 6 full rows (no partial last row).
-        // Bumped from 12 — with 5 columns, 12 left 2 cards orphaned
-        // on a partial row, making the grid look empty.
-        return 30;
+        // 24 is a mobile-first multiple:
+        //   5-col desktop → 4 full rows + 4-card row (1 slot empty, but compact)
+        //   4-col small   → 6 full rows
+        //   3-col tablet  → 8 full rows (no partial)
+        //   2-col mobile  → 12 full rows (no partial — biggest priority)
+        // AJAX batches land on even counts on mobile 2-col, so multi-page
+        // categories don't get a 1-card orphan at the end of a loadmore.
+        // Previously 30 (5×6 desktop, but 30 doesn't divide nicely for tablet
+        // 3-col when paginating).
+        return 24;
     }
 
     /**
