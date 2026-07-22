@@ -613,10 +613,15 @@ final class WooProductHook
      * the fold (lazy + low) so they don't compete for bandwidth with the
      * main image.
      *
+     * NOTE: $size is `mixed` because WP core passes either a string
+     * (`'large'`) or an array (`[600, 600]`) depending on the caller.
+     * `_wp_post_thumbnail_html()` uses the array form for the featured-image
+     * meta box in wp-admin, which was throwing TypeError before.
+     *
      * @param array<string,mixed> $attrs
      * @return array<string,mixed>
      */
-    public function product_gallery_image_attrs(array $attrs, \WP_Post $attachment, string $size): array
+    public function product_gallery_image_attrs(array $attrs, \WP_Post $attachment, mixed $size): array
     {
         // Scope to single-product pages so we don't affect blog / shop / cart
         // image attributes.
