@@ -74,4 +74,4 @@
 .ct-faq .item summary::-webkit-details-marker{display:none}
 .ct-faq .item summary::after{content:'+';font-family:var(--mono);font-size:20px;color:var(--accent);font-weight:400;transition:.2s;line-height:1;flex-shrink:0}
 .ct-faq .item[open] summary::after{content:'−'}
-.ct-faq .item .answer{color:#333;font-size:14px;line-height:1.7;padding-top:12px;max-width:72ch}
+.ct-faq .item .answer{color:#333;font-size:14px;line-height:1.7;padding-top:12px}
