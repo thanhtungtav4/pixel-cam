@@ -408,8 +408,9 @@ final class WooProductHook
 
         // Drop Woo's default "Mô tả sản phẩm" tab — its content (which
         // usually holds the YouTube embed pasted by the shop owner) moves
-        // into the custom TỔNG QUAN tab below, alongside the "Hộp sản phẩm
-        // bao gồm" card. Same for `additional_information` — empty on most
+        // into the custom TỔNG QUAN tab below. The "Hộp sản phẩm bao gồm"
+        // block lives in the right info column (content-single-product.php),
+        // not here. Same for `additional_information` — empty on most
         // products and the spec table already covers it.
         unset($tabs['description'], $tabs['additional_information']);
 
@@ -418,9 +419,9 @@ final class WooProductHook
         }
 
         // Tab 1 — TỔNG QUAN: description (with video embed).
-        // The "Hộp sản phẩm bao gồm" block now lives in the right info
-        // column (content-single-product.php), so it shows up above-the-fold
-        // next to the buy buttons — no longer duplicated here.
+        // "Hộp sản phẩm bao gồm" is rendered separately in the right info
+        // column (content-single-product.php) — wysiwyg block, so it sits
+        // above-the-fold next to the buy buttons.
         $tabs['pxc_overview'] = [
             'title'    => __('Tổng quan', 'underscores'),
             'priority' => 5,
@@ -529,7 +530,10 @@ final class WooProductHook
 
     public function loop_per_page(int $per_page): int
     {
-        return 12;
+        // 30 fills a 5-col grid in 6 full rows (no partial last row).
+        // Bumped from 12 — with 5 columns, 12 left 2 cards orphaned
+        // on a partial row, making the grid look empty.
+        return 30;
     }
 
     /**
