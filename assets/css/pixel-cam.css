@@ -2140,10 +2140,30 @@ body.newsdtpage .prose{max-width:none}
 .woocommerce-tabs .panel p{font-size:15px;line-height:1.7;color:#333;margin:8px 0}
 .woocommerce-tabs .panel ul{margin:8px 0 8px 20px;font-size:14.5px;line-height:1.7;color:#333}
 .woocommerce-tabs .panel li{margin:4px 0}
-/* Related / upsells reuse .grid via loop_start filter */
-.related.products>h2,.upsells.products>h2{font-size:20px;font-weight:700;margin:48px 0 18px;letter-spacing:-.01em}
-.related.products .grid,.upsells.products .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media(max-width:780px){.related.products .grid,.upsells.products .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Related / upsells reuse .grid via loop_start filter.
+   Desktop follows the shop's 5-card rhythm; phones keep two cards visible
+   and expose the remaining products as a native, keyboard-safe snap slider. */
+.related.products,.upsells.products{padding:0;margin-top:48px}
+.related.products>h2,.upsells.products>h2{font-size:20px;font-weight:700;margin:0 0 18px;letter-spacing:-.01em}
+.related.products .grid,.upsells.products .grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+@media(max-width:1100px){.related.products .grid,.upsells.products .grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:780px){.related.products .grid,.upsells.products .grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){
+  .related.products>h2,.upsells.products>h2{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+  .related.products>h2::after,.upsells.products>h2::after{content:"Vuốt để xem thêm →";color:var(--muted);font-size:11px;font-weight:500;letter-spacing:0;white-space:nowrap}
+  .related.products .grid,.upsells.products .grid{
+    display:flex;gap:14px;overflow-x:auto;overscroll-behavior-inline:contain;
+    padding:2px 2px 12px;scroll-padding-inline:2px;scroll-snap-type:x mandatory;
+    scrollbar-width:thin;scrollbar-color:var(--accent) var(--border);
+    -webkit-overflow-scrolling:touch
+  }
+  .related.products .grid>.pcard,.upsells.products .grid>.pcard{
+    flex:0 0 calc((100% - 14px)/2);min-width:0;scroll-snap-align:start;scroll-snap-stop:always
+  }
+  .related.products .grid::-webkit-scrollbar,.upsells.products .grid::-webkit-scrollbar{height:4px}
+  .related.products .grid::-webkit-scrollbar-track,.upsells.products .grid::-webkit-scrollbar-track{background:var(--border);border-radius:999px}
+  .related.products .grid::-webkit-scrollbar-thumb,.upsells.products .grid::-webkit-scrollbar-thumb{background:var(--accent);border-radius:999px}
+}
 
 /* ----- Cart ----- */
 .woocommerce-cart .woo-content,.woocommerce-checkout .woo-content,.woocommerce-account .woo-content{padding-block:clamp(24px,4vw,40px)}

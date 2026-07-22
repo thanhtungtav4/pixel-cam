@@ -44,10 +44,14 @@ final class WooProductHook
         // Keep Woo's AJAX add-to-cart classes, just append the .addcart look.
         add_filter('woocommerce_loop_add_to_cart_args', [$self, 'add_to_cart_args'], 10, 2);
 
-        // Loop counts (also apply to upsells).
+        // Keep every product recommendation row aligned to the same 5-card
+        // desktop rhythm. Mobile turns these two rows into a 2-card slider.
         add_filter('loop_shop_columns', [$self, 'loop_columns']);
         add_filter('loop_shop_per_page', [$self, 'loop_per_page']);
         add_filter('woocommerce_upsells_columns', [$self, 'loop_columns']);
+        add_filter('woocommerce_related_products_columns', [$self, 'loop_columns']);
+        add_filter('woocommerce_upsells_total', [$self, 'recommendation_total']);
+        add_filter('woocommerce_product_get_upsell_ids', [$self, 'complete_upsell_ids'], 20, 2);
 
         // Gallery image attributes (LCP-aware).
         add_filter('wp_get_attachment_image_attributes', [$self, 'product_gallery_image_attrs'], 10, 3);
@@ -396,7 +400,19 @@ final class WooProductHook
 
     public function loop_columns(int $columns): int
     {
-        return 3;
+        return 5;
+    }
+
+    /**
+     * Woo passes the saved posts_per_page value through this filter and some
+     * installs expose it as a numeric string, so do not enforce a scalar input
+     * type at the WordPress hook boundary.
+     *
+     * @param int|string $total Existing Woo limit.
+     */
+    public function recommendation_total($total): int
+    {
+        return 5;
     }
 
     public function loop_per_page(int $per_page): int
@@ -464,9 +480,47 @@ final class WooProductHook
      */
     public function related_args(array $args): array
     {
-        $args['posts_per_page'] = 3;
-        $args['columns']        = 3;
+        $args['posts_per_page'] = 5;
+        $args['columns']        = 5;
         return $args;
+    }
+
+    /**
+     * Fill sparse curated upsell rows with Woo's own related-product results.
+     * This only changes the front-end read value; saved product data remains
+     * untouched. Returning the completed list here also lets Woo exclude the
+     * displayed upsells from the following related-products section.
+     *
+     * @param mixed $ids     Stored upsell IDs.
+     * @param mixed $product Product whose property is being read.
+     * @return int[]
+     */
+    public function complete_upsell_ids($ids, $product): array
+    {
+        $upsell_ids = array_values(array_unique(array_filter(array_map('absint', (array) $ids))));
+
+        if (
+            is_admin()
+            || ! function_exists('is_product')
+            || ! is_product()
+            || ! $product instanceof \WC_Product
+            || empty($upsell_ids)
+            || count($upsell_ids) >= 5
+        ) {
+            return $upsell_ids;
+        }
+
+        $fallback_ids = wc_get_related_products(
+            $product->get_id(),
+            5 - count($upsell_ids),
+            array_merge([$product->get_id()], $upsell_ids)
+        );
+
+        return array_slice(
+            array_values(array_unique(array_merge($upsell_ids, array_map('absint', $fallback_ids)))),
+            0,
+            5
+        );
     }
 
     public function related_heading(): string
