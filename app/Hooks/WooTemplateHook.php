@@ -59,6 +59,17 @@ final class WooTemplateHook
         // Shop loop: plain .grid wrapper for product cards.
         add_filter('woocommerce_product_loop_start', [$self, 'loop_start']);
         add_filter('woocommerce_product_loop_end', [$self, 'loop_end']);
+
+        // SEO outro block (ACF wysiwyg) — rendered AFTER the product grid
+        // on product category archives, hidden when empty. Lets editors add
+        // long-form content, images, and internal links for SEO without
+        // bloating the intro.
+        //
+        // Hook on woocommerce_after_shop_loop @ 1000 so we fire AFTER
+        // close_shop_grid (999) — keeps the outro OUTSIDE the .grid wrapper.
+        // (woocommerce_content() doesn't fire before/after_main_content, hence
+        // the loop hooks instead — comment in swap_content_wrapper.)
+        add_action('woocommerce_after_shop_loop', [$self, 'render_seo_outro'], 1000);
     }
 
     /* ------------------------------------------------------------------ *
@@ -229,25 +240,48 @@ final class WooTemplateHook
             }
         }
         if ($desc !== '') {
-            // Collapsible description: `.meta-wrap` is hidden by JS when the
-            // content fits within the collapsed height (so short descriptions
-            // show the full text without a button). See `initMetaToggle`.
-            echo '<div class="meta-wrap" data-meta-wrap>'
-                . '<div class="meta" data-meta>' . wp_kses_post(wpautop($desc)) . '</div>'
-                . '<button class="meta-toggle" type="button" data-meta-toggle '
-                . 'aria-expanded="false" aria-controls="' . esc_attr('meta-' . md5($desc)) . '">'
-                . '<span class="meta-toggle__label" data-meta-label>'
-                . esc_html__('Xem thêm', 'underscores') . '</span>'
-                . '<svg class="meta-toggle__icon" viewBox="0 0 24 24" width="14" height="14" '
-                . 'aria-hidden="true" focusable="false">'
-                . '<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" '
-                . 'fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
-                . '</svg>'
-                . '</button>'
-                . '</div>';
+            // Category / tag description (WP core, editable in the term
+            // editor). SEO intro — wrap in the collapsible block so long
+            // descriptions don't push the product grid too far down.
+            get_template_part('partials/components/collapsible-content', null, [
+                'content'   => wpautop($desc),
+                'max_lines' => 3,
+                'class'     => 'seo-block--intro',
+            ]);
         }
 
         echo '</div></div>'; // .page-head, .page-head-wrap
+    }
+
+    /**
+     * SEO outro block — ACF wysiwyg rendered after the shop grid on
+     * product taxonomy archives. Empty value = block is not rendered.
+     *
+     * Uses function_exists guards so the partial is no-op if ACF is
+     * disabled. Reuses the collapsible-content partial for the same
+     * "Xem thêm" UX as the intro.
+     */
+    public function render_seo_outro(): void
+    {
+        if (! is_product_taxonomy()) {
+            return;
+        }
+        if (! function_exists('get_field')) {
+            return;
+        }
+        $term = get_queried_object();
+        if (! $term instanceof \WP_Term) {
+            return;
+        }
+        $outro = (string) get_field('pxc_seo_outro', $term->term_id);
+        if (trim(strip_tags($outro)) === '') {
+            return;
+        }
+        get_template_part('partials/components/collapsible-content', null, [
+            'content'   => $outro,
+            'max_lines' => 4,
+            'class'     => 'seo-block--outro',
+        ]);
     }
 
     /* ------------------------------------------------------------------ *

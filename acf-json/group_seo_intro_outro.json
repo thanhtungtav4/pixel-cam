@@ -1,0 +1,50 @@
+{
+    "key": "group_seo_intro_outro",
+    "title": "SEO intro / outro (danh mục)",
+    "fields": [
+        {
+            "key": "field_pxc_seo_outro",
+            "label": "Nội dung SEO bên dưới (outro)",
+            "name": "pxc_seo_outro",
+            "type": "wysiwyg",
+            "instructions": "Hiển thị bên dưới danh sách sản phẩm / bài viết. Dùng để bổ sung nội dung SEO, mô tả chuyên mục, internal links. Có thể nhúng ảnh / button bằng block editor. Để trống thì ẩn.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "show_in_rest": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "product_cat"
+            }
+        ],
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "category"
+            }
+        ]
+    ],
+    "menu_order": 20,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Wysiwyg content rendered below the product / post list on category archives. Auto-collapses when too long with a 'Xem thêm' button. Empty value = block is hidden.",
+    "modified": 1737600000
+}

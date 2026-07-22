@@ -31,7 +31,18 @@ $blog_url     = $blog_page_id ? get_permalink($blog_page_id) : home_url('/');
 
 <section class="section--flush"><div class="wrap page-head">
     <?php if ($title) : ?><h1><?php echo esc_html($title); ?></h1><?php endif; ?>
-    <?php if ($description) : ?><p class="meta"><?php echo esc_html($description); ?></p><?php endif; ?>
+    <?php
+    // SEO intro: collapse the category description (WP core term field) so a
+    // long blurb doesn't push the post grid too far down. Block auto-hides
+    // inside the partial when content is empty.
+    if ($description !== '') :
+        get_template_part('partials/components/collapsible-content', null, [
+            'content'   => wpautop($description),
+            'max_lines' => 3,
+            'class'     => 'seo-block--intro',
+        ]);
+    endif;
+    ?>
 
     <?php if ($show_chips) :
         $categories = get_categories([
@@ -137,3 +148,28 @@ $blog_url     = $blog_page_id ? get_permalink($blog_page_id) : home_url('/');
 
     <?php get_template_part('partials/components/blog-sidebar'); ?>
 </div></section>
+
+<?php
+// SEO outro (ACF wysiwyg) — rendered below the post grid on category
+// archives. Empty value = block is hidden. Uses the same collapsible
+// block as the intro so the "Xem thêm" UX stays consistent.
+if (function_exists('get_field')) :
+    $outro_term = get_queried_object();
+    if ($outro_term instanceof \WP_Term) :
+        $outro = (string) get_field('pxc_seo_outro', $outro_term->term_id);
+        if (trim(strip_tags($outro)) !== '') :
+            ?>
+            <section class="section--flush"><div class="wrap">
+                <?php
+                get_template_part('partials/components/collapsible-content', null, [
+                    'content'   => $outro,
+                    'max_lines' => 4,
+                    'class'     => 'seo-block--outro',
+                ]);
+                ?>
+            </div></section>
+            <?php
+        endif;
+    endif;
+endif;
+?>

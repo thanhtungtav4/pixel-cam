@@ -579,40 +579,11 @@ function initPdpTabs() {
   }
 }
 
-/* ---------- Meta toggle (category / tag description expand) ----------
-   Collapses long Woo term descriptions with a bottom fade. JS measures
-   scrollHeight; if it fits inside the CSS max-height (200px), the button
-   stays hidden and the wrap is left untouched. Otherwise we add
-   `is-collapsed` and let the toggle swap to `is-expanded`. */
-function initMetaToggle() {
-  const COLLAPSED_PX = 200; // must match the .is-collapsed .meta max-height in CSS
-  const LABEL_MORE = 'Xem thêm';
-  const LABEL_LESS = 'Thu gọn';
-
-  document.querySelectorAll('[data-meta-wrap]').forEach(wrap => {
-    const meta = wrap.querySelector('[data-meta]');
-    const btn  = wrap.querySelector('[data-meta-toggle]');
-    const lbl  = wrap.querySelector('[data-meta-label]');
-    if (!meta || !btn) return;
-
-    // Measure: clientHeight of the natural (un-collapsed) content.
-    // Temporarily remove any state to read true height.
-    wrap.classList.remove('is-collapsed', 'is-expanded');
-    const natural = meta.scrollHeight;
-    if (natural <= COLLAPSED_PX + 1) {
-      // Short description — no toggle needed, leave it fully visible.
-      return;
-    }
-    wrap.classList.add('is-collapsed');
-
-    btn.addEventListener('click', () => {
-      const expanded = wrap.classList.toggle('is-expanded');
-      wrap.classList.toggle('is-collapsed', !expanded);
-      btn.setAttribute('aria-expanded', String(expanded));
-      if (lbl) lbl.textContent = expanded ? LABEL_LESS : LABEL_MORE;
-    });
-  });
-}
+/* Meta toggle removed — category / tag description is rendered full.
+   Long descriptions are an editor concern; the previous fade-mask
+   collapse read as a render bug (the bottom 60px gradient masked
+   content under it). Keep this slot in case we ever re-introduce a
+   no-fade truncation. */
 
 /* ---------- Copy link (blog share) ---------- */
 function initCopyLink() {
@@ -753,6 +724,44 @@ function initCheckoutShippingSync() {
   }
 }
 
+/* ---------- SEO intro/outro collapse (term archives) ---------- */
+/*
+ * The .seo-block wrapper has -webkit-line-clamp applied server-side. We
+ * hide the toggle when the content fits within the clamp, and switch the
+ * button label between "Xem thêm" / "Thu gọn" when expanded. Empty
+ * buttons (server hides the wrapper via .seo-block--no-toggle) are
+ * skipped.
+ */
+function initSeoBlock() {
+  const blocks = document.querySelectorAll('.seo-block[data-collapsible]');
+  blocks.forEach(function (block) {
+    const inner = block.querySelector('[data-collapsible-content]');
+    const btn = block.querySelector('[data-collapsible-toggle]');
+    if (!inner || !btn) return;
+
+    // Measure whether the content actually overflows the clamp. If not,
+    // the toggle would be a dead end — hide it.
+    requestAnimationFrame(function () {
+      const isClamped = inner.scrollHeight > inner.clientHeight + 1;
+      if (!isClamped) {
+        block.classList.add('seo-block--no-toggle');
+        return;
+      }
+      btn.hidden = false;
+      btn.addEventListener('click', function () {
+        const expanded = block.classList.toggle('is-expanded');
+        btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        const text = btn.querySelector('.seo-block__toggle-text');
+        if (text) {
+          text.textContent = expanded
+            ? btn.getAttribute('data-label-collapsed') || text.textContent
+            : btn.getAttribute('data-label-expanded') || text.textContent;
+        }
+      });
+    });
+  });
+}
+
 function boot() {
   initSlider();
   initMega();
@@ -768,9 +777,9 @@ function boot() {
   initVariationPriceSync();
   initPwToggle();
   initCopyLink();
-  initMetaToggle();
   initPdpTabs();
   initCheckoutShippingSync();
+  initSeoBlock();
 }
 
 if (document.readyState === 'loading') {
