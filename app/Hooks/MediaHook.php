@@ -71,8 +71,11 @@ final class MediaHook
     {
         $mimes['avif'] = 'image/avif';
         $mimes['webp'] = 'image/webp';
-        // SVG (sanitized on upload by sanitize_svg_upload). Needed for menu icons.
-        $mimes['svg']  = 'image/svg+xml';
+        // SVG is active content. Keep it limited to trusted store managers;
+        // every accepted file is still sanitized before WordPress stores it.
+        if (current_user_can('manage_options') || current_user_can('manage_woocommerce')) {
+            $mimes['svg'] = 'image/svg+xml';
+        }
         return $mimes;
     }
 
@@ -316,16 +319,20 @@ final class MediaHook
             return $img_tag;
         }
 
-        $info      = pathinfo($file_path);
-        $avif_side = trailingslashit($info['dirname']) . $info['filename'] . '.avif';
-        $webp_side = trailingslashit($info['dirname']) . $info['filename'] . '.webp';
+        $info     = pathinfo($file_path);
+        $url_info = pathinfo($original_src);
 
-        $avif_exists = file_exists($avif_side);
-        $webp_exists = file_exists($webp_side);
-        if (! $webp_exists && file_exists($file_path . '.webp')) {
-            $webp_exists = true;
-        }
-        if (! $avif_exists && ! $webp_exists) {
+        $replacement_path = static fn(string $ext): string => trailingslashit($info['dirname']) . $info['filename'] . $ext;
+        $replacement_url  = static fn(string $ext): string => trailingslashit($url_info['dirname']) . $url_info['filename'] . $ext;
+
+        $avif_src = file_exists($replacement_path('.avif'))
+            ? $replacement_url('.avif')
+            : (file_exists($file_path . '.avif') ? $original_src . '.avif' : '');
+        $webp_src = file_exists($replacement_path('.webp'))
+            ? $replacement_url('.webp')
+            : (file_exists($file_path . '.webp') ? $original_src . '.webp' : '');
+
+        if ($avif_src === '' && $webp_src === '') {
             return $img_tag;
         }
 
@@ -333,16 +340,12 @@ final class MediaHook
         $sizes  = preg_match('/\bsizes=["\']([^"\']+)["\']/i', $img_tag, $m) ? $m[1] : '';
         $sizes_attr = $sizes ? ' sizes="' . esc_attr($sizes) . '"' : '';
 
-        $url_info  = pathinfo($original_src);
-        $avif_src  = trailingslashit($url_info['dirname']) . $url_info['filename'] . '.avif';
-        $webp_src  = trailingslashit($url_info['dirname']) . $url_info['filename'] . '.webp';
-
         $sources = '';
-        if ($avif_exists) {
+        if ($avif_src !== '') {
             $ss = $srcset ? $this->convert_srcset($srcset, '.avif') : esc_url($avif_src);
             $sources .= '<source type="image/avif" srcset="' . ($srcset ? esc_attr($ss) : $ss) . '"' . ($srcset ? $sizes_attr : '') . '>';
         }
-        if ($webp_exists) {
+        if ($webp_src !== '') {
             $ss = $srcset ? $this->convert_srcset($srcset, '.webp') : esc_url($webp_src);
             $sources .= '<source type="image/webp" srcset="' . ($srcset ? esc_attr($ss) : $ss) . '"' . ($srcset ? $sizes_attr : '') . '>';
         }
@@ -368,8 +371,8 @@ final class MediaHook
                 $url = trailingslashit(dirname($pieces[0])) . $pi['filename'] . $ext;
                 return $url . (isset($pieces[1]) ? ' ' . $pieces[1] : '');
             }
-            if ($ext === '.webp' && file_exists($path . '.webp')) {
-                return $pieces[0] . '.webp' . (isset($pieces[1]) ? ' ' . $pieces[1] : '');
+            if (file_exists($path . $ext)) {
+                return $pieces[0] . $ext . (isset($pieces[1]) ? ' ' . $pieces[1] : '');
             }
             return $trim;
         }, explode(',', $srcset));
@@ -409,45 +412,56 @@ final class MediaHook
         }
         $content = file_get_contents($file['tmp_name']);
         if ($content === false || $content === '') {
+            $file['error'] = __('File SVG rỗng hoặc không thể đọc.', 'underscores');
             return $file;
         }
 
-        $bad_tags  = ['script', 'foreignObject', 'set', 'animate', 'animateTransform', 'animateMotion', 'handler', 'listener'];
-        $bad_attrs = ['onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup', 'onload', 'onerror', 'onunload', 'onfocus', 'onblur', 'onchange', 'onsubmit', 'onreset', 'onselect', 'onabort', 'onresize', 'onscroll'];
+        // Never parse declarations/entities. LIBXML_NOENT would expand local
+        // entities and turns an image upload into a file-disclosure primitive.
+        if (preg_match('/<!\s*(?:DOCTYPE|ENTITY)\b/i', $content)) {
+            $file['error'] = __('SVG không được chứa DOCTYPE hoặc ENTITY.', 'underscores');
+            return $file;
+        }
+
+        $bad_tags = ['script', 'style', 'foreignobject', 'object', 'embed', 'iframe', 'set', 'animate', 'animatetransform', 'animatemotion', 'handler', 'listener'];
 
         libxml_use_internal_errors(true);
         $dom                     = new \DOMDocument();
         $dom->formatOutput       = false;
         $dom->preserveWhiteSpace = true;
 
-        if (! $dom->loadXML($content, LIBXML_NONET | LIBXML_NOENT)) {
+        if (! $dom->loadXML($content, LIBXML_NONET)) {
             $file['error'] = __('Không đọc được file SVG.', 'underscores');
             libxml_clear_errors();
             return $file;
         }
 
-        foreach ($bad_tags as $tag) {
-            $nodes = $dom->getElementsByTagName($tag);
-            for ($i = $nodes->length - 1; $i >= 0; $i--) {
-                $node = $nodes->item($i);
-                $node->parentNode?->removeChild($node);
-            }
+        $xpath = new \DOMXPath($dom);
+        $elements = [];
+        foreach ($xpath->query('//*') ?: [] as $element) {
+            $elements[] = $element;
         }
 
-        $xpath = new \DOMXPath($dom);
-        foreach ($xpath->query('//*') as $el) {
+        foreach ($elements as $el) {
             /** @var \DOMElement $el */
-            foreach ($bad_attrs as $attr) {
-                if ($el->hasAttribute($attr)) {
-                    $el->removeAttribute($attr);
+            if (in_array(strtolower($el->localName), $bad_tags, true)) {
+                $el->parentNode?->removeChild($el);
+                continue;
+            }
+
+            for ($i = $el->attributes->length - 1; $i >= 0; $i--) {
+                $attr = $el->attributes->item($i);
+                if (! $attr) {
+                    continue;
                 }
-            }
-            $xlink = $el->getAttributeNS('http://www.w3.org/1999/xlink', 'href');
-            if ($xlink && preg_match('/^\s*(javascript|data):/i', $xlink)) {
-                $el->removeAttributeNS('http://www.w3.org/1999/xlink', 'href');
-            }
-            if ($el->hasAttribute('href') && preg_match('/^\s*(javascript|data):/i', $el->getAttribute('href'))) {
-                $el->removeAttribute('href');
+
+                $name  = strtolower($attr->nodeName);
+                $value = trim($attr->nodeValue ?? '');
+                $is_href = $name === 'href' || $name === 'xlink:href';
+
+                if (str_starts_with($name, 'on') || $name === 'style' || ($is_href && ! str_starts_with($value, '#'))) {
+                    $el->removeAttributeNode($attr);
+                }
             }
         }
 
@@ -458,7 +472,9 @@ final class MediaHook
             return $file;
         }
 
-        file_put_contents($file['tmp_name'], $clean);
+        if (file_put_contents($file['tmp_name'], $clean, LOCK_EX) === false) {
+            $file['error'] = __('Không thể lưu file SVG đã làm sạch.', 'underscores');
+        }
         return $file;
     }
 

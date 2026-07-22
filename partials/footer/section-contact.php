@@ -20,7 +20,7 @@ if (! $has_contact && ! $has_payments) {
 }
 ?>
 <div class="foot-col foot-col--contact">
-    <h5><?php esc_html_e('Liên hệ', 'underscores'); ?></h5>
+    <h2 class="foot-heading"><?php esc_html_e('Liên hệ', 'underscores'); ?></h2>
     <?php if ($has_contact) : ?>
         <ul class="foot-contact">
             <?php if ($hotline) : ?>

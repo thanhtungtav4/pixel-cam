@@ -42,7 +42,7 @@ if (empty($product_ids)) {
 <section class="section--flush"><div class="wrap">
     <?php if ($heading || $link) : ?>
         <div class="sec-head">
-            <?php if ($heading) : ?><h3><?php echo esc_html($heading); ?></h3><?php endif; ?>
+            <?php if ($heading) : ?><h2><?php echo esc_html($heading); ?></h2><?php endif; ?>
             <?php if ($link) : ?><a href="<?php echo esc_url($link['url']); ?>"><?php echo esc_html($link['title']); ?></a><?php endif; ?>
         </div>
     <?php endif; ?>

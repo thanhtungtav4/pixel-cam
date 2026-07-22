@@ -31,7 +31,6 @@ require_once UNDERSCORES_CHILD_THEME_INCLUDES_PATH . '/functions/template-functi
 \Theme\Child\Hooks\SecurityHook::register();
 \Theme\Child\Hooks\MenuHook::register();
 \Theme\Child\Hooks\FilterHook::register();
-\Theme\Child\Product\Versions::register();
 \Theme\Child\Hooks\AboutPageHook::register();
 \Theme\Child\Hooks\ContactPageHook::register();
 \Theme\Child\Hooks\AuthorPageHook::register();

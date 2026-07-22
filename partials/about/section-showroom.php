@@ -41,8 +41,8 @@ if (empty($rooms)) {
                     <?php endif; ?>
                     <?php if ($map || $book) : ?>
                         <div class="actions">
-                            <?php if ($map) : ?><a class="btn-sm primary" href="<?php echo esc_url($map['url']); ?>"<?php echo $map['target'] ? ' target="' . esc_attr($map['target']) . '"' : ''; ?>><?php echo esc_html($map['title']); ?></a><?php endif; ?>
-                            <?php if ($book) : ?><a class="btn-sm" href="<?php echo esc_url($book['url']); ?>"><?php echo esc_html($book['title']); ?></a><?php endif; ?>
+                            <?php if ($map) : ?><a class="btn-sm primary" href="<?php echo esc_url($map['url']); ?>"<?php echo $map['target'] ? ' target="' . esc_attr($map['target']) . '"' : ''; ?><?php echo ($map['target'] ?? '') === '_blank' ? ' rel="noopener noreferrer"' : ''; ?>><?php echo esc_html($map['title']); ?></a><?php endif; ?>
+                            <?php if ($book) : ?><a class="btn-sm" href="<?php echo esc_url($book['url']); ?>"<?php echo $book['target'] ? ' target="' . esc_attr($book['target']) . '"' : ''; ?><?php echo ($book['target'] ?? '') === '_blank' ? ' rel="noopener noreferrer"' : ''; ?>><?php echo esc_html($book['title']); ?></a><?php endif; ?>
                         </div>
                     <?php endif; ?>
                 </div>

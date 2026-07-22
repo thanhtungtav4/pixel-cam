@@ -52,6 +52,7 @@ final class MegaWalker extends \Walker_Nav_Menu
         $title        = apply_filters('the_title', $item->title, $item->ID);
         $url          = $item->url ?: '#';
         $atts         = $item->target ? ' target="' . esc_attr($item->target) . '"' : '';
+        $atts        .= $item->target === '_blank' ? ' rel="noopener noreferrer"' : '';
 
         if ($depth === 0) {
             $this->top_has_children = $has_children;

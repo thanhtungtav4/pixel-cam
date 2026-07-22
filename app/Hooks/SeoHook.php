@@ -7,25 +7,23 @@ namespace Theme\Child\Hooks;
 defined('ABSPATH') || exit;
 
 /**
- * Technical SEO hooks:
- *   - #10  Primary product category → breadcrumb + permalink.
- *   - #13  Discontinued products: 410 Gone or 301 redirect (ACF driven).
- *   - #7   Product schema data (GTIN/MPN/shipping/return) → Rank Math.
+ * Technical SEO hooks. Rank Math owns product metadata/schema/redirections;
+ * this class only handles faceted archives and reuses Rank Math's primary
+ * product category for the Woo breadcrumb/permalink when configured.
  */
 final class SeoHook
 {
     public static function register(): void
     {
         $self = new self();
-        add_action('template_redirect', [$self, 'handle_discontinued_product'], 5);
         add_filter('woocommerce_breadcrumb_links', [$self, 'primary_category_breadcrumb']);
         add_filter('post_type_link', [$self, 'primary_category_permalink'], 10, 2);
-        add_filter('rank_math/snippet/rich_snippet_product_entities', [$self, 'enrich_product_schema']);
 
         // Faceted URLs (filter / sort / price / rating / search) must not be
         // indexed and should canonicalize to the clean archive.
         add_filter('rank_math/frontend/robots', [$self, 'faceted_robots']);
         add_filter('rank_math/frontend/canonical', [$self, 'faceted_canonical']);
+        add_filter('rank_math/json_ld', [$self, 'enrich_organization_schema'], 120, 2);
         // Fallback when Rank Math is inactive: print the tags ourselves.
         add_action('wp_head', [$self, 'faceted_head_fallback'], 1);
     }
@@ -90,6 +88,9 @@ final class SeoHook
      */
     public function faceted_canonical(string $canonical): string
     {
+        if (! $this->is_faceted()) {
+            return $canonical;
+        }
         $clean = $this->clean_archive_url();
         return $clean !== '' ? $clean : $canonical;
     }
@@ -108,6 +109,27 @@ final class SeoHook
         if ($clean !== '') {
             echo '<link rel="canonical" href="' . esc_url($clean) . '" />' . "\n";
         }
+    }
+
+    /**
+     * Rank Math's free Organization entity omits its canonical URL. Add the
+     * missing property without duplicating or replacing plugin-owned schema.
+     *
+     * @param array<string,array<string,mixed>> $data
+     * @return array<string,array<string,mixed>>
+     */
+    public function enrich_organization_schema(array $data, $jsonld): array
+    {
+        foreach ($data as $key => $entity) {
+            $types = (array) ($entity['@type'] ?? []);
+            if (! in_array('Organization', $types, true)) {
+                continue;
+            }
+
+            $data[$key]['url'] = home_url('/');
+        }
+
+        return $data;
     }
 
     /** Clean archive URL for the current shop/category/tag (no query args). */
@@ -131,47 +153,12 @@ final class SeoHook
         return '';
     }
 
-    /**
-     * #13 — Discontinued: 301 redirect or 410 Gone before single product loads.
-     */
-    public function handle_discontinued_product(): void
-    {
-        if (! is_singular('product') || ! function_exists('get_field')) {
-            return;
-        }
-        $product_id = (int) get_queried_object_id();
-        if ($product_id <= 0) {
-            return;
-        }
-        if (! (bool) get_field('discontinued', $product_id)) {
-            return;
-        }
-        $redirect = (string) (get_field('redirect_url', $product_id) ?: '');
-        if ($redirect !== '') {
-            wp_safe_redirect(esc_url_raw($redirect), 301);
-            exit;
-        }
-        // 410 Gone: status header is what crawlers honor. wp_die() lets
-        // maintenance/security plugins still hook in (vs raw echo+exit), and
-        // automatically applies the proper 410 status.
-        status_header(410);
-        nocache_headers();
-        wp_die(
-            wp_kses_post(
-                '<p>' . esc_html__('Sản phẩm này đã ngừng kinh doanh. Vui lòng quay lại cửa hàng.', 'underscores') . '</p>'
-                . '<p><a href="' . esc_url(home_url('/')) . '">' . esc_html__('Về trang chủ', 'underscores') . '</a></p>'
-            ),
-            esc_html__('Sản phẩm đã ngừng bán', 'underscores'),
-            ['response' => 410]
-        );
-    }
-
     public function primary_category_breadcrumb(array $crumbs): array
     {
-        if (! is_singular('product') || ! function_exists('get_field')) {
+        if (! is_singular('product')) {
             return $crumbs;
         }
-        $primary = (int) (get_field('primary_category', get_queried_object_id()) ?: 0);
+        $primary = (int) get_post_meta(get_queried_object_id(), 'rank_math_primary_product_cat', true);
         if ($primary <= 0) {
             return $crumbs;
         }
@@ -207,10 +194,10 @@ final class SeoHook
         if (! $post instanceof \WP_Post || $post->post_type !== 'product') {
             return $permalink;
         }
-        if (strpos($permalink, '%product_cat%') === false || ! function_exists('get_field')) {
+        if (strpos($permalink, '%product_cat%') === false) {
             return $permalink;
         }
-        $primary = (int) (get_field('primary_category', $post->ID) ?: 0);
+        $primary = (int) get_post_meta($post->ID, 'rank_math_primary_product_cat', true);
         if ($primary <= 0) {
             return $permalink;
         }
@@ -221,47 +208,4 @@ final class SeoHook
         return $permalink;
     }
 
-    public function enrich_product_schema(array $entities): array
-    {
-        if (! function_exists('get_field') || ! is_singular('product')) {
-            return $entities;
-        }
-        $product_id = (int) get_queried_object_id();
-        if ($product_id <= 0) {
-            return $entities;
-        }
-        $gtin = (string) (get_field('gtin', $product_id) ?: '');
-        $mpn  = (string) (get_field('mpn', $product_id) ?: '');
-        $ship = (string) (get_field('shipping_policy', $product_id) ?: '');
-        $ret  = (string) (get_field('return_policy', $product_id) ?: '');
-        foreach ($entities as &$entity) {
-            if (! is_array($entity)) {
-                continue;
-            }
-            $type = $entity['@type'] ?? '';
-            $is_product = $type === 'Product' || (is_array($type) && in_array('Product', $type, true));
-            if (! $is_product) {
-                continue;
-            }
-            if ($gtin !== '') {
-                $entity['gtin13'] = $gtin;
-            }
-            if ($mpn !== '') {
-                $entity['mpn'] = $mpn;
-            }
-            if ($ship !== '') {
-                $entity['shippingDetails'] = ['@type' => 'OfferShippingDetails', 'description' => $ship];
-            }
-            if ($ret !== '') {
-                $entity['hasMerchantReturnPolicy'] = [
-                    '@type'                => 'MerchantReturnPolicy',
-                    'applicableCountry'    => 'VN',
-                    'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
-                    'description'          => $ret,
-                ];
-            }
-        }
-        unset($entity);
-        return $entities;
-    }
 }

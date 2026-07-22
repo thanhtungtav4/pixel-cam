@@ -294,11 +294,15 @@ if (!function_exists('underscores_child_add_webp_to_srcset')) {
             // Convert URL → filesystem path.
             $path = str_replace(wp_get_upload_dir()['baseurl'], wp_get_upload_dir()['basedir'], $url);
             $webp_path = preg_replace('/\.(jpe?g|png)$/i', '.webp', $path);
+            $webp_url  = preg_replace('/\.(jpe?g|png)$/i', '.webp', $url);
+            if (! is_string($webp_path) || ! file_exists($webp_path)) {
+                $webp_path = $path . '.webp';
+                $webp_url  = $url . '.webp';
+            }
             if (! file_exists($webp_path)) {
                 continue;
             }
             // WebP exists → add as a source with same dimensions.
-            $webp_url = preg_replace('/\.(jpe?g|png)$/i', '.webp', $url);
             $sources[$i . '-webp'] = [
                 'url'        => $webp_url,
                 'descriptor' => $source['descriptor'] ?? '',

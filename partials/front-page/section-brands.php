@@ -17,7 +17,7 @@ if (empty($brands)) {
 ?>
 <div class="brands"><section><div class="wrap">
     <?php if ($heading) : ?>
-        <div class="sec-head"><h3><?php echo esc_html($heading); ?></h3></div>
+        <div class="sec-head"><h2><?php echo esc_html($heading); ?></h2></div>
     <?php endif; ?>
     <div class="brand-grid">
         <?php foreach ($brands as $brand) :

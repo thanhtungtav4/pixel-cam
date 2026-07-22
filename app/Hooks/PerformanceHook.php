@@ -18,6 +18,10 @@ final class PerformanceHook
         add_action('wp_head', [$self, 'output_font_fallback'], 1);
         add_filter('style_loader_tag', [$self, 'apply_style_loading_strategy'], 20, 4);
         add_filter('script_loader_tag', [$self, 'apply_script_loading_strategy'], 20, 3);
+        add_filter('woocommerce_enqueue_styles', '__return_empty_array');
+        add_action('wp_enqueue_scripts', [$self, 'dequeue_contact_form_assets'], 100);
+        add_action('wp_enqueue_scripts', [$self, 'dequeue_unused_commerce_styles'], 9999);
+        add_action('wp_print_styles', [$self, 'dequeue_unused_commerce_styles'], 9999);
 
         // Head cleanup (ported from i-dent optimize.php).
         $self->clean_head();
@@ -39,7 +43,49 @@ final class PerformanceHook
         if (is_admin()) {
             return;
         }
-        echo '<style id="pxc-inter-fallback">@font-face{font-family:"Inter-fallback";src:local("Arial"),local("Helvetica"),local("Segoe UI");size-adjust:107.40%;ascent-override:90.20%;descent-override:22.48%;line-gap-override:0%}</style>' . "\n";
+        echo '<style id="pxc-inter-fallback">@font-face{font-family:"Inter-fallback";src:local("Arial"),local("Helvetica"),local("Segoe UI");font-display:swap;size-adjust:107.40%;ascent-override:90.20%;descent-override:22.48%;line-gap-override:0%}</style>' . "\n";
+    }
+
+    /** Keep Contact Form 7 payloads off catalog, product and content pages. */
+    public function dequeue_contact_form_assets(): void
+    {
+        if (is_admin() || is_page_template('page-template/template-contact.php')) {
+            return;
+        }
+
+        $post = get_queried_object();
+        if ($post instanceof \WP_Post && has_shortcode($post->post_content, 'contact-form-7')) {
+            return;
+        }
+
+        foreach (['contact-form-7', 'wpcf7-recaptcha', 'google-recaptcha', 'swv'] as $handle) {
+            wp_dequeue_script($handle);
+            wp_dequeue_style($handle);
+        }
+    }
+
+    /** Remove plugin CSS already covered by the child theme's design system. */
+    public function dequeue_unused_commerce_styles(): void
+    {
+        if (is_admin()) {
+            return;
+        }
+
+        if (! $this->current_page_uses_woocommerce_blocks()) {
+            wp_dequeue_style('wc-blocks-style');
+        }
+
+        if (! function_exists('is_product') || ! is_product()) {
+            wp_dequeue_style('woocommerce_prettyPhoto_css');
+        }
+
+        $wishlist_page_id = function_exists('YITH_WCWL') && YITH_WCWL()
+            ? (int) YITH_WCWL()->get_wishlist_page_id()
+            : 0;
+        if ($wishlist_page_id <= 0 || ! is_page($wishlist_page_id)) {
+            wp_dequeue_style('jquery-selectBox');
+            wp_dequeue_style('yith-wcwl-main');
+        }
     }
 
     /**
@@ -117,6 +163,13 @@ final class PerformanceHook
             return $tag;
         }
 
+        // Woo Blocks registers this late and can re-enqueue it after the
+        // normal dequeue pass. Suppress only when the queried page has no
+        // WooCommerce block markup.
+        if ($handle === 'wc-blocks-style' && ! $this->current_page_uses_woocommerce_blocks()) {
+            return '';
+        }
+
         $strategies = underscores_child_get_style_loading_strategies();
         $strategy = $strategies[$handle] ?? null;
 
@@ -148,6 +201,13 @@ final class PerformanceHook
             $href,
             esc_attr($media)
         );
+    }
+
+    private function current_page_uses_woocommerce_blocks(): bool
+    {
+        $post = get_queried_object();
+        return $post instanceof \WP_Post
+            && str_contains($post->post_content, '<!-- wp:woocommerce/');
     }
 
     public function apply_script_loading_strategy(string $tag, string $handle, string $src): string

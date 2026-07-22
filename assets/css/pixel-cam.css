@@ -233,7 +233,7 @@ nav.cat{background:var(--brand-secondary);border-bottom:1px solid var(--brand-se
 .slide .cap{position:absolute;left:0;bottom:0;padding:clamp(20px,4vw,40px);max-width:60%;
   background:linear-gradient(90deg,rgba(0,0,0,.6),transparent);color:#fff}
 .slide .cap .kick{font-size:12px;text-transform:uppercase;letter-spacing:.08em;opacity:.85}
-.slide .cap h2{font-size:clamp(22px,3vw,40px);font-weight:700;letter-spacing:-.02em;margin:6px 0 12px;line-height:1.15}
+.slide .cap h1,.slide .cap h2{font-size:clamp(22px,3vw,40px);font-weight:700;letter-spacing:-.02em;margin:6px 0 12px;line-height:1.15}
 .slide .cap .btn{display:inline-block;background:#fff;color:var(--accent);padding:10px 22px;border-radius:8px;font-weight:600;font-size:14px;border:1.5px solid var(--accent)}
 .slide .cap .btn:hover{background:var(--accent);color:#fff}
 .dots{position:absolute;bottom:16px;right:20px;display:flex;gap:8px;z-index:2}
@@ -274,7 +274,7 @@ nav.cat{background:var(--brand-secondary);border-bottom:1px solid var(--brand-se
 /* ===== CATEGORY TILES ===== */
 section{padding:clamp(36px,6vw,56px) 0}
 .sec-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;gap:16px}
-.sec-head h3{font-size:clamp(20px,3vw,28px);font-weight:700;letter-spacing:-.01em}
+.sec-head h2{font-size:clamp(20px,3vw,28px);font-weight:700;letter-spacing:-.01em}
 .sec-head a{font-size:14px;color:var(--accent);font-weight:600}
 .sec-head a::after{content:" \2192"}
 .sec-head a:hover{text-decoration:underline}
@@ -406,6 +406,7 @@ section{padding:clamp(36px,6vw,56px) 0}
 .wish svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.6;transition:.15s}
 .wish:hover svg{stroke:var(--accent)}
 .wish.on svg{stroke:var(--accent);fill:var(--accent)}
+.wish[aria-busy="true"]{cursor:wait;opacity:.65}
 .pcard .body{padding:10px 12px 12px;display:flex;flex-direction:column;flex:1;gap:4px}
 /* Brand is a sub-label of the name → sit it tight above, not evenly spaced. */
 .pcard .brand{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;line-height:1;margin-bottom:2px}
@@ -438,7 +439,7 @@ section{padding:clamp(36px,6vw,56px) 0}
 /* ===== BANNER CTA ===== */
 .cta{background:linear-gradient(90deg,var(--accent),var(--accent-80));border-radius:16px;color:#fff;
   padding:clamp(28px,5vw,48px);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
-.cta h3{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.01em}
+.cta h2{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.01em}
 .cta p{opacity:.9;margin-top:8px;max-width:480px}
 .cta .btn{background:#fff;color:var(--accent);padding:12px 26px;border-radius:8px;font-weight:700;white-space:nowrap}
 .cta .btn:hover{opacity:.9}
@@ -446,7 +447,7 @@ section{padding:clamp(36px,6vw,56px) 0}
 /* ===== FOOTER ===== */
 footer{background:var(--fg);color:#cfcfcf;padding:48px 0 24px;font-size:14px}
 .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:32px;margin-bottom:32px}
-footer h5{color:#fff;font-size:14px;margin-bottom:14px;letter-spacing:.02em}
+footer .foot-heading{color:#fff;font-size:14px;margin-bottom:14px;letter-spacing:.02em}
 footer ul{list-style:none;display:flex;flex-direction:column;gap:9px}
 footer a:hover{color:#fff}
 .foot-logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:#fff;margin-bottom:14px}
@@ -728,12 +729,6 @@ body.newsdtpage .prose{max-width:none}
 .callout b{display:block;margin-bottom:4px;font-size:14px}
 .callout p{font-size:14.5px;color:var(--muted);margin:0}
 
-/* specs table inside post */
-.spec-table{width:100%;border-collapse:collapse;font-size:14px}
-.spec-table th,.spec-table td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border)}
-.spec-table th{font-weight:600;color:var(--muted);width:35%;background:var(--bg)}
-.spec-table tr:last-child td,.spec-table tr:last-child th{border-bottom:0}
-
 /* post footer / tags */
 .post-foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:22px 0;border-block:1px solid var(--border);margin:32px 0 0}
 .post-tags{display:flex;gap:8px;flex-wrap:wrap}
@@ -908,8 +903,6 @@ body.newsdtpage .prose{max-width:none}
 .pdp-price .now{font-family:var(--mono);font-size:clamp(24px,2.6vw,30px);color:var(--accent);font-weight:700;letter-spacing:-.01em}
 .pdp-price .old{color:var(--muted);text-decoration:line-through;font-family:var(--mono);font-size:15px}
 .pdp-price .save{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-15);padding:3px 8px;border-radius:6px;letter-spacing:.02em}
-.pdp-price .install{flex-basis:100%;font-size:13px;color:var(--muted);margin-top:2px}
-.pdp-price .install b{color:var(--fg);font-family:var(--mono)}
 
 /* Variants */
 .variant-group{margin-top:18px}
@@ -966,7 +959,7 @@ body.newsdtpage .prose{max-width:none}
 .pdp-perks .perk b{display:block;font-weight:600;margin-bottom:2px;color:var(--brand-secondary)}
 .pdp-perks .perk small{color:var(--muted);font-size:12.5px;line-height:1.45}
 
-/* Gifts + box (PDP) */
+/* Gifts (PDP) */
 .pdp-gifts{margin-top:18px;border:1px dashed var(--accent);border-radius:10px;background:var(--accent-06);padding:14px 16px}
 .gift-head{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:10px}
 .gift-head svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.6;flex-shrink:0}
@@ -975,22 +968,6 @@ body.newsdtpage .prose{max-width:none}
 .gift-list li{position:relative;padding-left:22px;font-size:13.5px;line-height:1.45}
 .gift-list li::before{content:"✓";position:absolute;left:1px;top:0;color:var(--accent);font-size:13px;font-weight:700}
 .gift-list li small{color:var(--muted)}
-
-/* Box (PDP) — wysiwyg, user-pasted ul/ol/strong/a. */
-.pdp-box{margin-top:18px;border:1px solid var(--border);border-radius:10px;background:var(--bg);padding:14px 16px}
-.pdp-box__title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;margin:0 0 10px;color:var(--fg)}
-.pdp-box__title svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.6;flex-shrink:0}
-.pdp-box__body{font-size:13.5px;line-height:1.55;color:var(--fg)}
-.pdp-box__body p{margin:0 0 8px}
-.pdp-box__body p:last-child{margin-bottom:0}
-.pdp-box__body ul,.pdp-box__body ol{margin:0 0 8px;padding-left:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px}
-.pdp-box__body ol{list-style:decimal inside;display:block;padding-left:6px}
-.pdp-box__body li{position:relative;padding-left:18px;font-size:13px;line-height:1.45}
-.pdp-box__body ul li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
-.pdp-box__body li>ul,.pdp-box__body li>ol{margin-top:6px;display:block}
-.pdp-box__body strong{font-weight:600;color:var(--fg)}
-.pdp-box__body a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
-@media(max-width:560px){.pdp-box__body ul,.pdp-box__body ol{grid-template-columns:1fr}}
 
 /* Tabs */
 /* Bought-together slider (ngang, cuộn) */
@@ -1018,32 +995,11 @@ body.newsdtpage .prose{max-width:none}
 .pdp-tabs .panel h3{font-size:18px;font-weight:700;margin:24px 0 10px;letter-spacing:-.01em}
 .pdp-tabs .panel h3:first-child{margin-top:0}
 .pdp-tabs .panel p{font-size:15px;line-height:1.7;color:#333;margin:8px 0}
+.woocommerce-product-attributes{width:100%;border-collapse:collapse;font-size:14px}
+.woocommerce-product-attributes th,.woocommerce-product-attributes td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border)}
+.woocommerce-product-attributes th{font-weight:600;color:var(--muted);width:35%;background:var(--bg)}
+.woocommerce-product-attributes tr:last-child th,.woocommerce-product-attributes tr:last-child td{border-bottom:0}
 
-/* TỔNG QUAN tab: 2-col grid (description + box). */
-.pdp-overview{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:32px;align-items:start}
-@media(max-width:900px){.pdp-overview{grid-template-columns:minmax(0,1fr);gap:24px}}
-.pdp-overview__main .prose{max-width:none}
-/* Some product descriptions include a nested Woo tabs block (often from
-   WP Bakery / Visual Composer). On its own page it's interactive, but
-   inside our TỔNG QUAN tab it adds a confusing second tab bar. Flatten
-   the nested tabs: show all panels stacked, hide the inner tabbar. */
-.pdp-overview__main .prose .woocommerce-tabs .wc-tabs{display:none!important}
-.pdp-overview__main .prose .woocommerce-tabs .tab-panels>.panel,
-.pdp-overview__main .prose .woocommerce-tabs .tab-panels>.woocommerce-Tabs-panel{display:block!important;visibility:visible!important;height:auto!important;opacity:1!important;margin:0 0 16px}
-.pdp-overview__main .prose iframe{width:100%;aspect-ratio:16/9;height:auto;border:0;border-radius:10px;display:block;margin:8px 0 16px}
-.pdp-overview__main .prose p:first-child{margin-top:0}
-.pdp-overview__empty{padding:24px;border:1px dashed var(--border);border-radius:10px;color:var(--muted);font-size:14px;text-align:center;background:var(--surface)}
-.pdp-overview__box{
-  position:sticky;top:120px;
-  border:1px solid var(--border);border-radius:12px;background:var(--bg);
-  padding:16px 18px}
-.pdp-overview__box .box-head{margin-bottom:10px}
-@media(max-width:900px){.pdp-overview__box{position:static}}
-
-/* PHỤ KIỆN tab: render the same .pcard grid as "Sản phẩm tương tự". */
-.pxc-accessories__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
-@media(max-width:1024px){.pxc-accessories__grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:760px){.pxc-accessories__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
 .pdp-tabs .panel ul{margin:8px 0 8px 20px;font-size:14.5px;line-height:1.7;color:#333}
 
 /* Review summary block */
@@ -1072,14 +1028,6 @@ body.newsdtpage .prose{max-width:none}
 .review-item .stars span{color:var(--border)}
 .review-item p{font-size:14px;color:#333;line-height:1.6;margin-top:8px}
 .review-item .var-tag{display:inline-block;font-size:12px;color:var(--muted);background:var(--bg);padding:3px 8px;border-radius:5px;margin-top:8px}
-
-/* Q&A */
-.qa-item{padding:16px 0;border-bottom:1px solid var(--border)}
-.qa-item:last-child{border-bottom:0}
-.qa-item .q{font-weight:600;font-size:14.5px;display:flex;gap:10px}
-.qa-item .q::before{content:'Q';color:var(--accent);font-family:var(--mono);font-weight:700;flex-shrink:0}
-.qa-item .a{margin-top:8px;color:#333;font-size:14px;line-height:1.6;display:flex;gap:10px;padding-left:0}
-.qa-item .a::before{content:'A';color:var(--muted);font-family:var(--mono);font-weight:700;flex-shrink:0}
 
 /* ===== PDP REVIEWS (custom summary + cards) ===== */
 .pxc-reviews{margin:0}
@@ -1189,8 +1137,6 @@ body.newsdtpage .prose{max-width:none}
   .pxc-review-summary{grid-template-columns:1fr;gap:20px;padding:20px}
   .pxc-rs-left{min-width:0}
 }
-.qa-item .meta{color:var(--muted);font-size:12.5px;margin-top:6px;padding-left:24px}
-
 /* Related products */
 .pdp-related{margin-top:56px}
 .pdp-related h2{font-size:20px;font-weight:700;margin-bottom:18px;letter-spacing:-.01em}
@@ -1334,7 +1280,8 @@ body.newsdtpage .prose{max-width:none}
 .auth-steps .step.on {
     background: var(--accent);
 }
-.auth-narrow h1 {
+.auth-narrow h1,
+.auth-narrow h2 {
     text-align: center !important;
     font-size: 28px !important;
     font-weight: 700 !important;
@@ -1342,6 +1289,11 @@ body.newsdtpage .prose{max-width:none}
     margin-bottom: 8px !important;
     letter-spacing: -0.02em !important;
 }
+.woocommerce form .password-input{display:block;position:relative}
+.woocommerce form .password-input input{padding-right:48px}
+.woocommerce form .show-password-input{appearance:none;position:absolute;top:0;right:0;width:44px;height:100%;margin:0;padding:0;border:0;background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center}
+.woocommerce form .show-password-input::before{content:"";display:block;width:20px;height:20px;background:currentColor;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Zm11 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z'/%3E%3C/svg%3E") center/contain no-repeat;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Zm11 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z'/%3E%3C/svg%3E") center/contain no-repeat}
+.woocommerce form .show-password-input:hover,.woocommerce form .show-password-input:focus-visible{color:var(--accent)}
 .auth-narrow .auth-register-heading {
     text-align: center !important;
     font-size: 24px !important;

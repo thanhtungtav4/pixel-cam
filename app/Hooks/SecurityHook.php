@@ -94,6 +94,13 @@ final class SecurityHook
      */
     public function hide_user_endpoints(array $endpoints): array
     {
+        // Editors and plugins legitimately use these routes in wp-admin.
+        // Hide them only from anonymous requests to prevent public user
+        // enumeration without breaking authenticated REST workflows.
+        if (is_user_logged_in()) {
+            return $endpoints;
+        }
+
         foreach (['/wp/v2/users', '/wp/v2/users/(?P<id>[\d]+)'] as $route) {
             unset($endpoints[$route]);
         }

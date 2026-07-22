@@ -12,7 +12,7 @@ if (! has_nav_menu('footer-support')) {
 }
 ?>
 <div class="foot-col foot-col--support">
-    <h5><?php esc_html_e('Hỗ trợ', 'underscores'); ?></h5>
+    <h2 class="foot-heading"><?php esc_html_e('Hỗ trợ', 'underscores'); ?></h2>
     <?php
     wp_nav_menu([
         'theme_location' => 'footer-support',

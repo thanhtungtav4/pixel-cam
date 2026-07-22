@@ -23,7 +23,6 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
     <meta charset="<?php echo esc_attr(get_bloginfo('charset')); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php wp_site_icon(); ?>
-    <link rel="pingback" href="<?php echo esc_url(get_bloginfo('pingback_url')); ?>" />
     <?php wp_head(); ?>
 </head>
 
@@ -42,7 +41,7 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
                     continue;
                 }
                 ?>
-                <span><a href="<?php echo esc_url($link['url']); ?>"<?php echo $link['target'] ? ' target="' . esc_attr($link['target']) . '"' : ''; ?>><?php echo esc_html($link['title']); ?></a></span>
+                <span><a href="<?php echo esc_url($link['url']); ?>"<?php echo $link['target'] ? ' target="' . esc_attr($link['target']) . '"' : ''; ?><?php echo ($link['target'] ?? '') === '_blank' ? ' rel="noopener noreferrer"' : ''; ?>><?php echo esc_html($link['title']); ?></a></span>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
@@ -62,12 +61,14 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
 
     <?php if ($has_woo) : ?>
         <form class="hdr-search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
+            <label class="screen-reader-text" for="searchInput"><?php esc_html_e('Tìm kiếm sản phẩm', 'underscores'); ?></label>
             <input type="search" id="searchInput" name="s" value="<?php echo esc_attr(get_search_query()); ?>" placeholder="<?php esc_attr_e('Tìm máy ảnh, lens, flycam, gimbal...', 'underscores'); ?>">
             <input type="hidden" name="post_type" value="product">
             <button type="submit"><?php esc_html_e('Tìm', 'underscores'); ?></button>
         </form>
     <?php else : ?>
         <form class="hdr-search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
+            <label class="screen-reader-text" for="searchInput"><?php esc_html_e('Tìm kiếm', 'underscores'); ?></label>
             <input type="search" id="searchInput" name="s" value="<?php echo esc_attr(get_search_query()); ?>" placeholder="<?php esc_attr_e('Tìm kiếm...', 'underscores'); ?>">
             <button type="submit"><?php esc_html_e('Tìm', 'underscores'); ?></button>
         </form>
@@ -77,7 +78,7 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
         <button class="ha hdr-burger" type="button" aria-label="<?php esc_attr_e('Mở menu', 'underscores'); ?>" aria-expanded="false" aria-controls="primary-nav">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
-        <button class="ha mob-search-btn" type="button" aria-label="<?php esc_attr_e('Tìm kiếm', 'underscores'); ?>">
+        <button class="ha mob-search-btn" type="button" aria-label="<?php esc_attr_e('Tìm kiếm', 'underscores'); ?>" aria-controls="hdrSearchOverlay" aria-expanded="false">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
         </button>
         <a class="ha" href="<?php echo esc_url($has_woo ? wc_get_page_permalink('myaccount') : wp_login_url()); ?>" aria-label="<?php echo is_user_logged_in() ? esc_attr__('Tài khoản', 'underscores') : esc_attr__('Đăng nhập', 'underscores'); ?>">
@@ -138,9 +139,10 @@ $cart_count = $has_woo && WC()->cart ? WC()->cart->get_cart_contents_count() : 0
 </div></header>
 
 <!-- MOBILE SEARCH OVERLAY -->
-<div class="hdr-search-overlay" id="hdrSearchOverlay" aria-hidden="true">
+<div class="hdr-search-overlay" id="hdrSearchOverlay" inert>
     <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
-        <input type="search" name="s" value="<?php echo esc_attr(get_search_query()); ?>" placeholder="<?php esc_attr_e('Tìm máy ảnh, lens, flycam, gimbal...', 'underscores'); ?>" autocomplete="off">
+        <label class="screen-reader-text" for="mobileSearchInput"><?php esc_html_e('Tìm kiếm sản phẩm', 'underscores'); ?></label>
+        <input type="search" id="mobileSearchInput" name="s" value="<?php echo esc_attr(get_search_query()); ?>" placeholder="<?php esc_attr_e('Tìm máy ảnh, lens, flycam, gimbal...', 'underscores'); ?>" autocomplete="off">
         <?php if ($has_woo) : ?>
             <input type="hidden" name="post_type" value="product">
         <?php endif; ?>

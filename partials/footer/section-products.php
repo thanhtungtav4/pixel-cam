@@ -12,7 +12,7 @@ if (! has_nav_menu('footer-products')) {
 }
 ?>
 <div class="foot-col foot-col--products">
-    <h5><?php esc_html_e('Sản phẩm', 'underscores'); ?></h5>
+    <h2 class="foot-heading"><?php esc_html_e('Sản phẩm', 'underscores'); ?></h2>
     <?php
     wp_nav_menu([
         'theme_location' => 'footer-products',

@@ -20,7 +20,14 @@ if (empty($items)) {
         ?>
         <div class="item">
             <?php if ($icon) {
-                echo wp_get_attachment_image($icon, 'thumbnail');
+                echo wp_get_attachment_image($icon, 'thumbnail', false, [
+                    // The adjacent title carries the meaning; keep the icon
+                    // decorative while making below-fold loading explicit.
+                    'alt'          => '',
+                    'aria-hidden'  => 'true',
+                    'loading'      => 'lazy',
+                    'decoding'     => 'async',
+                ]);
             } ?>
             <div>
                 <?php if (! empty($item['title'])) : ?><b><?php echo esc_html($item['title']); ?></b><?php endif; ?>

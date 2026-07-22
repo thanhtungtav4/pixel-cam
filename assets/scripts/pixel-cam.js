@@ -97,13 +97,16 @@ function initSearch() {
 
   const open = () => {
     document.body.classList.add('mob-search-open');
-    overlay.setAttribute('aria-hidden', 'false');
+    overlay.removeAttribute('inert');
+    mobBtn.setAttribute('aria-expanded', 'true');
     // Defer focus until after the slide-in transition has started.
     setTimeout(() => input && input.focus(), 60);
   };
   const close = () => {
     document.body.classList.remove('mob-search-open');
-    overlay.setAttribute('aria-hidden', 'true');
+    overlay.setAttribute('inert', '');
+    mobBtn.setAttribute('aria-expanded', 'false');
+    mobBtn.focus();
   };
 
   mobBtn.addEventListener('click', open);
@@ -213,25 +216,72 @@ function initMobileNav() {
 
 /* ---------- Wishlist button ---------- */
 /*
- * The .wish button sits inside the card's <a class="imgwrap"> link. Stop the
- * click from navigating to the product page so the wishlist toggle wins.
- * When YITH is active it owns the AJAX add (bound via .add_to_wishlist) and
- * we only flip .on optimistically; without YITH this is a UI-only toggle.
+ * Persist the custom heart through YITH's official guest-capable admin AJAX
+ * actions. All copies of the same product and the header count stay in sync.
  */
 function initWishlist() {
-  document.addEventListener('click', e => {
+  document.addEventListener('click', async e => {
     const btn = e.target.closest('.wish');
     if (!btn) return;
-    e.preventDefault(); // button sits inside the card link — don't navigate
-    const on = btn.classList.toggle('on');
-    btn.setAttribute('aria-pressed', String(on));
-    toast(on ? 'Đã thêm vào yêu thích' : 'Đã bỏ yêu thích');
+    e.preventDefault();
 
-    // Persist via YITH's add URL in the background (no page reload). Only fires
-    // on add; removal is UI-only until the user opens the wishlist page.
-    const url = btn.dataset.addUrl;
-    if (on && url) {
-      fetch(url, { credentials: 'same-origin' }).catch(() => {});
+    if (btn.getAttribute('aria-busy') === 'true') return;
+
+    const ajaxUrl = btn.dataset.wishlistAjax;
+    const productId = btn.dataset.productId;
+    const wasOn = btn.classList.contains('on');
+    const shouldAdd = !wasOn;
+    const nonce = shouldAdd ? btn.dataset.addNonce : btn.dataset.removeNonce;
+
+    if (!ajaxUrl || !productId || !nonce) {
+      toast('Yêu thích hiện chưa sẵn sàng');
+      return;
+    }
+
+    const payload = new URLSearchParams({
+      action: shouldAdd ? 'add_to_wishlist' : 'remove_from_wishlist',
+      nonce,
+      context: 'frontend',
+      product_type: btn.dataset.productType || 'simple',
+      [shouldAdd ? 'add_to_wishlist' : 'remove_from_wishlist']: productId,
+    });
+
+    btn.setAttribute('aria-busy', 'true');
+    btn.disabled = true;
+
+    try {
+      const response = await fetch(ajaxUrl, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+        body: payload.toString(),
+      });
+      if (!response.ok) throw new Error(`Wishlist HTTP ${response.status}`);
+
+      const result = await response.json();
+      if (shouldAdd && !['true', 'exists'].includes(String(result.result))) {
+        throw new Error('YITH rejected wishlist add');
+      }
+
+      document.querySelectorAll(`.wish[data-product-id="${CSS.escape(productId)}"]`).forEach(item => {
+        item.classList.toggle('on', shouldAdd);
+        item.setAttribute('aria-pressed', String(shouldAdd));
+        item.setAttribute('aria-label', shouldAdd ? 'Bỏ khỏi yêu thích' : 'Thêm vào yêu thích');
+      });
+
+      const badge = document.getElementById('wishBadge');
+      if (badge && (!shouldAdd || String(result.result) === 'true')) {
+        const count = Number.parseInt(badge.textContent || '0', 10) || 0;
+        badge.textContent = String(Math.max(0, count + (shouldAdd ? 1 : -1)));
+      }
+
+      toast(shouldAdd ? 'Đã thêm vào yêu thích' : 'Đã bỏ yêu thích');
+    } catch (error) {
+      console.error('Wishlist request failed', error);
+      toast('Không thể cập nhật yêu thích. Vui lòng thử lại.');
+    } finally {
+      btn.removeAttribute('aria-busy');
+      btn.disabled = false;
     }
   }, true); // capture: run before the <a> default
 }

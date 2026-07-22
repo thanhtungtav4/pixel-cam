@@ -10,7 +10,7 @@ defined('ABSPATH') || exit;
  * WooCommerce PDP + product rendering.
  *
  *   - Gallery support (zoom/lightbox/slider) + product-card image size.
- *   - PDP summary order: price → gifts → version chips → stock → add-to-cart.
+ *   - PDP summary order: price → gifts → stock → add-to-cart.
  *   - Variation swatches (buttons above the native <select>).
  *   - Custom product tabs (Tổng quan / Thông số / Hỏi đáp / Phụ kiện).
  *   - Loop add-to-cart class + columns + per-page.
@@ -37,6 +37,9 @@ final class WooProductHook
         add_filter('woocommerce_product_add_to_cart_text', [$self, 'add_to_cart_text'], 10, 2);
         add_filter('woocommerce_product_single_add_to_cart_text', [$self, 'single_add_to_cart_text'], 10, 2);
         add_filter('woocommerce_get_price_html', [$self, 'add_price_save_badge'], 10, 2);
+        // WordPress.org currently has no Vietnamese language pack for YITH
+        // Wishlist. Keep its public UI consistent with the Vietnamese store.
+        add_filter('gettext', [$self, 'translate_yith_text'], 20, 3);
 
         // Keep Woo's AJAX add-to-cart classes, just append the .addcart look.
         add_filter('woocommerce_loop_add_to_cart_args', [$self, 'add_to_cart_args'], 10, 2);
@@ -53,10 +56,9 @@ final class WooProductHook
         // is rendered.
         add_action('wp_enqueue_scripts', [$self, 'enqueue_review_form_asset']);
 
-        // PDP summary: gifts (@12), version chips (@15), stock (@28), SKU (@6).
+        // PDP summary: gifts (@12), stock (@28), SKU (@6).
         add_action('woocommerce_single_product_summary', [$self, 'sku_line'], 6);
         add_action('woocommerce_single_product_summary', [$self, 'gifts_block'], 12);
-        add_action('woocommerce_single_product_summary', [$self, 'version_chips'], 15);
         add_action('woocommerce_single_product_summary', [$self, 'stock_block'], 28);
 
         // "Mua ngay" + wishlist after add-to-cart on simple product pages.
@@ -71,7 +73,7 @@ final class WooProductHook
         // Colour/attribute variations → swatch buttons alongside the Woo <select>.
         add_filter('woocommerce_dropdown_variation_attribute_options_html', [$self, 'variation_swatches'], 20, 2);
 
-        // PDP product tabs (Tổng quan / Thông số / Hỏi đáp / Phụ kiện).
+        // Keep Woo's native tabs, only localize the two content labels.
         add_filter('woocommerce_product_tabs', [$self, 'product_tabs'], 98);
 
         // Internal-link blocks after related.
@@ -106,6 +108,33 @@ final class WooProductHook
         add_image_size('pxc_card', 600, 600, true);
     }
 
+    public function translate_yith_text(string $translation, string $text, string $domain): string
+    {
+        if ($domain !== 'yith-woocommerce-wishlist') {
+            return $translation;
+        }
+
+        $translations = [
+            'My wishlist'                              => 'Danh sách yêu thích',
+            'Product name'                             => 'Sản phẩm',
+            'Unit price'                               => 'Đơn giá',
+            'Stock status'                             => 'Tình trạng',
+            'No products added to the wishlist'        => 'Chưa có sản phẩm nào trong danh sách yêu thích',
+            'Remove this product'                      => 'Xóa sản phẩm này',
+            'Remove'                                   => 'Xóa',
+            'Add to cart'                              => 'Thêm vào giỏ',
+            'Share on:'                                => 'Chia sẻ qua:',
+            'In stock'                                 => 'Còn hàng',
+            'Out of stock'                             => 'Hết hàng',
+            'Product added!'                           => 'Đã thêm vào yêu thích!',
+            'Add to wishlist'                          => 'Thêm vào yêu thích',
+            'Browse wishlist'                          => 'Xem danh sách yêu thích',
+            'The product is already in your wishlist!' => 'Sản phẩm đã có trong danh sách yêu thích!',
+        ];
+
+        return $translations[$text] ?? $translation;
+    }
+
     /* ------------------------------------------------------------------ *
      * PDP blocks
      * ------------------------------------------------------------------ */
@@ -123,7 +152,7 @@ final class WooProductHook
         echo '<div class="sku">' . esc_html__('Mã SKU:', 'underscores') . ' <b>' . esc_html($sku) . '</b></div>';
     }
 
-    /** Quà tặng kèm — ACF gifts, between price and version chips. */
+    /** Quà tặng kèm — the only product-specific ACF field kept by the theme. */
     public function gifts_block(): void
     {
         global $product;
@@ -138,83 +167,43 @@ final class WooProductHook
         if (empty($gifts)) {
             return;
         }
-        $total = (string) (get_field('gifts_total', $id) ?: '');
+        $total = array_reduce(
+            $gifts,
+            static fn(float $sum, array $gift): float => $sum + max(0.0, (float) ($gift['value'] ?? 0)),
+            0.0
+        );
         echo '<div class="pdp-gifts"><div class="gift-head"><b>' . esc_html__('Quà tặng kèm', 'underscores') . '</b>';
-        if ($total !== '') {
-            echo '<span class="gift-total">' . esc_html($total) . '</span>';
+        if ($total > 0) {
+            echo '<span class="gift-total">' . sprintf(
+                /* translators: %s = total value of included gifts. */
+                esc_html__('Tổng trị giá %s', 'underscores'),
+                wp_kses_post(wc_price($total))
+            ) . '</span>';
         }
         echo '</div><ul class="gift-list">';
         foreach ($gifts as $gift) {
             echo '<li>' . esc_html($gift['name'] ?? '');
-            if (! empty($gift['value'])) {
-                echo ' <small>(' . esc_html($gift['value']) . ')</small>';
+            $value = max(0.0, (float) ($gift['value'] ?? 0));
+            if ($value > 0) {
+                echo ' <small>(' . wp_kses_post(wc_price($value)) . ')</small>';
             }
             echo '</li>';
         }
         echo '</ul></div>';
     }
 
-    /**
-     * Render version chips: each sibling product as an <a> to its own URL, the
-     * current one marked active, with its price. Two-way linked (see Versions).
-     */
-    public function version_chips(): void
-    {
-        global $product;
-        if (! $product instanceof \WC_Product) {
-            return;
-        }
-        $current = $product->get_id();
-        $chips   = \Theme\Child\Product\Versions::chips($current);
-        if (empty($chips)) {
-            return;
-        }
-
-        $active_label = '';
-        foreach ($chips as $chip) {
-            if ($chip['current']) {
-                $active_label = $chip['label'];
-                break;
-            }
-        }
-
-        $label_text = rtrim(\Theme\Child\Product\Versions::group_label($current), ' :');
-
-        echo '<div class="variant-group pdp-versions" data-variant="version">';
-        printf(
-            '<div class="lbl">%s%s</div>',
-            esc_html($label_text),
-            $active_label !== '' ? ': <span class="sel">' . esc_html($active_label) . '</span>' : ''
-        );
-        echo '<div class="opts">';
-        foreach ($chips as $chip) {
-            $inner = '<span>' . esc_html($chip['label']) . '</span>'
-                . ($chip['price'] !== '' ? '<small>' . wp_kses_post($chip['price']) . '</small>' : '');
-            if ($chip['current']) {
-                echo '<span class="variant-chip on" aria-current="true">' . $inner . '</span>';
-            } else {
-                echo '<a class="variant-chip" href="' . esc_url($chip['url']) . '">' . $inner . '</a>';
-            }
-        }
-        echo '</div></div>';
-    }
-
-    /** Tình trạng kho + ghi chú giao hàng, right before add-to-cart. */
+    /** Woo stock status, right before add-to-cart. */
     public function stock_block(): void
     {
         global $product;
         if (! $product instanceof \WC_Product) {
             return;
         }
-        $note = function_exists('get_field') ? (string) (get_field('stock_note', $product->get_id()) ?: '') : '';
         echo '<div class="pdp-stock">';
         if ($product->is_in_stock()) {
             echo '<span class="dot"></span><b>' . esc_html__('Còn hàng', 'underscores') . '</b>';
         } else {
             echo '<span class="dot dot--out"></span><b>' . esc_html__('Hết hàng', 'underscores') . '</b>';
-        }
-        if ($note !== '') {
-            echo '<span class="muted">· ' . esc_html($note) . '</span>';
         }
         echo '</div>';
     }
@@ -389,131 +378,13 @@ final class WooProductHook
      */
     public function product_tabs(array $tabs): array
     {
-        $product_id = get_the_ID();
-
-        // Reviews tab — Woo's default only adds it when comments_open() is
-        // true, which can be false for some products. Force it on so the
-        // tab count matches the design's 5-tab layout; the panel can still
-        // show "no reviews yet" inside.
-        $review_count = (int) get_comments_number($product_id);
-        $tabs['reviews'] = [
-            /* translators: %s = number of reviews */
-            'title'    => sprintf(
-                _n('Đánh giá <span class="count">(%s)</span>', 'Đánh giá <span class="count">(%s)</span>', $review_count, 'underscores'),
-                number_format_i18n($review_count)
-            ),
-            'priority' => 30,
-            'callback' => 'comments_template',
-        ];
-
-        // Drop Woo's default "Mô tả sản phẩm" tab — its content (which
-        // usually holds the YouTube embed pasted by the shop owner) moves
-        // into the custom TỔNG QUAN tab below. The "Hộp sản phẩm bao gồm"
-        // block lives in the right info column (content-single-product.php),
-        // not here. Same for `additional_information` — empty on most
-        // products and the spec table already covers it.
-        unset($tabs['description'], $tabs['additional_information']);
-
-        if (! function_exists('get_field')) {
-            return $tabs;
+        if (isset($tabs['description'])) {
+            $tabs['description']['title'] = __('Tổng quan', 'underscores');
+            $tabs['description']['priority'] = 5;
         }
-
-        // Tab 1 — TỔNG QUAN: description (with video embed).
-        // "Hộp sản phẩm bao gồm" is rendered separately in the right info
-        // column (content-single-product.php) — wysiwyg block, so it sits
-        // above-the-fold next to the buy buttons.
-        $tabs['pxc_overview'] = [
-            'title'    => __('Tổng quan', 'underscores'),
-            'priority' => 5,
-            'callback' => static function () use ($product_id): void {
-                $product = wc_get_product($product_id);
-                $description = $product instanceof \WC_Product ? (string) $product->get_description() : '';
-                echo '<div class="pdp-overview">';
-                echo   '<div class="pdp-overview__main">';
-                if ($description !== '') {
-                    // apply_filters('the_content', ...) so oEmbed / YouTube
-                    // iframe shortcodes render properly.
-                    echo '<div class="prose">' . wp_kses_post(apply_filters('the_content', $description)) . '</div>';
-                } else {
-                    echo '<div class="pdp-overview__empty">'
-                       . esc_html__('Chưa có nội dung tổng quan. Hãy dán mô tả / video YouTube vào ô "Mô tả sản phẩm" của trình soạn thảo.', 'underscores')
-                       . '</div>';
-                }
-                echo   '</div>';
-                echo '</div>';
-            },
-        ];
-
-        // Tab 2 — Thông số kỹ thuật.
-        // (array) cast: legacy saves may have left these as a plain string,
-        // and `?: []` only catches falsy values — an empty string would
-        // still skip the cast and blow up the foreach inside the callback.
-        $spec_rows = (array) (get_field('spec_rows', $product_id) ?: []);
-        if ($spec_rows) {
-            $tabs['pxc_spec'] = [
-                'title'    => __('Thông số kỹ thuật', 'underscores'),
-                'priority' => 15,
-                'callback' => static function () use ($spec_rows): void {
-                    echo '<table class="spec-table">';
-                    foreach ($spec_rows as $row) {
-                        if (! is_array($row)) {
-                            continue;
-                        }
-                        echo '<tr><th>' . esc_html($row['key'] ?? '') . '</th><td>' . nl2br(esc_html($row['value'] ?? '')) . '</td></tr>';
-                    }
-                    echo '</table>';
-                },
-            ];
-        }
-
-        // Tab 4 — Hỏi đáp.
-        $qa_items = (array) (get_field('qa', $product_id) ?: []);
-        if ($qa_items) {
-            $tabs['pxc_qa'] = [
-                'title'    => __('Hỏi đáp', 'underscores'),
-                'priority' => 45,
-                'callback' => static function () use ($qa_items): void {
-                    foreach ($qa_items as $item) {
-                        if (! is_array($item)) {
-                            continue;
-                        }
-                        echo '<div class="qa-item">';
-                        echo '<div class="q">' . esc_html($item['question'] ?? '') . '</div>';
-                        echo '<div class="a">' . nl2br(esc_html($item['answer'] ?? '')) . '</div>';
-                        if (! empty($item['meta'])) {
-                            echo '<div class="meta">' . esc_html($item['meta']) . '</div>';
-                        }
-                        echo '</div>';
-                    }
-                },
-            ];
-        }
-
-        // Tab 5 — Phụ kiện: same Woo upsell source as the "Khách thường
-        // mua kèm" sidebar block, so editing in one place updates both.
-        $upsell_ids = get_post_meta($product_id, '_upsell_ids', true);
-        $upsell_ids = is_array($upsell_ids) ? array_map('intval', $upsell_ids) : [];
-        if (! empty($upsell_ids)) {
-            $tabs['pxc_accessories'] = [
-                'title'    => __('Phụ kiện', 'underscores'),
-                'priority' => 55,
-                'callback' => static function () use ($upsell_ids): void {
-                    // Reuse the existing loop template so cards match the
-                    // "Sản phẩm tương tự" block. We pin a stable wrapper
-                    // class so the section can be styled if needed.
-                    echo '<div class="related products pxc-accessories"><div class="pxc-accessories__grid">';
-                    foreach ($upsell_ids as $pid) {
-                        $post = get_post((int) $pid);
-                        if (! $post instanceof \WP_Post || 'product' !== $post->post_type) {
-                            continue;
-                        }
-                        setup_postdata($post);
-                        get_template_part('partials/components/product-card', null, ['post_id' => (int) $pid]);
-                    }
-                    wp_reset_postdata();
-                    echo '</div></div>';
-                },
-            ];
+        if (isset($tabs['additional_information'])) {
+            $tabs['additional_information']['title'] = __('Thông số kỹ thuật', 'underscores');
+            $tabs['additional_information']['priority'] = 15;
         }
 
         return $tabs;

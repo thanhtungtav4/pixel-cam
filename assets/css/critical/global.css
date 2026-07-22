@@ -242,7 +242,7 @@ nav.cat{background:var(--brand-secondary);border-bottom:1px solid var(--brand-se
 .slide .cap{position:absolute;left:0;bottom:0;padding:clamp(20px,4vw,40px);max-width:60%;
   background:linear-gradient(90deg,rgba(0,0,0,.6),transparent);color:#fff}
 .slide .cap .kick{font-size:12px;text-transform:uppercase;letter-spacing:.08em;opacity:.85}
-.slide .cap h2{font-size:clamp(22px,3vw,40px);font-weight:700;letter-spacing:-.02em;margin:6px 0 12px;line-height:1.15}
+.slide .cap h1,.slide .cap h2{font-size:clamp(22px,3vw,40px);font-weight:700;letter-spacing:-.02em;margin:6px 0 12px;line-height:1.15}
 .slide .cap .btn{display:inline-block;background:#fff;color:var(--accent);padding:10px 22px;border-radius:8px;font-weight:600;font-size:14px;border:1.5px solid var(--accent)}
 .slide .cap .btn:hover{background:var(--accent);color:#fff}
 .dots{position:absolute;bottom:16px;right:20px;display:flex;gap:8px;z-index:2}
@@ -269,4 +269,3 @@ nav.cat{background:var(--brand-secondary);border-bottom:1px solid var(--brand-se
 @media(max-width:560px){.slide .cap{max-width:100%}.hero-side{gap:10px}}
 /* Tiny phones: stack side banners 1-col so each gets full width + impact. */
 @media(max-width:380px){.hero-side{grid-template-columns:1fr}}
-

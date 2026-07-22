@@ -55,7 +55,8 @@ defined('ABSPATH') || exit;
         <h4><?php esc_html_e('Đăng ký nhận tin', 'underscores'); ?></h4>
         <p><?php esc_html_e('Tổng hợp bài hay mỗi tuần — và voucher khuyến mãi nội bộ.', 'underscores'); ?></p>
         <form onsubmit="event.preventDefault();this.querySelector('input').value='';this.querySelector('.ok').textContent='✓ <?php esc_attr_e('Đã đăng ký!', 'underscores'); ?>'">
-            <input type="email" required placeholder="<?php esc_attr_e('Email của bạn', 'underscores'); ?>">
+            <label class="screen-reader-text" for="blogNewsletterEmail"><?php esc_html_e('Email nhận bản tin', 'underscores'); ?></label>
+            <input type="email" id="blogNewsletterEmail" name="email" autocomplete="email" required placeholder="<?php esc_attr_e('Email của bạn', 'underscores'); ?>">
             <button type="submit"><?php esc_html_e('Đăng ký', 'underscores'); ?></button>
             <small class="ok"></small>
         </form>

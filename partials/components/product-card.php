@@ -2,7 +2,7 @@
 
 /**
  * Reusable product card (WooCommerce) — matches the Pixel Cam design card
- * (.pcard) exactly: badge + wishlist live inside .imgwrap, image sits in a
+ * (.pcard) exactly: badge + wishlist overlay the image, image sits in a
  * .ph aspect box, price uses .now/.old so the design CSS applies.
  *
  * @param array $args {
@@ -62,28 +62,44 @@ if ($is_simple_price) {
     $price_html = $product->get_price_html(); // range / tax / save-badge handled by Woo + theme filter
 }
 
-// Optional spec line (design ".spec"): sensor · mount from ACF, hidden if empty.
-$spec_line = function_exists('get_field') ? (string) (get_field('card_spec', $product_id) ?: '') : '';
+// Card spec comes from Woo Attributes. Until attributes are entered, reuse
+// the real short description rather than maintaining a second product field.
+$spec_parts = [];
+foreach ($product->get_attributes() as $attribute) {
+    if (! $attribute instanceof WC_Product_Attribute || ! $attribute->get_visible()) {
+        continue;
+    }
+    $value = trim($product->get_attribute($attribute->get_name()));
+    if ($value !== '') {
+        $spec_parts[] = $value;
+    }
+    if (count($spec_parts) === 2) {
+        break;
+    }
+}
+$spec_line = implode(' · ', $spec_parts);
+if ($spec_line === '') {
+    $short_description = trim(wp_strip_all_tags($product->get_short_description()));
+    $spec_line = $short_description !== '' ? wp_trim_words($short_description, 10, '…') : '';
+}
 ?>
 <article class="pcard">
     <a class="imgwrap" href="<?php echo esc_url($permalink); ?>" aria-label="<?php echo esc_attr($name); ?>">
         <?php if ($badge_label) : ?>
             <div class="badges"><span class="bd <?php echo esc_attr($badge_class); ?>"><?php echo esc_html($badge_label); ?></span></div>
         <?php endif; ?>
-
-        <?php
-        // Wishlist toggle — icon-only .wish button (shared helper). We do NOT add
-        // YITH's .add_to_wishlist class (its JS injects extra label/icon); the
-        // button carries YITH's add URL and theme JS posts to it.
-        echo underscores_child_wishlist_button($product_id); // helper returns escaped markup
-        ?>
-
         <?php echo $product->get_image('pxc_card', $image_attr); ?>
     </a>
 
+    <?php
+    // Keep the button outside the product link: nested interactive controls
+    // are invalid HTML and produce unreliable keyboard/click behaviour.
+    echo underscores_child_wishlist_button($product_id); // helper returns escaped markup
+    ?>
+
     <div class="body">
         <?php if ($brand) : ?><span class="brand"><?php echo esc_html($brand); ?></span><?php endif; ?>
-        <h4 class="name"><a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($name); ?></a></h4>
+        <h3 class="name"><a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($name); ?></a></h3>
         <?php if ($spec_line) : ?><span class="spec"><?php echo esc_html($spec_line); ?></span><?php endif; ?>
 
         <div class="price">

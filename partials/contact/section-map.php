@@ -14,6 +14,11 @@ $embed   = $args['embed'] ?? '';
 if (! $heading && ! $embed) {
     return;
 }
+
+if ($embed && ! preg_match('/<iframe\b[^>]*\btitle\s*=/i', $embed)) {
+    $map_title = $heading ?: __('Bản đồ cửa hàng Pixel Cam', 'underscores');
+    $embed = (string) preg_replace('/<iframe\b/i', '<iframe title="' . esc_attr($map_title) . '"', $embed, 1);
+}
 ?>
 <div class="ct-map">
     <?php if ($heading || $caption) : ?>
@@ -23,6 +28,6 @@ if (! $heading && ! $embed) {
         </div>
     <?php endif; ?>
     <?php if ($embed) : ?>
-        <div class="canvas"><?php echo wp_kses($embed, ['iframe' => ['src' => [], 'width' => [], 'height' => [], 'style' => [], 'loading' => [], 'allowfullscreen' => [], 'referrerpolicy' => [], 'frameborder' => []]]); ?></div>
+        <div class="canvas"><?php echo wp_kses($embed, ['iframe' => ['src' => [], 'title' => [], 'width' => [], 'height' => [], 'style' => [], 'loading' => [], 'allowfullscreen' => [], 'referrerpolicy' => [], 'frameborder' => []]]); ?></div>
     <?php endif; ?>
 </div>

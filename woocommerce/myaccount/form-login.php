@@ -7,6 +7,7 @@
  *
  * @package Underscores
  * @see https://woocommerce.com/document/template-structure/
+ * @version 9.9.0
  */
 
 defined('ABSPATH') || exit;
@@ -21,7 +22,7 @@ $show_register = isset($_POST['register']) || (isset($_GET['action']) && $_GET['
 
     <!-- LOGIN CONTAINER -->
     <div class="auth-login-box" style="display: <?php echo $show_register ? 'none' : 'block'; ?>;">
-        <h1><?php esc_html_e('Đăng nhập', 'underscores'); ?></h1>
+        <h2><?php esc_html_e('Đăng nhập', 'underscores'); ?></h2>
         <p class="auth-sub"><?php esc_html_e('Chào mừng trở lại. Đăng nhập để tiếp tục mua sắm.', 'underscores'); ?></p>
 
         <form class="woocommerce-form woocommerce-form-login login auth-form" method="post" novalidate>
@@ -62,7 +63,7 @@ $show_register = isset($_POST['register']) || (isset($_GET['action']) && $_GET['
     <!-- REGISTER CONTAINER -->
     <?php if ($registration_enabled) : ?>
         <div class="auth-register-box" style="display: <?php echo $show_register ? 'block' : 'none'; ?>;">
-            <h1 class="auth-register-heading"><?php esc_html_e('Đăng ký', 'underscores'); ?></h1>
+            <h2 class="auth-register-heading"><?php esc_html_e('Đăng ký', 'underscores'); ?></h2>
             <p class="auth-sub"><?php esc_html_e('Tạo tài khoản mới để tích điểm và nhận ưu đãi.', 'underscores'); ?></p>
 
             <form method="post" class="woocommerce-form woocommerce-form-register register auth-form" <?php do_action('woocommerce_register_form_tag'); ?>>

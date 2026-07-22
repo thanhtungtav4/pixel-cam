@@ -18,6 +18,7 @@ if (empty($slides) && empty($side)) {
 <section class="hero"><div class="wrap hero-grid">
     <?php if (! empty($slides)) : ?>
     <div class="slider" id="slider">
+        <?php $has_primary_heading = false; ?>
         <?php foreach ($slides as $i => $slide) :
             $image = $slide['image'] ?? 0;
             $link  = underscores_child_acf_link($slide['link'] ?? []);
@@ -31,10 +32,11 @@ if (empty($slides) && empty($side)) {
                         <div class="kick"><?php echo esc_html($slide['kicker']); ?></div>
                     <?php endif; ?>
                     <?php if (! empty($slide['heading'])) : ?>
-                        <h2><?php echo esc_html($slide['heading']); ?></h2>
+                        <?php $heading_tag = $has_primary_heading ? 'h2' : 'h1'; $has_primary_heading = true; ?>
+                        <<?php echo $heading_tag; ?>><?php echo esc_html($slide['heading']); ?></<?php echo $heading_tag; ?>>
                     <?php endif; ?>
                     <?php if ($link) : ?>
-                        <a href="<?php echo esc_url($link['url']); ?>" class="btn"<?php echo $link['target'] ? ' target="' . esc_attr($link['target']) . '"' : ''; ?>><?php echo esc_html($link['title']); ?></a>
+                        <a href="<?php echo esc_url($link['url']); ?>" class="btn"<?php echo $link['target'] ? ' target="' . esc_attr($link['target']) . '"' : ''; ?><?php echo ($link['target'] ?? '') === '_blank' ? ' rel="noopener noreferrer"' : ''; ?>><?php echo esc_html($link['title']); ?></a>
                     <?php endif; ?>
                 </div>
             </div>
