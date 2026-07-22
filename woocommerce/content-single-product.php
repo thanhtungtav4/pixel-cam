@@ -32,16 +32,19 @@ $acf_fields = function_exists('get_field') ? [
     'gifts'        => get_field('gifts', $product_id) ?: [],
     'gifts_total'  => get_field('gifts_total', $product_id) ?: '',
     'stock_note'   => get_field('stock_note', $product_id) ?: '',
+    'box_items'    => get_field('box_items', $product_id) ?: '',
 ] : [
     'install_text' => '',
     'gifts'        => [],
     'gifts_total'  => '',
     'stock_note'   => '',
+    'box_items'    => '',
 ];
 $install_text = $acf_fields['install_text'];
 $gifts        = $acf_fields['gifts'];
 $gifts_total  = $acf_fields['gifts_total'];
 $stock_note   = $acf_fields['stock_note'];
+$box_items    = trim((string) $acf_fields['box_items']);
 
 $product_settings = function_exists('underscores_get_option') ? (underscores_get_option('product_section') ?: []) : [];
 $perks            = $product_settings['perks'] ?? [];
@@ -112,6 +115,20 @@ $sku         = $product->get_sku();
                 <div class="install"><?php echo esc_html($install_text); ?></div>
             <?php endif; ?>
 
+            <?php if ($box_items !== '') : ?>
+                <div class="pdp-box">
+                    <h3 class="pdp-box__title"><?php esc_html_e('Hộp sản phẩm bao gồm', 'underscores'); ?></h3>
+                    <div class="pdp-box__body">
+                        <?php
+                        // apply_filters('the_content', ...) so the editor's HTML
+                        // (ul/li, <strong>, <a>) renders properly. wp_kses_post
+                        // strips anything dangerous (script, on*, etc).
+                        echo wp_kses_post(apply_filters('the_content', $box_items));
+                        ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
             <?php if (! empty($perks)) : ?>
                 <div class="pdp-perks">
                     <?php foreach ($perks as $perk) :
@@ -131,9 +148,8 @@ $sku         = $product->get_sku();
             <?php endif; ?>
 
             <?php
-            // Note: the "Hộp sản phẩm bao gồm" block used to live here in
-            // the right info column. It now sits inside the TỔNG QUAN tab
-            // (right side, see WooProductHook::product_tabs() / pxc_overview).
+            // (No more "Hộp sản phẩm bao gồm" stub here — it's now rendered
+            // above, between install_text and perks, as a wysiwyg block.)
             ?>
         </div>
     </div>

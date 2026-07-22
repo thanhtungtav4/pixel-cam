@@ -109,18 +109,12 @@
             "key": "field_pdp_box_items",
             "label": "Hộp sản phẩm bao gồm",
             "name": "box_items",
-            "type": "repeater",
-            "layout": "table",
-            "button_label": "Thêm mục",
-            "sub_fields": [
-                {
-                    "key": "field_pdp_box_item_text",
-                    "label": "Mục",
-                    "name": "text",
-                    "type": "text",
-                    "placeholder": "Thân máy Sony A7 IV"
-                }
-            ]
+            "type": "wysiwyg",
+            "instructions": "Nhập danh sách phụ kiện trong hộp. Dùng bullist (•) hoặc numlist (1.) — render đúng dạng ul/ol ở PDP. Hỗ trợ bold, italic, link.",
+            "media_upload": 0,
+            "delay": 0,
+            "toolbar": "bold italic bullist numlist link",
+            "tabs": "visual"
         },
         {
             "key": "field_pdp_tab_spec",
