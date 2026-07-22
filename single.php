@@ -117,22 +117,45 @@ while (have_posts()) :
         </div>
     </div>
 
-    <section><div class="wrap post-layout">
+    <section><div class="wrap post-layout<?php echo empty($toc_headings) ? ' no-toc' : ''; ?>">
         <div class="post-share">
             <h5><?php esc_html_e('Chia sẻ', 'underscores'); ?></h5>
             <?php
             $share_url = rawurlencode(get_permalink());
+            $share_url_plain = get_permalink();
             ?>
-            <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $share_url; ?>" target="_blank" rel="noopener">Facebook</a>
-            <a class="share-btn" href="https://twitter.com/intent/tweet?url=<?php echo $share_url; ?>" target="_blank" rel="noopener">X (Twitter)</a>
-            <button class="share-btn" type="button" data-copy-link="<?php echo esc_url(get_permalink()); ?>"><?php esc_html_e('Sao chép link', 'underscores'); ?></button>
+            <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $share_url; ?>" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                Facebook
+            </a>
+            <a class="share-btn" href="https://twitter.com/intent/tweet?url=<?php echo $share_url; ?>" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 4.01a8 8 0 0 1-2.36.65A4.07 4.07 0 0 0 21.4 2.4a8.2 8.2 0 0 1-2.6 1 4.1 4.1 0 0 0-7 3.74A11.6 11.6 0 0 1 3 3.16a4.1 4.1 0 0 0 1.27 5.5A4.07 4.07 0 0 1 2.4 8v.05a4.1 4.1 0 0 0 3.3 4 4 4 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85A8.23 8.23 0 0 1 2 16.54a11.62 11.62 0 0 0 6.29 1.84c7.55 0 11.67-6.25 11.67-11.67v-.53A8.3 8.3 0 0 0 22 4z"/></svg>
+                X (Twitter)
+            </a>
+            <a class="share-btn" href="https://www.facebook.com/dialog/send?link=<?php echo $share_url; ?>&app_id=0" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.87v-7H8v-2.9h2.4V9.5c0-2.37 1.4-3.68 3.57-3.68 1.03 0 2.1.19 2.1.19v2.31h-1.18c-1.17 0-1.53.73-1.53 1.47v1.77h2.6l-.42 2.9h-2.18v7A10 10 0 0 0 22 12z"/></svg>
+                Messenger
+            </a>
+            <button class="share-btn" type="button" data-copy-link="<?php echo esc_url($share_url_plain); ?>">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
+                <?php esc_html_e('Sao chép link', 'underscores'); ?>
+            </button>
         </div>
 
         <article>
             <div class="post-share-mobile" aria-label="<?php esc_attr_e('Chia sẻ bài viết', 'underscores'); ?>">
-                <a class="share-btn share-btn--icon" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $share_url; ?>" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Chia sẻ Facebook', 'underscores'); ?>">Facebook</a>
-                <a class="share-btn share-btn--icon" href="https://twitter.com/intent/tweet?url=<?php echo $share_url; ?>" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Chia sẻ X (Twitter)', 'underscores'); ?>">X</a>
-                <button class="share-btn share-btn--icon" type="button" data-copy-link="<?php echo esc_url(get_permalink()); ?>" aria-label="<?php esc_attr_e('Sao chép link', 'underscores'); ?>"><?php esc_html_e('Sao chép', 'underscores'); ?></button>
+                <a class="share-btn share-btn--icon" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $share_url; ?>" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Chia sẻ Facebook', 'underscores'); ?>">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                </a>
+                <a class="share-btn share-btn--icon" href="https://twitter.com/intent/tweet?url=<?php echo $share_url; ?>" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Chia sẻ X (Twitter)', 'underscores'); ?>">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 4.01a8 8 0 0 1-2.36.65A4.07 4.07 0 0 0 21.4 2.4a8.2 8.2 0 0 1-2.6 1 4.1 4.1 0 0 0-7 3.74A11.6 11.6 0 0 1 3 3.16a4.1 4.1 0 0 0 1.27 5.5A4.07 4.07 0 0 1 2.4 8v.05a4.1 4.1 0 0 0 3.3 4 4 4 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85A8.23 8.23 0 0 1 2 16.54a11.62 11.62 0 0 0 6.29 1.84c7.55 0 11.67-6.25 11.67-11.67v-.53A8.3 8.3 0 0 0 22 4z"/></svg>
+                </a>
+                <a class="share-btn share-btn--icon" href="https://www.facebook.com/dialog/send?link=<?php echo $share_url; ?>&app_id=0" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Chia sẻ Messenger', 'underscores'); ?>">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.87v-7H8v-2.9h2.4V9.5c0-2.37 1.4-3.68 3.57-3.68 1.03 0 2.1.19 2.1.19v2.31h-1.18c-1.17 0-1.53.73-1.53 1.47v1.77h2.6l-.42 2.9h-2.18v7A10 10 0 0 0 22 12z"/></svg>
+                </a>
+                <button class="share-btn share-btn--icon" type="button" data-copy-link="<?php echo esc_url($share_url_plain); ?>" aria-label="<?php esc_attr_e('Sao chép link', 'underscores'); ?>">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
+                </button>
             </div>
 
             <div class="prose"><?php the_content(); ?></div>
